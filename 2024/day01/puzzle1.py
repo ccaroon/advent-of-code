@@ -1,40 +1,15 @@
 #!/usr/bin/env python
-import re
 import sys
 
-def read_input(filename):
+import utils
+
+def compute_dist(left:list[int], right:list[int]) -> int:
     """
-    Opens the input file & reads each column of numbers into two separate lists.
-    """
-    left = []
-    right = []
-
-    with open(filename) as fptr:
-        line = fptr.readline()
-        while line:
-            # remove extra whitespace
-            id_str = re.sub(r"\s+", " ", line)
-
-            # split each line into the two numbers
-            (lnum, rnum) = id_str.strip().split(" ", 2)
-
-            # ...store left num in "left" list
-            left.append(int(lnum))
-
-            # ...store right num in "right" list
-            right.append(int(rnum))
-
-            # get next line
-            line = fptr.readline()
-
-    return (left, right)
-
-
-def compute_dist(left:list, right:list) -> int:
-    """
-    Compute the total distance between two lists of ints.
+    Find the total distance between the `left` list and the `right` list by
+    adding up the distances between each pair of numbers (left[i], right[i]).
 
     Each list should have the same length.
+    Each list will be sorted lowest to highest.
 
     >>> compute_dist([3,4,2,1,3,3], [4,3,5,3,9,3])
     11
@@ -60,18 +35,18 @@ def compute_dist(left:list, right:list) -> int:
     return total_dist
 
 
-def main(input_file):
+def main(input_file:str) -> None:
+    """ Entry Point """
     total_dist = 0
 
     # read the input file
-    left, right = read_input(input_file)
+    left, right = utils.read_input(input_file)
 
     total_dist = compute_dist(left, right)
 
-
-    print(f"""--- Day 01 ---
+    print(f"""--- Day 01 // Puzzle 01 ---
 -> Input File: {input_file}
--> # of Locations: {len(left)}
+-> # of LocIds: {len(left)}
 -> Total Distance: {total_dist}
 """)
 
