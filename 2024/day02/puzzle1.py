@@ -4,7 +4,7 @@ import sys
 
 import utils
 
-def main(report_file):
+def main(report_file:str) -> None:
     safe_reports = 0
     report_count = 0
 
@@ -14,9 +14,15 @@ def main(report_file):
             report_count += 1
 
             # strip out extra whitespace
-            report_data = re.sub(r"\s+", " ", line.strip())
+            report_line = re.sub(r"\s+", " ", line.strip())
+            # Convert data into array/list
+            report_data = report_line.split(" ")
+            # Convert levels from str to int
+            report_data = [int(lvl) for lvl in report_data]
 
-            if utils.report_is_safe(report_data):
+            # Don't care about failures
+            (is_safe, _) = utils.report_is_safe(report_data)
+            if is_safe:
                 safe_reports += 1
 
             line = fptr.readline()

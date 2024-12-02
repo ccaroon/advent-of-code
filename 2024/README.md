@@ -8,7 +8,7 @@ As each location is checked, they will mark it on their list with a star. They f
 Collect stars by solving puzzles. Two puzzles will be made available on each day in the Advent calendar; the second puzzle is unlocked when you complete the first. Each puzzle grants one star. Good luck!
 
 * [x] [Day 01](./day01/README.md)
-* [ ] Day 02
+* [x] [Day 02](./day02/README.md)
 * [ ] Day 03
 * [ ] Day 04
 * [ ] Day 05
