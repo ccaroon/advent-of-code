@@ -8,8 +8,7 @@ def main(input_file:str) -> None:
 
     total = 0
     for mem_loc in memory_dump:
-        total += utils.scan_memory_location(mem_loc)
-
+        total += utils.scan_memory_dump(mem_loc)
 
     print(f"""--- Day 03 // Puzzle 01 ---
 -> Input File: {input_file}
