@@ -5,7 +5,6 @@ import utils
 
 def main(input_file:str) -> None:
     grid = utils.create_word_grid(input_file)
-    print(grid)
     cols = len(grid[0])
     rows = len(grid)
     count = utils.count_word(grid, "XMAS")

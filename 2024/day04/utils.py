@@ -1,3 +1,14 @@
+# Directions in the form NAME = (row_delta, col_delta)
+NORTH = (-1, 0)
+EAST  = (0,  1)
+SOUTH = (1,  0)
+WEST  = (0, -1)
+NE    = (-1, 1)
+NW    = (-1, -1)
+SE    = (1,  1)
+SW    = (1, -1)
+
+
 def create_word_grid(filename:str) -> list[list]:
     """
     Read `filename` into a list of lists of letters.
@@ -28,16 +39,6 @@ def create_word_grid(filename:str) -> list[list]:
     return grid
 
 
-# Directions in the form NAME = (row_delta, col_delta)
-NORTH = (-1, 0)
-EAST  = (0,  1)
-SOUTH = (1,  0)
-WEST  = (0, -1)
-NE    = (-1, 1)
-NW    = (-1, -1)
-SE    = (1,  1)
-SW    = (1, -1)
-
 def find_by_dir(grid:list[list], row:int, col:int, word:str, direction:tuple) -> bool:
     """
     Look for `word` in `grid` starting at `row`,`col` and looking in the
@@ -45,6 +46,22 @@ def find_by_dir(grid:list[list], row:int, col:int, word:str, direction:tuple) ->
 
     Returns:
         bool: Was `word` found?
+
+    >>> find_by_dir([['.','.','X','M','A','S','.','.']], 0, 2, "XMAS", EAST)
+    True
+
+    >>> find_by_dir([['.','.','X','M','A','S','.','.']], 0, 4, "XMAS", WEST)
+    False
+
+    >>> find_by_dir([
+    ... [' ',' ',' ',' ',' ',' '],
+    ... [' ','X',' ',' ',' ',' '],
+    ... [' ',' ','M',' ',' ',' '],
+    ... [' ',' ',' ','A',' ',' '],
+    ... [' ',' ',' ',' ','S',' ']
+    ... ],
+    ... 1, 1, "XMAS", SE)
+    True
     """
     found = True
     num_rows = len(grid)
@@ -93,7 +110,6 @@ def count_word(grid:list[list], word:str) -> int:
     # Assume each row has same number of cols
     num_rows = len(grid)
     num_cols = len(grid[0])
-    # locs = []
 
     for row in range(num_rows):
         for col in range(num_cols):
@@ -104,12 +120,41 @@ def count_word(grid:list[list], word:str) -> int:
                 for direction in (NORTH, EAST, SOUTH, WEST, NE, NW, SE, SW):
                     if find_by_dir(grid, row, col, word, direction):
                         count += 1
-                        # locs.append({
-                        #     "pos": (row, col),
-                        #     "dir": direction
-                        # })
 
-    # import pprint
-    # pprint.pprint(locs)
+    return count
+
+
+def count_x_mas(grid:list[list]) -> int:
+    """
+    Count the number of times `MAS` appears in the grid in an `X` pattern.
+
+    M S
+     A
+    M S
+
+    >>> count_x_mas(
+    ... [
+    ... ['M', 'M', 'M', 'S', 'X', 'X', 'M', 'A', 'S', 'M'], ['M', 'S', 'A', 'M', 'X', 'M', 'S', 'M', 'S', 'A'], ['A', 'M', 'X', 'S', 'X', 'M', 'A', 'A', 'M', 'M'], ['M', 'S', 'A', 'M', 'A', 'S', 'M', 'S', 'M', 'X'], ['X', 'M', 'A', 'S', 'A', 'M', 'X', 'A', 'M', 'M'], ['X', 'X', 'A', 'M', 'M', 'X', 'X', 'A', 'M', 'A'], ['S', 'M', 'S', 'M', 'S', 'A', 'S', 'X', 'S', 'S'], ['S', 'A', 'X', 'A', 'M', 'A', 'S', 'A', 'A', 'A'], ['M', 'A', 'M', 'M', 'M', 'X', 'M', 'M', 'M', 'M'], ['M', 'X', 'M', 'X', 'A', 'X', 'M', 'A', 'S', 'X']
+    ... ])
+    9
+    """
+    count = 0
+    # Assume each row has same number of cols
+    num_rows = len(grid)
+    num_cols = len(grid[0])
+    word = "MAS"
+
+    for row in range(num_rows):
+        for col in range(num_cols):
+            # Look for an 'A', that's a possible middle/axis point
+            if grid[row][col] == 'A':
+                x_count = 0
+                # Look for "MAS" starting a each "corner"
+                for corner, direction in ((NW,SE), (NE,SW), (SW,NE), (SE,NW)):
+                    if find_by_dir(grid, row+corner[0], col+corner[1], word, direction):
+                        x_count += 1
+
+                if x_count == 2:
+                    count += 1
 
     return count

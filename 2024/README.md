@@ -10,7 +10,7 @@ Collect stars by solving puzzles. Two puzzles will be made available on each day
 * [x] [Day 01](./day01/README.md)
 * [x] [Day 02](./day02/README.md)
 * [x] [Day 03](./day03/README.md)
-* [ ] [Day 04](./day04/README.md)
+* [x] [Day 04](./day04/README.md)
 * [ ] Day 05
 * [ ] Day 06
 * [ ] Day 07
