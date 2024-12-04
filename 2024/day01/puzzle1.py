@@ -52,7 +52,7 @@ def main(input_file:str) -> None:
 
 
 if __name__ == "__main__":
-    input_file = "day1-input.dat"
+    input_file = "location-ids.dat"
 
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
