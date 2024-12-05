@@ -4,16 +4,23 @@ import sys
 import utils
 
 def main(input_file:str) -> None:
+    rules, updates = utils.read_printer_data(input_file)
 
+    result = utils.check_printer_data(rules, updates, auto_correct=True)
 
     print(f"""--- Day 05 // Puzzle 02 ---
 -> Input File: {input_file}
-
+-> Rule Count: {len(rules)} (collated)
+-> Page Updates: {len(updates)}
+-> Correct Updates: {len(result["correct_idxs"])}
+-> Correct Sum: {result["correct_sum"]}
+-> InCorrect Updates: {len(result["incorrect_idxs"])}
+-> InCorrect Sum: {result["incorrect_sum"]}
 """)
 
 
 if __name__ == "__main__":
-    input_file = None
+    input_file = "safety-manual-printer.dat"
 
     if len(sys.argv) > 1:
         input_file = sys.argv[1]

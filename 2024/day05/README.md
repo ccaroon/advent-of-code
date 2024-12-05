@@ -8,6 +8,8 @@ Determine which updates are already in the correct order. What do you get if you
 * [Code](./puzzle1.py) => `4774`
 
 ## Puzzle2
-...
+For each of the incorrectly-ordered updates, use the page ordering rules to put the page numbers in the right order.
 
-* [Code](./puzzle2.py) => `?????`
+Find the updates which are not in the correct order. What do you get if you add up the middle page numbers after correctly ordering just those updates?
+
+* [Code](./puzzle2.py) => `6004`

@@ -6,14 +6,14 @@ import utils
 def main(input_file:str) -> None:
     rules, updates = utils.read_printer_data(input_file)
 
-    correct, page_sum = utils.check_printer_data(rules, updates)
+    result = utils.check_printer_data(rules, updates)
 
     print(f"""--- Day 05 // Puzzle 01 ---
 -> Input File: {input_file}
 -> Rule Count: {len(rules)} (collated)
 -> Page Updates: {len(updates)}
--> Correct Updates: {len(correct)}
--> Middle Page Sum: {page_sum}
+-> Correct Updates: {len(result["correct_idxs"])}
+-> Correct Sum: {result["correct_sum"]}
 """)
 
 
