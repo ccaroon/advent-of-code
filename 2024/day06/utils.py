@@ -5,6 +5,20 @@ RT = (0,1)
 DN = (1,0)
 LF = (0,-1)
 
+DIRECTION_MARKER = {
+    UP: "U",
+    DN: "D",
+    LF: "L",
+    RT: "R"
+}
+
+DIRECTION_LOOKUP = {
+    "U": UP,
+    "D": DN,
+    "L": LF,
+    "R": RT
+}
+
 TURN = {
     UP: RT,
     RT: DN,
@@ -12,9 +26,15 @@ TURN = {
     LF: UP
 }
 
+EVENT_MOVE = 1
+EVENT_OBSTACLE = 2
+EVENT_TURN = 3
+EVENT_EXIT = 4
+
 GUARD = "^"
-MARK  = "X"
+POSITION_MARK  = "X"
 OBSTACLE = "#"
+LOOP_OBSTACLE = "O"
 
 def load_map(filename:str) -> list[list[str]]:
     """
@@ -30,7 +50,74 @@ def load_map(filename:str) -> list[list[str]]:
     return map_data
 
 
-def lidar_scan(area_map:list[list[str]]) -> list[list[str]]:
+def walk_map(area_map:list[list[str]], start_pos, start_dir, event_handler) -> None:
+    width = len(area_map[0])
+    height = len(area_map)
+
+    curr_row = start_pos[0]
+    curr_col = start_pos[1]
+    curr_dir = start_dir
+    turn_record = []
+    while True:
+        event_handler(area_map, EVENT_MOVE, position=(curr_row, curr_col))
+
+        # move
+        new_row = curr_row + curr_dir[0]
+        new_col = curr_col + curr_dir[1]
+
+        # check if guard has exited the area
+        if new_row < 0 or new_row >= height or new_col < 0 or new_col >= width :
+            event_handler(area_map, EVENT_EXIT, position=(curr_row, curr_col))
+            break
+
+        # check for obstacle
+        if area_map[new_row][new_col] == OBSTACLE:
+            event_handler(area_map, EVENT_OBSTACLE, position=(new_row,new_col))
+
+            # turn
+            new_dir = TURN[curr_dir]
+
+            turn_record.append({
+                "prev_dir": curr_dir,
+                "new_dir": new_dir,
+                "position": (curr_row, curr_col)
+            })
+
+            event_handler(
+                area_map,
+                EVENT_TURN,
+                turns=turn_record
+            )
+
+            curr_dir = new_dir
+            # update pos
+            curr_row += curr_dir[0]
+            curr_col += curr_dir[1]
+        else:
+            # update pos -- keep moving in same dir
+            curr_row = new_row
+            curr_col = new_col
+
+
+def find_guard(area_map:list[list[str]]) -> tuple[int,int]:
+    guard_row = None
+    guard_col = None
+    for row, section in enumerate(area_map):
+        if GUARD in section:
+            guard_row = row
+            guard_col = section.index(GUARD)
+            break
+
+    return guard_row, guard_col
+
+
+def puzzle1_handler(area_map, event, **kwargs):
+    if event == EVENT_MOVE:
+        pos = kwargs.get("position")
+        area_map[pos[0]][pos[1]] = POSITION_MARK
+
+
+def analyze_map(area_map:list[list[str]], event_handler) -> list[list[str]]:
     """
     Scan the `area_map` to map out the Guard's route using the rules:
 
@@ -59,48 +146,99 @@ def lidar_scan(area_map:list[list[str]]) -> list[list[str]]:
     """
     marked_map = copy.deepcopy(area_map)
 
-    width = len(marked_map[0])
-    height = len(marked_map)
+    # find starting position, e.g. the guard
+    guard_dir = UP
+    guard_row, guard_col = find_guard(marked_map)
 
-    # find starting position
-    curr_row = None
-    curr_col = None
-    curr_dir = UP
-    for row, scan_line in enumerate(marked_map):
-        if GUARD in scan_line:
-            curr_row = row
-            curr_col = scan_line.index(GUARD)
-            break
-
-    # scan
-    while True:
-        # mark
-        marked_map[curr_row][curr_col] = MARK
-
-        # move
-        new_row = curr_row + curr_dir[0]
-        new_col = curr_col + curr_dir[1]
-
-        # check if guard has exited the area
-        if new_row < 0 or new_row >= height or new_col < 0 or new_col >= width :
-            break
-
-        # check for obstacle
-        if marked_map[new_row][new_col] == OBSTACLE:
-            # turn
-            curr_dir = TURN[curr_dir]
-            # update pos
-            curr_row += curr_dir[0]
-            curr_col += curr_dir[1]
-        else:
-            # update pos -- keep moving in same dir
-            curr_row = new_row
-            curr_col = new_col
+    walk_map(
+        marked_map,
+        (guard_row, guard_col),
+        guard_dir,
+        event_handler
+    )
 
     return marked_map
 
 
-def count_unique_positions(marked_map:list[list[str]]) -> int:
+def mark_directions(area_map, event, **kwargs):
+    if event == EVENT_TURN:
+        turns = kwargs.get("turns")
+        turn_count = len(turns)
+        last_turn = turns[turn_count - 1]
+
+        pos = last_turn.get("position")
+        direction = last_turn.get("new_dir")
+
+        marker = DIRECTION_MARKER.get(direction)
+        area_map[pos[0]][pos[1]] = marker
+
+
+def place_obstacles(area_map:list[list[str]]) -> list[list[str]]:
+    marked_map = copy.deepcopy(area_map)
+
+    dir_map = analyze_map(area_map, mark_directions)
+
+    # find starting position, e.g. the guard
+    # Mark loop obstacles from guard start pos
+    guard_dir = UP
+    guard_row, guard_col = find_guard(marked_map)
+    walk_map(
+        marked_map,
+        (guard_row, guard_col),
+        guard_dir,
+        puzzle2_handler
+    )
+
+    # Mark loop obstacles from each turning point
+    for row, section in enumerate(dir_map):
+        for col, marker in enumerate(section):
+            if marker in DIRECTION_LOOKUP.keys():
+                walk_map(
+                    marked_map,
+                    (row,col),
+                    DIRECTION_LOOKUP[marker],
+                    puzzle2_handler
+                )
+
+    return marked_map
+
+
+def puzzle2_handler(area_map, event, **kwargs):
+    if event == EVENT_TURN:
+        turns = kwargs.get("turns")
+        turn_count = len(turns)
+        if turn_count % 4 == 3:
+            first_turn = turns[0]
+            this_turn = turns[turn_count - 1]
+
+            first_pos = first_turn.get("position")
+            first_dir = first_turn.get("prev_dir")
+
+            this_pos = this_turn.get("position")
+            this_dir = this_turn.get("new_dir")
+
+            print(f"Turn #{turn_count} -> ({this_pos}) heading {this_dir}")
+
+            # figure out where to set new obstacle
+            obst_row = None
+            obst_col = None
+            if this_dir == LF or this_dir == RT:
+                obst_row = this_pos[0]
+            elif this_dir == UP or this_dir == DN:
+                obst_col = this_pos[1]
+
+            if first_dir == LF or first_dir == RT:
+                obst_row = first_pos[0]
+            elif first_dir == UP or first_dir == DN:
+                obst_col = first_pos[1] - 1
+
+            # TODO: what about obstacle in the way
+
+            # set obstacle
+            area_map[obst_row][obst_col] = LOOP_OBSTACLE
+
+
+def count(marked_map:list[list[str]], marker) -> int:
     """
     Count the number of unique positions that are marked on the `marked_map`
 
@@ -118,9 +256,9 @@ def count_unique_positions(marked_map:list[list[str]]) -> int:
     ... )
     10
     """
-    unique_pos = 0
+    total = 0
 
     for row in marked_map:
-        unique_pos += row.count(MARK)
+        total += row.count(marker)
 
-    return unique_pos
+    return total

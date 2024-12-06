@@ -11,10 +11,10 @@ def main(input_file:str) -> None:
     height = len(patrol_map)
 
     # scan the map to mark out the route
-    marked_map = utils.lidar_scan(patrol_map)
+    marked_map = utils.analyze_map(patrol_map, utils.puzzle1_handler)
 
     # count each unique location
-    pos_cnt = utils.count_unique_positions(marked_map)
+    pos_cnt = utils.count(marked_map, utils.POSITION_MARK)
 
     print(f"""--- Day 06 // Puzzle 01 ---
 -> Input File: {input_file}

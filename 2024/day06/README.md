@@ -8,6 +8,8 @@ Predict the path of the guard. How many distinct positions will the guard visit 
 * [Code](./puzzle1.py) => `5208`
 
 ## Puzzle2
-...
+You need to get the guard stuck in a loop by adding a single new obstruction.
+
+How many different positions could you choose for this obstruction?
 
 * [Code](./puzzle2.py) => `?????`
