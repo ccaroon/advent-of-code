@@ -11,7 +11,7 @@ def main(input_file:str) -> None:
     height = len(patrol_map)
 
     # scan the map to mark out the route
-    marked_map = utils.analyze_map(patrol_map, utils.puzzle1_handler)
+    marked_map = utils.analyze_map(patrol_map, utils.mark_positions)
 
     # count each unique location
     pos_cnt = utils.count(marked_map, utils.POSITION_MARK)

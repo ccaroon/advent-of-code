@@ -12,4 +12,13 @@ You need to get the guard stuck in a loop by adding a single new obstruction.
 
 How many different positions could you choose for this obstruction?
 
+
 * [Code](./puzzle2.py) => `?????`
+
+
+841 Obstacles
+153 turns
+
+1. 762 -- too low
+2. 1432 -- too low
+3. 822 -- too low
