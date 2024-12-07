@@ -4,10 +4,10 @@ import sys
 from bridge_repair import BridgeRepair
 
 def main(input_file:str) -> None:
-    br = BridgeRepair(input_file, ('+','*'))
+    br = BridgeRepair(input_file, ('+','*', '||'))
     result = br.calibration_result()
 
-    print(f"""--- Day 07 // Puzzle 01 ---
+    print(f"""--- Day 07 // Puzzle 02 ---
 -> Input File: {input_file}
 -> Equation Count: {len(br.equations)}
 -> Calibration Result: {result}
