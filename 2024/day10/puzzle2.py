@@ -5,11 +5,11 @@ from topo_map import TopoMap
 
 def main(input_file:str) -> None:
     topo_map = TopoMap(input_file)
-    score, _ = topo_map.map_trails()
+    _, rating = topo_map.map_trails()
 
-    print(f"""--- Day 10 // Puzzle 01 ---
+    print(f"""--- Day 10 // Puzzle 02 ---
 -> Input File: {input_file}
--> Trail Score: {score}
+-> Trail Rating: {rating}
 """)
 
 

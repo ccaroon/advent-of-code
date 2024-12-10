@@ -46,13 +46,16 @@ class TopoMap:
         return trailheads
 
 
-    def walk_trail(self, start:Location) -> set[Location]:
+    def walk_trail(self, start:Location) -> tuple[int,set]:
         """
         Walk the trail starting at the `start` location.
 
         Returns:
-            set[Location]: List of unique TRAILEND locations that can be reached from `start`
+            tuple[int,set]:
+                - Total paths to TRAILENDs
+                - Unique TRAILEND locations
         """
+        path_cnt = 0
         trail_ends = set()
         branches = []
 
@@ -61,6 +64,7 @@ class TopoMap:
 
         # If at the end of the trail, count it
         if height == self.TRAILEND:
+            path_cnt += 1
             trail_ends.add(start)
         # Not at the end, continue walking
         else:
@@ -73,25 +77,23 @@ class TopoMap:
         if branches:
             # for each possible direction, move and recurse
             for branch_dir in branches:
-                # branch_loc = start.copy().move(branch_dir)
                 branch_loc = start.copy()
                 branch_loc.move(branch_dir)
-                trail_ends.update(self.walk_trail(branch_loc))
+                (pcount, tends) = self.walk_trail(branch_loc)
+                path_cnt += pcount
+                trail_ends.update(tends)
 
-        return trail_ends
-
-
-    def find_trails_ends(self, start) -> set[Location]:
-        trail_ends = self.walk_trail(start)
-        return trail_ends
+        return path_cnt, trail_ends
 
 
-    def score_trails(self) -> int:
+    def map_trails(self) -> int:
         trailheads = self.find_trailheads()
 
-        score = 0
+        total_trail_ends = 0
+        total_paths = 0
         for thead in trailheads:
-            trail_ends = self.find_trails_ends(thead)
-            score += len(trail_ends)
+            path_count, trail_ends = self.walk_trail(thead)
+            total_paths += path_count
+            total_trail_ends += len(trail_ends)
 
-        return score
+        return total_trail_ends, total_paths
