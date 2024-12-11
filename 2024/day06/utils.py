@@ -154,6 +154,56 @@ def analyze_map(area_map:list[list[str]], event_handler) -> list[list[str]]:
     return marked_map
 
 
+class StupidError(Exception):
+    pass
+
+STUPID_COUNT = 0
+def stupid_handler(area_map, event, **kwargs):
+    global STUPID_COUNT
+    if event == EVENT_OBSTACLE:
+        STUPID_COUNT += 1
+
+        # print(STUPID_COUNT)
+        if STUPID_COUNT >= 50000:
+            raise StupidError()
+    elif event == EVENT_EXIT:
+        STUPID_COUNT = 0
+        # pos = kwargs.get("position")
+        # print(f"Exit @ ({pos[0]},{pos[1]})")
+
+
+def stupid_solution(area_map):
+    global STUPID_COUNT
+    guard_dir = UP
+    guard_row, guard_col = find_guard(area_map)
+
+    count = 0
+    for ridx, row in enumerate(area_map):
+        for cidx, col in enumerate(row):
+            # skip guard star pos
+            if ridx == guard_row and cidx == guard_col:
+                continue
+            # place obstacle at r,c
+            STUPID_COUNT = 0
+            test_map = copy.deepcopy(area_map)
+            # print(f"Trying ({ridx},{cidx})")
+            test_map[ridx][cidx] = OBSTACLE
+            # check if loop
+            # ...if loop count
+            try:
+                walk_map(
+                    test_map,
+                    (guard_row, guard_col),
+                    guard_dir,
+                    stupid_handler
+                )
+            except StupidError:
+                count += 1
+                print(f"({ridx},{cidx}) - Loop Count: {count}")
+
+    return count
+
+
 def place_obstacles(area_map:list[list[str]]) -> list[list[str]]:
     marked_map = copy.deepcopy(area_map)
 

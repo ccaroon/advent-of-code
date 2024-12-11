@@ -17,18 +17,18 @@ def main(input_file:str) -> None:
     # print(f"Total Obstacles: {count}")
 
     # scan the map to mark out the route
-    marked_map = utils.place_obstacles(patrol_map)
+    count = utils.stupid_solution(patrol_map)
 
     # pprint.pprint(patrol_map)
     # print("----------------------------------------------------")
     # pprint.pprint(marked_map)
 
-    loop_cnt = utils.count(marked_map, utils.LOOP_OBSTACLE)
+    # loop_cnt = utils.count(marked_map, utils.LOOP_OBSTACLE)
 
     print(f"""--- Day 06 // Puzzle 02 ---
 -> Input File: {input_file}
 -> Map Size: {width}x{height}
--> Obstacle Pos: {loop_cnt}
+-> Obstacle Pos: {count}
 """)
 
 
