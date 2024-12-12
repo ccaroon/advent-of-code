@@ -9,12 +9,14 @@ class Location:
 
 
     def move(self, direction):
-        self.row += direction.rdelta
-        self.col += direction.cdelta
+        self.row += direction.row_delta
+        self.col += direction.col_delta
 
 
-    # TODO: Maybe this method belongs on TopoMap instead?
     def look(self, direction, area_map:list[list]) -> any:
+        """
+        Take a quick peek in `direction`
+        """
         peek_loc = self.copy()
         peek_loc.move(direction)
 

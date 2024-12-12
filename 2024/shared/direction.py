@@ -1,23 +1,25 @@
-# class DirectionMeta:
-#     def __iter__(self):
-#         return self.__ALL_DIRECTIONS
-
+import random
 
 class Direction:
-    # __metaclass__ = DirectionMeta
-
     __CODE_MAP = {
-        "U": (-1, 0),
-        "D": (1, 0),
-        "L": (0, -1),
-        "R": (0, 1),
+        "N":  (-1, 0),
+        "NE": (-1, 1),
+        "E":  (0, 1),
+        "SE": (1, 1),
+        "S":  (1, 0),
+        "SW": (1, -1),
+        "W":  (0, -1),
+        "NW": (-1,-1)
     }
 
-    # __ALL_DIRECTIONS = [Direction(code) for code in __CODE_MAP.keys()]
+    VALID_CODES = tuple(__CODE_MAP.keys())
 
+    def __init__(self, code:str):
+        if code not in self.__CODE_MAP:
+            raise ValueError(f"Invalid Direction Code '{code}'")
 
-    def __init__(self, code):
         self.__code = code
+        self.__delta = self.__CODE_MAP.get(code)
 
 
     @classmethod
@@ -26,23 +28,41 @@ class Direction:
 
 
     @property
-    def code(self) -> str:
+    def code(self):
         return self.__code
 
+    @property
+    def row_delta(self):
+        return self.__delta[0]
+
 
     @property
-    def rdelta(self) -> int:
-        return self.__CODE_MAP[self.__code][0]
+    def col_delta(self):
+        return self.__delta[1]
 
 
-    @property
-    def cdelta(self) -> int:
-        return self.__CODE_MAP[self.__code][1]
+    @classmethod
+    def random(self):
+        """
+        Pick a random direction
+
+        >>> d = Direction.random()
+        >>> isinstance(d, Direction)
+        True
+        >>> d.code in Direction.VALID_CODES
+        True
+        """
+        rand_code = random.choice(self.VALID_CODES)
+        return Direction(rand_code)
+
+
+    def copy(self):
+        return Direction(self.code)
+
+
+    def __eq__(self, other):
+        return self.code == other.code
 
 
     def __str__(self):
-        return self.code
-
-
-    def __repr__(self):
-        return f"Direction('{self.code}','{self.rdelta}','{self.cdelta}')"
+        return f"{self.__code} ({self.row_delta},{self.col_delta})"
