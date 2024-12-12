@@ -1,19 +1,25 @@
 #!/usr/bin/env python
 import argparse
+# import sys
 
-from plutonian_pebbles import PlutonianPebbles
+from plutonian_pebbles2 import PlutonianPebbles2
 
 def main(input_file:str, blinks:int) -> None:
-    pp = PlutonianPebbles(input_file)
+    total_pebbles = 0
 
-    for count in range(blinks):
-        print(f"#{count+1} - {pp.count}")
-        pp.blink()
+    pebbles = None
+    with open(input_file, "r") as fptr:
+        line = fptr.readline()
+        pebbles = line.strip().split()
 
-    print(f"""--- Day 11 // Puzzle 01 ---
+    for pb in pebbles:
+        pp = PlutonianPebbles2(pb)
+        total_pebbles += pp.blink(blinks)
+
+    print(f"""--- Day 11 // Puzzle 02 ---
 -> Input File: {input_file}
 -> Blinks Count: {blinks}
--> Stone Count: {pp.count}
+-> Stone Count: {total_pebbles}
 """)
 
 

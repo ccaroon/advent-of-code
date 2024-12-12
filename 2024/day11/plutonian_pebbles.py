@@ -8,7 +8,7 @@ class PlutonianPebbles:
 
 
     def __read_pebble_data(self):
-        with open(self.__filename) as fptr:
+        with open(self.__filename, "r") as fptr:
             line = fptr.readline()
 
             self.__pebbles = line.strip().split(" ")
@@ -18,6 +18,14 @@ class PlutonianPebbles:
     @property
     def count(self):
         return len(self.__pebbles)
+
+
+    def cache(self):
+        with open("./cache.dat", "w") as fptr:
+            for pebble in self.__pebbles:
+                fptr.write(f"{pebble} ")
+
+            fptr.write("\n")
 
 
     def blink(self):
@@ -63,6 +71,13 @@ class PlutonianPebbles:
 
         return output.strip()
 
+
+    def __repr__(self):
+        output = ""
+        for pb in self.__pebbles:
+            output += f"{pb} "
+
+        return output.strip()
 
 
 
