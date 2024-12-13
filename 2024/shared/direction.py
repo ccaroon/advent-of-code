@@ -23,8 +23,8 @@ class Direction:
 
 
     @classmethod
-    def enumerate(cls):
-        return [Direction(code) for code in cls.__CODE_MAP.keys()]
+    def enumerate(cls, dirs=__CODE_MAP.keys()):
+        return [Direction(code) for code in dirs]
 
 
     @property

@@ -1,4 +1,5 @@
 test:
-	python -mdoctest -v garden.py
+	python -mdoctest shared/location.py
+	python -mdoctest garden.py
 
 .PHONY: clean test

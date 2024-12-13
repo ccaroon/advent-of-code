@@ -9,11 +9,16 @@ def main(input_file:str, **kwargs) -> None:
     garden = Garden(input_file)
     print(garden)
 
+    import pprint
+    pprint.pprint(garden.regions)
+
+    fencing_cost = garden.calculate_fencing()
+
     print(f"""{main.__doc__}
 -> Input File: {input_file}
--> Plant Types: ?????
--> Regions: ?????
--> Fencing Cost: $?????
+-> Plant Types: {garden.plant_types}
+-> Regions: {len(garden.regions)}
+-> Fencing Cost: ${fencing_cost}
 """)
 
 
