@@ -43,7 +43,10 @@ class Region:
         perimiter = 0
 
         for plot_loc in self.__plot_locations:
+            # Assume 4 side are open
             plot_perimeter = 4
+            # Look for sides that touch other plots
+            # and reduce the plot_perimeter count
             for direction in Direction.enumerate(("N","E","S","W")):
                 neighbor = plot_loc + direction
                 if neighbor in self.__plot_locations:
@@ -134,48 +137,56 @@ class Garden:
         return output
 
 
+    def __make_regions(self, plant_type:str, plot_locs:list[Location]):
+        curr_plot_count = len(plot_locs)
+
+        # Start a region
+        region = Region(plant_type)
+        self.__regions.append(region)
+        region.add_plot(plot_locs.pop(0))
+        new_plot_count = curr_plot_count - 1
+
+        # Look for plot locs that touch the Region
+        # Until the list of plots stops getting smaller, i.e. no more plots
+        # touch this region
+        while new_plot_count < curr_plot_count:
+            curr_plot_count = new_plot_count
+            tmp_locs = plot_locs.copy()
+            for loc in tmp_locs:
+                # if loc touches it, add to region
+                if region.touches(loc):
+                    region.add_plot(loc)
+                    plot_locs.remove(loc)
+                # if not, skip it
+            new_plot_count = len(plot_locs)
+
+        # Keep going until all plot locs have been sorted into a Region
+        if len(plot_locs) > 0:
+            self.__make_regions(plant_type, plot_locs)
+
+
     def __identify_regions(self):
-        region_map = {}
+        """
+        Creates a mapping from a plant type to a list of locations of
+        plots that contain that plant type.
+
+        Hands each entry in that list off to the Region Maker(tm)
+        """
+        plot_map = {}
         for ridx in range(self.__rows):
             for cidx in range(self.__cols):
                 loc = Location(ridx, cidx)
                 plant_type = self.__garden_map[loc.row][loc.col]
 
-                part_of_existing_region = False
-                if plant_type in region_map:
-                    # TODO: Clean up add/remove logic
-                    added = False
-                    for region in region_map[plant_type]:
-                        if added:
-                            region.remove_plot(loc)
-                            for direction in Direction.enumerate(("N","E","S","W")):
-                                # if loc.look(direction, self.__garden_map) == plant_type:
-                                region.remove_plot(loc + direction)
-                        elif region.touches(loc):
-                            part_of_existing_region = True
+                if plant_type in plot_map:
+                    plot_map[plant_type].append(loc)
+                else:
+                    plot_map[plant_type] = [loc]
 
-                            region.add_plot(loc)
+        for ptype, plot_locs in plot_map.items():
+            self.__make_regions(ptype, plot_locs)
 
-                            # Also add all locs to NESW
-                            for direction in Direction.enumerate(("N","E","S","W")):
-                                if loc.look(direction, self.__garden_map) == plant_type:
-                                    region.add_plot(loc + direction)
-
-                            added = True
-
-                if not part_of_existing_region:
-                    new_region = Region(plant_type)
-                    new_region.add_plot(loc)
-                    if plant_type not in region_map:
-                        region_map[plant_type] = []
-
-                    region_map[plant_type].append(new_region)
-
-        self.__plant_types = len(region_map.keys())
-
-        for region_list in region_map.values():
-            non_empty = filter(lambda region: not region.is_empty, region_list)
-            self.__regions.extend(non_empty)
+        self.__plant_types = len(plot_map.keys())
 
 
     def calculate_fencing(self):
@@ -183,7 +194,7 @@ class Garden:
 
         for region in self.__regions:
             region_cost = region.area * region.perimeter
-            print(f"{region} = {region.area}x{region.perimeter} == ${region_cost}")
+            # print(f"{region} = {region.area}x{region.perimeter} == ${region_cost}")
             total_cost += region_cost
 
         return total_cost

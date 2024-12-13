@@ -7,11 +7,6 @@ def main(input_file:str, **kwargs) -> None:
     """Day 12 // Puzzle 01"""
 
     garden = Garden(input_file)
-    print(garden)
-
-    import pprint
-    pprint.pprint(garden.regions)
-
     fencing_cost = garden.calculate_fencing()
 
     print(f"""{main.__doc__}
