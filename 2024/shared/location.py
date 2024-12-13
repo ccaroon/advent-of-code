@@ -93,6 +93,62 @@ class Location:
         return new_loc
 
 
+    def __lt__(self, other):
+        """
+        >>> loc1 = Location(0,0)
+        >>> loc2 = Location(0,1)
+        >>> loc1 < loc2
+        True
+
+        >>> loc1 = Location(0,0)
+        >>> loc2 = Location(0,0)
+        >>> loc1 < loc2
+        False
+
+        >>> loc1 = Location(2,5)
+        >>> loc2 = Location(1,34)
+        >>> loc1 < loc2
+        False
+
+        >>> loc1 = Location(2,2)
+        >>> loc2 = Location(3,3)
+        >>> loc1 < loc2
+        True
+        """
+        self_idx = self.row * 1_000_000 + self.col
+        other_idx = other.row * 1_000_000 + other.col
+
+        return self_idx < other_idx
+
+
+    def __gt__(self, other):
+        """
+        >>> loc1 = Location(0,0)
+        >>> loc2 = Location(0,1)
+        >>> loc1 > loc2
+        False
+
+        >>> loc1 = Location(0,0)
+        >>> loc2 = Location(0,0)
+        >>> loc1 > loc2
+        False
+
+        >>> loc1 = Location(2,5)
+        >>> loc2 = Location(1,34)
+        >>> loc1 > loc2
+        True
+
+        >>> loc1 = Location(2,2)
+        >>> loc2 = Location(3,3)
+        >>> loc1 > loc2
+        False
+        """
+        self_idx = self.row * 1_000_000 + self.col
+        other_idx = other.row * 1_000_000 + other.col
+
+        return self_idx > other_idx
+
+
     def __eq__(self, other):
         return self.row == other.row and self.col == other.col
 

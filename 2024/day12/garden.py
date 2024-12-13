@@ -28,15 +28,45 @@ class Region:
 
 
     @property
+    def sides(self):
+        """
+        Each straight section of fence counts as a side, regardless of how long
+        it is.
+
+        This Region has 8 sides:
+
+            [(1,2), (2,2), (2,3), (3,3)]
+
+            +-+
+            |C|    ->
+            + +-+
+            |C C|  ->
+            +-+ +
+              |C|  ->
+              +-+
+
+            +-+-+-+-+
+            |R R R R|
+            |R R R R|
+            +-+-+-+-+
+        """
+        side_count = 1
+
+
+
+        return side_count
+
+
+    @property
     def perimeter(self):
         """
         The perimeter of a region is the number of sides of garden plots in the
         region that do not touch another garden plot in the same region.
             +-+
             |C|    -> 3
-            + +-+
-            |C C|  -> 2,2
-            +-+ +
+            + +-+           |
+            |C C|  -> 2,2   |=> 10
+            +-+ +           |
               |C|  -> 3
               +-+
         """
@@ -60,6 +90,12 @@ class Region:
     @property
     def is_empty(self):
         return len(self.__plot_locations) == 0
+
+
+    def sorted_plots(self):
+        plots = list(self.__plot_locations)
+        plots.sort()
+        return plots
 
 
     def add_plot(self, location:Location):
@@ -189,12 +225,25 @@ class Garden:
         self.__plant_types = len(plot_map.keys())
 
 
-    def calculate_fencing(self):
+    def calculate_fencing(self, with_discount=False):
         total_cost = 0
 
         for region in self.__regions:
-            region_cost = region.area * region.perimeter
+            if with_discount:
+                region_cost = region.area * region.sides
+            else:
+                region_cost = region.area * region.perimeter
             # print(f"{region} = {region.area}x{region.perimeter} == ${region_cost}")
             total_cost += region_cost
 
         return total_cost
+
+
+
+
+
+
+
+
+
+#

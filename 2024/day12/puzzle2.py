@@ -1,33 +1,38 @@
 #!/usr/bin/env python
 import argparse
-# import sys
 
-from plutonian_pebbles2 import PlutonianPebbles2
+from garden import Garden
 
-def main(input_file:str, blinks:int) -> None:
-    total_pebbles = 0
+def main(input_file:str, **kwargs) -> None:
+    """Day 12 // Puzzle 02"""
 
-    pebbles = None
-    with open(input_file, "r") as fptr:
-        line = fptr.readline()
-        pebbles = line.strip().split()
+    garden = Garden(input_file)
+    print(garden)
+    fencing_cost = garden.calculate_fencing(with_discount=True)
 
-    for pb in pebbles:
-        pp = PlutonianPebbles2(pb)
-        total_pebbles += pp.blink(blinks)
+    import pprint
+    pprint.pprint(garden.regions)
+    region = garden.regions[2]
+    print("-------")
+    pprint.pprint(region.sorted_plots())
+    print(region.sides)
 
-    print(f"""--- Day 11 // Puzzle 02 ---
+
+    print(f"""{main.__doc__}
 -> Input File: {input_file}
--> Blinks Count: {blinks}
--> Stone Count: {total_pebbles}
+-> Plant Types: {garden.plant_types}
+-> Regions: {len(garden.regions)}
+-> Fencing Cost: ${fencing_cost}
 """)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Day 11 - Plutonian Pebbles")
+    parser = argparse.ArgumentParser(description=main.__doc__)
 
-    parser.add_argument("input_file", nargs="?", default='./plutonian-stones.dat')
-    parser.add_argument("--blinks", "-b", type=int, default=25)
+    parser.add_argument(
+        "input_file", nargs="?",
+        default='./garden-plot.map'
+    )
     args = parser.parse_args()
 
-    main(args.input_file, args.blinks)
+    main(args.input_file)
