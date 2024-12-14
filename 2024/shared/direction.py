@@ -9,17 +9,28 @@ class Direction:
         "S":  (1, 0),
         "SW": (1, -1),
         "W":  (0, -1),
-        "NW": (-1,-1)
+        "NW": (-1,-1),
     }
+
+    __ALT_CODE_MAP = {
+        "U": __CODE_MAP["N"],
+        "D": __CODE_MAP["S"],
+        "L": __CODE_MAP["W"],
+        "R": __CODE_MAP["E"]
+    }
+
 
     VALID_CODES = tuple(__CODE_MAP.keys())
 
     def __init__(self, code:str):
-        if code not in self.__CODE_MAP:
+        if code not in self.__CODE_MAP and code not in self.__ALT_CODE_MAP:
             raise ValueError(f"Invalid Direction Code '{code}'")
 
         self.__code = code
-        self.__delta = self.__CODE_MAP.get(code)
+        self.__delta = self.__CODE_MAP.get(
+            code,
+            self.__ALT_CODE_MAP.get(code)
+        )
 
 
     @classmethod
@@ -30,6 +41,7 @@ class Direction:
     @property
     def code(self):
         return self.__code
+
 
     @property
     def row_delta(self):
