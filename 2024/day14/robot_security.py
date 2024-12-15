@@ -114,7 +114,10 @@ class RobotSecurity:
         for ridx in range(self.AREA_ROWS):
             for cidx in range(self.AREA_COLS):
                 rcount = len(self.__area_map[ridx][cidx])
-                output += f"{rcount:2d}"
+                if rcount == 0:
+                    output += " ."
+                else:
+                    output += f"{rcount:2d}"
 
             output += "\n"
 
@@ -172,3 +175,81 @@ class RobotSecurity:
             self.__area_map[robot.y][robot.x].remove(robot)
             robot.move()
             self.__area_map[robot.y][robot.x].append(robot)
+
+
+    def __row_to_str(self, row):
+        output = "["
+        for item in row:
+            rcount = len(item)
+            if rcount == 0:
+                output += " ."
+            else:
+                output += f"{rcount:2d}"
+
+        output += "]"
+
+        return output
+
+
+    def easter_egg(self):
+        found = False
+
+        look_count = 35
+        last_row_count = 0
+        for idx, row in enumerate(self.__area_map):
+            count = 0
+            for robots in row:
+                if len(robots) > 0:
+                    count += 1
+
+            if count >= last_row_count:
+                last_row_count = count
+                # look_count += 1
+                # print(last_row_count, look_count)
+            # else:
+            #     look_count -= 1
+
+            if last_row_count >= look_count:
+                # print(f"{idx}:{count} | {self.__row_to_str(row)}")
+                print(f"IncRows: {last_row_count} | LookingFor: {look_count}")
+                found = True
+                break
+            # if count >= self.AREA_COLS * 0.40:
+            #     print(f"{idx}:{count} | {self.__row_to_str(row)}")
+            #     found = True
+            #     break
+
+        return found
+
+    # def easter_egg(self):
+    #     found = False
+    #     # count robots in middle row
+    #     mid_row = self.AREA_ROWS // 2
+
+    #     row = self.__area_map[mid_row]
+
+    #     count = 0
+    #     for robots in row:
+    #         # self.__print_row(row)
+    #         if len(robots) > 0:
+    #             count += 1
+
+    #     print(f"{mid_row} = ({count})")
+    #     if count >= 15: #self.AREA_COLS * 0.50:
+    #         self.__print_row(row)
+    #         found = True
+
+    #     return found
+
+
+
+
+
+
+
+
+
+
+
+
+#
