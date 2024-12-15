@@ -2,6 +2,7 @@ import random
 
 class Direction:
     __CODE_MAP = {
+        # Compass dirs
         "N":  (-1, 0),
         "NE": (-1, 1),
         "E":  (0, 1),
@@ -13,10 +14,17 @@ class Direction:
     }
 
     __ALT_CODE_MAP = {
+        # Up, Down, Left, Rigth
         "U": __CODE_MAP["N"],
         "D": __CODE_MAP["S"],
         "L": __CODE_MAP["W"],
-        "R": __CODE_MAP["E"]
+        "R": __CODE_MAP["E"],
+
+        # Arrows
+        "^": __CODE_MAP["N"],
+        "v": __CODE_MAP["S"],
+        "<": __CODE_MAP["W"],
+        ">": __CODE_MAP["E"],
     }
 
 

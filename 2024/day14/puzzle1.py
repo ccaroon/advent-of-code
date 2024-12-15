@@ -5,7 +5,7 @@ import pprint
 from robot_security import RobotSecurity
 
 def main(input_file:str, **kwargs) -> None:
-    """Day 14 // Puzzle 02"""
+    """Day 14 // Puzzle 01"""
 
     seconds = kwargs.get("seconds")
 
