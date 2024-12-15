@@ -43,11 +43,13 @@ class Warehouse:
 
     WALL = "#"
     BOX = "O"
+    BIG_BOX = ("[","]")
     ROBOT = "@"
     EMPTY = "."
 
-    def __init__(self, input_file:str):
+    def __init__(self, input_file:str, super_size=False):
         self.__input_file = input_file
+        self.__super_size = super_size
 
         self.__area_map = None
         self.__moves = None
@@ -58,33 +60,64 @@ class Warehouse:
 
 
     def __load_data(self):
+        """
+
+        if `super_size`:
+            - # => ## instead.
+            - O => [] instead.
+            - . => .. instead.
+            - @ => @. instead.
+
+        """
         self.__area_map = []
         self.__moves = []
         with open(self.__input_file, "r") as fptr:
             while line := fptr.readline():
+                row = []
+
                 data = line.strip()
-                # skip empty lines
                 if data:
-                    if data[0] == "#":
-                        # map line
-                        self.__area_map.append(list(data))
-                    elif data[0] in ("^",">","v","<"):
-                        # move line
-                        for arrow in data:
-                            self.__moves.append(Direction(arrow))
+                    for item in list(data):
+                        if item == self.WALL:
+                            row.append(self.WALL)
+                            if self.__super_size:
+                                row.append(self.WALL)
+                        elif item == self.BOX:
+                            if self.__super_size:
+                                row.extend(self.BIG_BOX)
+                            else:
+                                row.append(self.BOX)
+                        elif item == self.EMPTY:
+                            row.append(self.EMPTY)
+                            if self.__super_size:
+                                row.append(self.EMPTY)
+                        elif item == self.ROBOT:
+                            row.append(self.ROBOT)
+                            if self.__super_size:
+                                row.append(self.EMPTY)
+                        elif item in ("^",">","v","<"):
+                            # move line
+                            # for arrow in data:
+                            self.__moves.append(Direction(item))
+                    if row:
+                        self.__area_map.append(row)
 
 
     def __str__(self):
         output = ""
+        padding = " "
+        if self.__super_size:
+            padding = ""
         for row in self.__area_map:
             for thing in row:
-                output += f"{thing} "
+                output += f"{thing}{padding}"
 
             output += "\n"
 
         return output
 
 
+    # TODO: needs super_size update
     def __locate_boxes(self) -> list[GPS]:
         boxes = []
         for ridx, row in enumerate(self.__area_map):
@@ -116,6 +149,7 @@ class Warehouse:
         return self.__locate_boxes()
 
 
+    # TODO: needs super size update
     def __move_robot(self, direction):
         robot = self.__robot
         next_pos = robot.postion.copy()

@@ -5,12 +5,15 @@ import pprint
 from warehouse import Warehouse
 
 def main(input_file:str, **kwargs) -> None:
-    """Day 15 // Puzzle 01"""
+    """Day 15 // Puzzle 02"""
 
-    whaus = Warehouse(input_file)
+    whaus = Warehouse(input_file, super_size=True)
     print(whaus)
-    whaus.activate_robot()
-    checksum = whaus.checksum()
+    # whaus.activate_robot()
+
+    checksum = None
+    # checksum = whaus.checksum()
+
 
     print(f"""{main.__doc__}
 -> Input File: {input_file}
