@@ -20,12 +20,17 @@ class PlutonianPebbles:
         return len(self.__pebbles)
 
 
-    def cache(self):
-        with open("./cache.dat", "w") as fptr:
-            for pebble in self.__pebbles:
-                fptr.write(f"{pebble} ")
+    @property
+    def pebbles(self):
+        return self.__pebbles
 
-            fptr.write("\n")
+
+    # def cache(self):
+    #     with open("./cache.dat", "w") as fptr:
+    #         for pebble in self.__pebbles:
+    #             fptr.write(f"{pebble} ")
+
+    #         fptr.write("\n")
 
 
     def blink(self):
@@ -78,6 +83,52 @@ class PlutonianPebbles:
             output += f"{pb} "
 
         return output.strip()
+
+
+    def blink2(self, blinks:int):
+        """
+        Optimized version of blink that just counts the number of Pebbles
+        after a certain number of `blinks`
+        """
+        count = len(self.__pebbles)
+        for pebble in self.__pebbles:
+            print(f"S ({pebble}) - {count} pebbles")
+            count += self.__measure_growth(pebble, blinks)
+            print(f"E ({pebble}) - {count} pebbles")
+
+        return count
+
+
+    def __measure_growth(self, pebble:int, blinks:int, **kwargs):
+        """
+        Measures the growth of a single Pebble over X `blinks`
+        """
+        add_count = 0
+
+        if blinks > 0:
+            # print(f"({pebble}) -> Blinks: {blinks}")
+            blinks -= 1
+            engraving = str(pebble)
+            if pebble == 0:
+                add_count += self.__measure_growth(1, blinks)
+            elif len(engraving) % 2 == 0:
+                digits = list(engraving)
+                mid = (len(digits) // 2)
+                left = "".join(digits[0:mid])
+                right = "".join(digits[mid:])
+
+                add_count = 1
+                add_count += self.__measure_growth(int(left), blinks)
+                add_count += self.__measure_growth(int(right), blinks)
+            else:
+                add_count += self.__measure_growth(pebble * 2024, blinks)
+
+        return add_count
+
+
+
+
+
 
 
 
