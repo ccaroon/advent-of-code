@@ -1,10 +1,8 @@
-import copy
 import re
 
 from shared.direction import Direction
 from shared.location import Location
 from velocity import Velocity
-
 
 class Robot:
     def __init__(self, pos:Location, velocity:Velocity, rng:tuple):
@@ -169,7 +167,7 @@ class RobotSecurity:
 
     def tick(self):
         """
-        Adjust postions of robots by 1 tick (second)
+        Adjust positions of robots by 1 tick (second)
         """
         for robot in self.__robots:
             self.__area_map[robot.y][robot.x].remove(robot)
@@ -177,79 +175,35 @@ class RobotSecurity:
             self.__area_map[robot.y][robot.x].append(robot)
 
 
-    def __row_to_str(self, row):
-        output = "["
-        for item in row:
-            rcount = len(item)
-            if rcount == 0:
-                output += " ."
-            else:
-                output += f"{rcount:2d}"
-
-        output += "]"
-
-        return output
-
-
     def easter_egg(self):
+        """
+        If they're the same type of robots, they should have a hard-coded
+        Easter egg: very rarely, most of the robots should arrange themselves
+        into a picture of a Christmas tree.
+
+        Iter
+        """
         found = False
 
-        look_count = 35
-        last_row_count = 0
-        for idx, row in enumerate(self.__area_map):
-            count = 0
+        # Look for at least `look_count` robot occupied spaces
+        look_count = 10
+        look_for = "@" * look_count
+        for _, row in enumerate(self.__area_map):
+            # Create a cross section of `__area_map` for this row that contains
+            # an "@" for any space that has at least 1 robot
+            # e.g: .........@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.....
+            cross_section = ""
             for robots in row:
                 if len(robots) > 0:
-                    count += 1
+                    cross_section += "@"
+                else:
+                    cross_section += "."
 
-            if count >= last_row_count:
-                last_row_count = count
-                # look_count += 1
-                # print(last_row_count, look_count)
-            # else:
-            #     look_count -= 1
-
-            if last_row_count >= look_count:
-                # print(f"{idx}:{count} | {self.__row_to_str(row)}")
-                print(f"IncRows: {last_row_count} | LookingFor: {look_count}")
+            if look_for in cross_section:
+                print("-------------------------------------------------------")
+                print(cross_section)
+                print("-------------------------------------------------------")
                 found = True
                 break
-            # if count >= self.AREA_COLS * 0.40:
-            #     print(f"{idx}:{count} | {self.__row_to_str(row)}")
-            #     found = True
-            #     break
 
         return found
-
-    # def easter_egg(self):
-    #     found = False
-    #     # count robots in middle row
-    #     mid_row = self.AREA_ROWS // 2
-
-    #     row = self.__area_map[mid_row]
-
-    #     count = 0
-    #     for robots in row:
-    #         # self.__print_row(row)
-    #         if len(robots) > 0:
-    #             count += 1
-
-    #     print(f"{mid_row} = ({count})")
-    #     if count >= 15: #self.AREA_COLS * 0.50:
-    #         self.__print_row(row)
-    #         found = True
-
-    #     return found
-
-
-
-
-
-
-
-
-
-
-
-
-#

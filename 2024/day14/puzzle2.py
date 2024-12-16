@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import argparse
 import pprint
-import time
 
 from robot_security import RobotSecurity
 
@@ -12,8 +11,8 @@ def main(input_file:str, **kwargs) -> None:
 
     rs = RobotSecurity(input_file)
 
-    # TODO: count total robots in area
-
+    # Run for max of `max_secs` looking for the easter egg,
+    # if not found exit anyway.
     tick_count = 0
     while not rs.easter_egg() and tick_count < max_secs:
         rs.tick()
