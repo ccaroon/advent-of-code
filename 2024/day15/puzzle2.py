@@ -7,8 +7,9 @@ from warehouse import Warehouse
 def main(input_file:str, **kwargs) -> None:
     """Day 15 // Puzzle 02"""
 
-    whaus = Warehouse(input_file, super_size=True)
+    whaus = Warehouse(input_file, double=True)
     print(whaus)
+    print(whaus.robot)
     # whaus.activate_robot()
 
     checksum = None

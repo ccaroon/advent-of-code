@@ -43,13 +43,15 @@ class Warehouse:
 
     WALL = "#"
     BOX = "O"
-    BIG_BOX = ("[","]")
+    BIG_BOX_L = "["
+    BIG_BOX_R = "]"
+    BIG_BOX = (BIG_BOX_L, BIG_BOX_R)
     ROBOT = "@"
     EMPTY = "."
 
-    def __init__(self, input_file:str, super_size=False):
+    def __init__(self, input_file:str, double=False):
         self.__input_file = input_file
-        self.__super_size = super_size
+        self.__double = double
 
         self.__area_map = None
         self.__moves = None
@@ -62,7 +64,7 @@ class Warehouse:
     def __load_data(self):
         """
 
-        if `super_size`:
+        if `double`:
             - # => ## instead.
             - O => [] instead.
             - . => .. instead.
@@ -80,20 +82,20 @@ class Warehouse:
                     for item in list(data):
                         if item == self.WALL:
                             row.append(self.WALL)
-                            if self.__super_size:
+                            if self.__double:
                                 row.append(self.WALL)
                         elif item == self.BOX:
-                            if self.__super_size:
+                            if self.__double:
                                 row.extend(self.BIG_BOX)
                             else:
                                 row.append(self.BOX)
                         elif item == self.EMPTY:
                             row.append(self.EMPTY)
-                            if self.__super_size:
+                            if self.__double:
                                 row.append(self.EMPTY)
                         elif item == self.ROBOT:
                             row.append(self.ROBOT)
-                            if self.__super_size:
+                            if self.__double:
                                 row.append(self.EMPTY)
                         elif item in ("^",">","v","<"):
                             # move line
@@ -106,7 +108,7 @@ class Warehouse:
     def __str__(self):
         output = ""
         padding = " "
-        if self.__super_size:
+        if self.__double:
             padding = ""
         for row in self.__area_map:
             for thing in row:
@@ -117,12 +119,15 @@ class Warehouse:
         return output
 
 
-    # TODO: needs super_size update
     def __locate_boxes(self) -> list[GPS]:
         boxes = []
+        box_marker = self.BOX
+
+        if self.__double:
+            box_marker = self.BIG_BOX[0]
         for ridx, row in enumerate(self.__area_map):
             for cidx, thing in enumerate(row):
-                if thing == self.BOX:
+                if thing == box_marker:
                     boxes.append(GPS(ridx, cidx))
 
         return boxes
@@ -149,8 +154,58 @@ class Warehouse:
         return self.__locate_boxes()
 
 
-    # TODO: needs super size update
-    def __move_robot(self, direction):
+    def __move_robot2(self, direction):
+        robot = self.__robot
+        next_pos = robot.postion.copy()
+        next_pos.move(direction)
+        next_space = self.__area_map[next_pos.row][next_pos.col]
+
+        # if next space empty, just move robot
+        if next_space == self.EMPTY:
+            self.__area_map[robot.row][robot.col] = self.EMPTY
+            robot.move(direction)
+            self.__area_map[robot.row][robot.col] = self.ROBOT
+
+        # if next space wall, noop
+        elif next_space == self.WALL:
+            robot.noop()
+
+        # if next space box,
+        elif next_space in self.BIG_BOX:
+            boxes = []
+            # lookup down the line until find a NOT BOX / !BOX
+            while next_space in self.BIG_BOX:
+                if direction in Direction.enumerate(("<",">")):
+                    pass
+                    # TODO: push like normal, but shift 2 spaces
+                elif direction in Direction.enumerate(("^","v")):
+                    pass
+                    # TODO: check if L AND R side; box touching another box?
+                    #   - more all up or down
+
+                # box_pos = next_pos.copy()
+                # boxes.append(box_pos)
+                # next_space = self.__area_map[box_pos.row][box_pos.col]
+
+            if next_space == self.EMPTY:
+                # if empty, move all boxes, then robot
+
+                # move each box in direction
+                for box in boxes:
+                    box.move(direction)
+                    self.__area_map[box.row][box.col] = self.BOX
+
+                # move robot in direction
+                self.__area_map[robot.row][robot.col] = self.EMPTY
+                robot.move(direction)
+                self.__area_map[robot.row][robot.col] = self.ROBOT
+
+            elif next_space == self.WALL:
+                # if wall, noop
+                robot.noop()
+
+
+    def __move_robot1(self, direction):
         robot = self.__robot
         next_pos = robot.postion.copy()
         next_pos.move(direction)
@@ -193,10 +248,20 @@ class Warehouse:
                 robot.noop()
 
 
+    def __move_robot(self, direction):
+        if self.__double:
+            self.__move_robot2(direction)
+        else:
+            self.__move_robot1(direction)
+
+
     def activate_robot(self):
         # print(self)
         for direction in self.__moves:
-            self.__move_robot(direction)
+            if self.__double:
+                self.__move_robot2(direction)
+            else:
+                self.__move_robot(direction)
             # print(f"Move: {direction.code}")
             # print(self)
 
