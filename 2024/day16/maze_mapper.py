@@ -206,8 +206,11 @@ class MazeMapper:
         return new_deer
 
 
-    def analyze(self):
+    def analyze(self, **kwargs):
+        all_finished = []
         lowest_score = 0
+
+        max_iterations = kwargs.get("max_iter", 50)
 
         self.__reindeer = []
         # Start with 1 reindeer at the "S" location
@@ -216,33 +219,26 @@ class MazeMapper:
 
         still_going = True
         counter = 0
-        while still_going and counter < 50:
+        while still_going and counter < max_iterations:
             counter += 1
             new_deer = []
             for rdeer in self.__reindeer:
-                if rdeer.can_move():
-                    clones = self.__move(rdeer)
-                    new_deer.extend(clones)
+                clones = self.__move(rdeer)
+                new_deer.extend(clones)
 
             self.__reindeer.extend(new_deer)
 
-            # Reindeer still gots moves?
-            still_going = False
-            to_remove = []
-            for rdeer in self.__reindeer:
-                # if rdeer.finished:
-                #     still_going = False
-                #     break
-                if rdeer.can_move():
-                    still_going = True
-                    break
-            #     else:
-            #         to_remove.append(rdeer)
+            # Track "finished" reindeer
+            finished = filter(lambda rd: rd.finished, self.__reindeer)
+            all_finished.extend(list(finished))
 
-            # for rm in to_remove:
-            #     self.__reindeer.remove(rm)
+            # Remove reindeer that have no more moves: finished or stuck
+            self.__reindeer = list(filter(lambda rd: rd.can_move(), self.__reindeer))
 
-            print(f"Iteration #{counter:02} | Reindeer: {len(self.__reindeer)} | Added: {len(new_deer)} | Removed: {len(to_remove)}")
+            still_going = len(self.__reindeer) > 0
+
+            if counter % 10 == 0:
+                print(f"Iteration #{counter:02} | Reindeer: {len(self.__reindeer)} | Added: {len(new_deer)} | Finished: {len(all_finished)}")
             # tmp_map = copy.deepcopy(self.__maze_map)
             # for rdeer in self.__reindeer:
             #     self.__print_debug(rdeer)
@@ -255,8 +251,8 @@ class MazeMapper:
 
         # TODO: examine all rdeer for lowest score among all who finished
         lowest_score = 999_999_999_999
-        for rdeer in self.__reindeer:
-            if rdeer.finished and rdeer.score < lowest_score:
+        for rdeer in all_finished:
+            if rdeer.score < lowest_score:
                 lowest_score = rdeer.score
 
         return lowest_score

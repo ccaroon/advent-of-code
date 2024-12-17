@@ -4,15 +4,15 @@ import pprint
 
 from maze_mapper import MazeMapper
 
-def main(input_file:str, **kwargs) -> None:
+def main(args) -> None:
     """Day 16 // Puzzle 01"""
 
-    mm = MazeMapper(input_file)
+    mm = MazeMapper(args.input_file)
     # print(mm)
-    low_score = mm.analyze()
+    low_score = mm.analyze(max_iter=args.max_iter)
 
     print(f"""{main.__doc__}
--> Input File: {input_file}
+-> Input File: {args.input_file}
 -> Maze Size: {mm.size}
 -> Start/End: {mm.start}/{mm.end}
 -> Low Score: {low_score}
@@ -26,6 +26,7 @@ if __name__ == "__main__":
         "input_file", nargs="?",
         default="./maze.map"
     )
+    parser.add_argument("--max-iter", "-m", type=int, default=50)
     args = parser.parse_args()
 
-    main(args.input_file)
+    main(args)
