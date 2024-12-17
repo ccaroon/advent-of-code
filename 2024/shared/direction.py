@@ -14,7 +14,7 @@ class Direction:
     }
 
     __ALT_CODE_MAP = {
-        # Up, Down, Left, Rigth
+        # Up, Down, Left, Right
         "U": __CODE_MAP["N"],
         "D": __CODE_MAP["S"],
         "L": __CODE_MAP["W"],
@@ -25,6 +25,20 @@ class Direction:
         "v": __CODE_MAP["S"],
         "<": __CODE_MAP["W"],
         ">": __CODE_MAP["E"],
+    }
+
+    TURNS = {
+        "N-L": "W",
+        "N-R": "E",
+
+        "E-L": "N",
+        "E-R": "S",
+
+        "S-L": "E",
+        "S-R": "W",
+
+        "W-L": "S",
+        "W-R": "N"
     }
 
 
@@ -78,6 +92,41 @@ class Direction:
 
     def copy(self):
         return Direction(self.code)
+
+
+    def turn(self, direction):
+        """
+        >>> d = Direction("N")
+        >>> new_dir = d.turn("L")
+        >>> new_dir.code
+        'W'
+
+        >>> d = Direction("N")
+        >>> new_dir = d.turn("R")
+        >>> new_dir.code
+        'E'
+
+        >>> d = Direction("E")
+        >>> new_dir = d.turn("L")
+        >>> new_dir.code
+        'N'
+
+        >>> d = Direction("E")
+        >>> new_dir = d.turn("R")
+        >>> new_dir.code
+        'S'
+
+        >>> d = Direction("W")
+        >>> new_dir = d.turn(Direction("R"))
+        >>> new_dir.code
+        'N'
+        """
+        dcode = direction
+        if isinstance(direction, Direction):
+            dcode = direction.code
+
+        turn_code = f"{self.code}-{dcode}"
+        return Direction(self.TURNS[turn_code])
 
 
     def __eq__(self, other):

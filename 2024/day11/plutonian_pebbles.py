@@ -1,3 +1,4 @@
+import time
 
 class PlutonianPebbles:
     def __init__(self, filename:str):
@@ -92,9 +93,12 @@ class PlutonianPebbles:
         """
         count = len(self.__pebbles)
         for pebble in self.__pebbles:
-            print(f"S ({pebble}) - {count} pebbles")
+            print(f"({pebble}) - {count} pebbles")
+            start = time.perf_counter()
             count += self.__measure_growth(pebble, blinks)
-            print(f"E ({pebble}) - {count} pebbles")
+            end = time.perf_counter()
+            bench = end-start
+            print(f"...-> {count} pebbles {bench:0.2f}s")
 
         return count
 
