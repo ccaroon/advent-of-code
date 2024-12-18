@@ -9,7 +9,7 @@ def main(args) -> None:
 
     mm = MazeMapper(args.input_file)
     # print(mm)
-    low_score = mm.analyze(max_iter=args.max_iter)
+    low_score = mm.analyze(max_iter=args.max_iter, visual=args.visual)
 
     print(f"""{main.__doc__}
 -> Input File: {args.input_file}
@@ -27,6 +27,7 @@ if __name__ == "__main__":
         default="./maze.map"
     )
     parser.add_argument("--max-iter", "-m", type=int, default=50)
+    parser.add_argument("--visual", choices=("manual", "auto"), default=None)
     args = parser.parse_args()
 
     main(args)

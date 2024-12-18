@@ -30,8 +30,10 @@ class Reindeer:
 
     @property
     def rid(self):
-        return f"{self.DIR_ARROW[self.__direction.code]}"
+        # return f"{self.DIR_ARROW[self.__direction.code]}"
         # return f"{self.__id}{self.DIR_ARROW[self.__direction.code]}"
+        # return chr((self.__id + 33) % 126)
+        return self.__id
 
 
     @property
@@ -50,7 +52,7 @@ class Reindeer:
 
 
     def can_move(self):
-        return not (self.finished or self.stuck)
+        return not self.finished and not self.stuck
 
     def status(self):
         status = "M"
@@ -70,7 +72,7 @@ class Reindeer:
             self.__location.copy(),
             self.__direction.copy(),
             self.__score,
-            id=self.__id+1
+            id=self.__id + 1
         )
 
 
@@ -173,37 +175,83 @@ class MazeMapper:
 
         self.__print_debug(reindeer)
 
-        # NOTE: MUST process F last
-        for look_code in ("L", "R", "F"):
-            if look_code in ("L", "R"):
-                look_dir = reindeer.dir.turn(look_code)
-                what = self.__peek(reindeer.loc, look_dir)
-                self.__print_debug(f"...{look_code} -> [{what}]")
-                if what in (self.OPEN, self.END):
-                    self.__print_debug("......OPEN/END - clone/turn/move")
+        #  LEFT
+        look_dir = reindeer.dir.turn("L")
+        whats_left = self.__peek(reindeer.loc, look_dir)
+        left_valid = whats_left != self.WALL
+        # RIGHT
+        look_dir = reindeer.dir.turn("R")
+        whats_right = self.__peek(reindeer.loc, look_dir)
+        right_valid = whats_right != self.WALL
+        # FORWARD / STRAIGHT AHEAD
+        whats_forward = self.__peek(reindeer.loc, reindeer.dir)
+        forward_valid = whats_forward != self.WALL
+
+        choices = (left_valid, right_valid, forward_valid)
+        choice_count = choices.count(True)
+        # 0 choices => stuck
+        if choice_count == 0:
+            reindeer.stuck = True
+        # 1 choice  => turn and move OR move
+        # TODO: DRY it up
+        elif choice_count == 1:
+            if forward_valid:
+                if whats_forward != self.WALL:
+                    reindeer.move()
+                if whats_forward == self.END:
+                    reindeer.finished = True
+                elif whats_forward == self.START:
+                    reindeer.stuck = True
+            elif left_valid:
+                if whats_left != self.WALL:
+                    reindeer.turn(Direction("L"))
+                    reindeer.move()
+                if whats_left == self.END:
+                    reindeer.finished = True
+                elif whats_left == self.START:
+                    reindeer.stuck = True
+            elif right_valid:
+                if whats_right != self.WALL:
+                    reindeer.turn(Direction("R"))
+                    reindeer.move()
+                if whats_right == self.END:
+                    reindeer.finished = True
+                elif whats_right == self.START:
+                    reindeer.stuck = True
+        # 2+ choices => if F -> move, if L,R -> clone, turn, move
+        elif choice_count > 1:
+            if left_valid:
+                if whats_left != self.WALL:
                     clone = reindeer.clone()
-                    clone.turn(Direction(look_code))
+                    clone.turn(Direction("L"))
                     clone.move()
                     new_deer.append(clone)
-                elif what == self.WALL:
-                    self.__print_debug("......WALL - NoOp")
-                    # reindeer.stuck = True
-                    pass
-            elif look_code == "F":
-                what = self.__peek(reindeer.loc, reindeer.dir)
-                self.__print_debug(f"...{look_code} -> [{what}]")
-                if what == self.OPEN:
-                    self.__print_debug("......OPEN - move")
-                    reindeer.move()
-                elif what == self.END:
-                    self.__print_debug("......END - move/finished")
-                    reindeer.move()
-                    reindeer.finished = True
-                elif what in self.WALL:
-                    self.__print_debug("......WALL - stuck")
+                if whats_left == self.END:
+                    clone.finished = True
+                elif whats_left == self.START:
                     reindeer.stuck = True
 
-        self.__print_debug(f"...Clones: {len(new_deer)}")
+            if right_valid:
+                if whats_right != self.WALL:
+                    clone = reindeer.clone()
+                    clone.turn(Direction("R"))
+                    clone.move()
+                    new_deer.append(clone)
+                if whats_right == self.END:
+                    clone.finished = True
+                elif whats_right == self.START:
+                    reindeer.stuck = True
+
+            if forward_valid:
+                if whats_forward != self.WALL:
+                    reindeer.move()
+                if whats_forward == self.END:
+                    reindeer.finished = True
+                elif whats_forward == self.START:
+                    reindeer.stuck = True
+            else:
+                reindeer.stuck = True
+
         return new_deer
 
 
@@ -212,6 +260,7 @@ class MazeMapper:
         self.__reindeer = []
 
         max_iterations = kwargs.get("max_iter", 50)
+        visual = kwargs.get("visual", False)
 
         # Start with 1 reindeer at the "S" location
         reindeer = Reindeer(self.__start_loc, Direction("E"), 0)
@@ -221,6 +270,7 @@ class MazeMapper:
         still_going = True
         counter = 0
         while still_going and finished_count < 10 and counter < max_iterations:
+        # while still_going and counter < max_iterations:
             counter += 1
             new_deer = []
             for rdeer in self.__reindeer:
@@ -237,27 +287,25 @@ class MazeMapper:
                     lowest_score = rdeer.score
 
             # Remove reindeer that have no more moves: finished or stuck
+            # print(f"RDeer Before Prune: {len(self.__reindeer)}")
             self.__reindeer = list(filter(lambda rd: rd.can_move(), self.__reindeer))
+            # print(f"RDeer After Prune: {len(self.__reindeer)}")
 
             still_going = len(self.__reindeer) > 0
 
             if counter % 10 == 0:
                 print(f"Iteration #{counter:03} | Reindeer: {len(self.__reindeer)} | Added: {len(new_deer)} | Finished: {finished_count}")
 
-            # tmp_map = copy.deepcopy(self.__maze_map)
-            # for rdeer in self.__reindeer:
-            #     self.__print_debug(rdeer)
-            #     tmp_map[rdeer.loc.row][rdeer.loc.col] = str(rdeer.rid)
-            # print(self.render_maze(tmp_map))
-            # time.sleep(.25)
-            # input()
-
-
-        # TODO: examine all rdeer for lowest score among all who finished
-        # lowest_score = 999_999_999_999
-        # for rdeer in all_finished:
-        #     if rdeer.score < lowest_score:
-        #         lowest_score = rdeer.score
+            if visual:
+                tmp_map = copy.deepcopy(self.__maze_map)
+                for rdeer in self.__reindeer:
+                    self.__print_debug(rdeer)
+                    tmp_map[rdeer.loc.row][rdeer.loc.col] = str(rdeer.rid)
+                print(self.render_maze(tmp_map))
+                if visual == "auto":
+                    time.sleep(.25)
+                elif visual == "manual":
+                    input()
 
         return lowest_score
 
