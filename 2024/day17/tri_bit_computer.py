@@ -1,3 +1,4 @@
+import copy
 import re
 
 class Instructions:
@@ -182,9 +183,19 @@ class RegisterBank:
         for rid in reg_ids:
             self.__data[rid] = 0
 
+        self.__data_backup = None
+
 
     def __str__(self):
         return str(self.__data)
+
+
+    def save_state(self):
+        self.__data_backup = copy.deepcopy(self.__data)
+
+
+    def restore_state(self):
+        self.__data = copy.deepcopy(self.__data_backup)
 
 
     def get(self, rid):
@@ -207,11 +218,19 @@ class TriBitComputer:
         self.__program_file = program_file
 
         self.__registers = RegisterBank(self.REGISTERS)
+
+
         self.__program = []
 
         self.__debug = kwargs.get("debug", False)
 
         self.__read_program()
+        self.__registers.save_state()
+
+
+    @property
+    def program(self):
+        return self.__program
 
 
     @property
@@ -243,6 +262,10 @@ class TriBitComputer:
     def __trace(self, msg):
         if self.__debug:
             print(msg)
+
+
+    def reset(self):
+        self.__registers.restore_state()
 
 
     def execute(self):
