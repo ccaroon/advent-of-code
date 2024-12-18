@@ -34,7 +34,7 @@ Collect stars by solving puzzles. Two puzzles will be made available on each day
   - [ ] Part 1
   - [ ] Part 2
 * [ ] [Day 17](./day17/README.md)
-  - [ ] Part 1
+  - [x] Part 1
   - [ ] Part 2
 * [ ] Day 18
 * [ ] Day 19
