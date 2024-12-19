@@ -3,6 +3,7 @@ https://adventofcode.com/2024/day/16
 
 * [Part 1](./puzzle1.py) => `?????`
   - IDEA: No backtracking; if Reindeer is backtracking the remove
+  - 1264900 -- too high
 * [Part 2](./puzzle2.py) => `?????`
 
 

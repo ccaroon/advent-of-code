@@ -21,6 +21,8 @@ class Reindeer:
         self.__location = start_loc
         self.__direction = start_dir
         self.__score = score
+        self.__trail = set()
+        self.__trail.add(start_loc)
 
         self.__id = kwargs.get("id", 1)
 
@@ -86,6 +88,13 @@ class Reindeer:
         if self.can_move():
             self.__score += self.COST_FORWARD
             self.__location.move(self.__direction)
+            if self.__location in self.__trail:
+                # stuck in a loop?
+                self.stuck = True
+                # print(f"{self} stuck in loop")
+            else:
+                self.__trail.add(self.__location)
+
 
 
 class MazeMapper:
@@ -94,6 +103,9 @@ class MazeMapper:
     WALL = "#"
     OPEN = "."
     REINDEER = "@"
+
+    MAX_REINDEER = 1000
+
 
     def __init__(self, input_file:str, **kwargs):
         self.__input_file = input_file
@@ -277,7 +289,8 @@ class MazeMapper:
                 clones = self.__move(rdeer)
                 new_deer.extend(clones)
 
-            self.__reindeer.extend(new_deer)
+            if len(self.__reindeer) < self.MAX_REINDEER:
+                self.__reindeer.extend(new_deer)
 
             # Track "finished" reindeer
             finished = filter(lambda rd: rd.finished, self.__reindeer)
@@ -293,10 +306,12 @@ class MazeMapper:
 
             still_going = len(self.__reindeer) > 0
 
-            if counter % 10 == 0:
+            if counter % 100 == 0:
                 print(f"Iteration #{counter:03} | Reindeer: {len(self.__reindeer)} | Added: {len(new_deer)} | Finished: {finished_count}")
+                # input()
 
             if visual:
+                print(f"Iteration #{counter:03} | Reindeer: {len(self.__reindeer)} | Added: {len(new_deer)} | Finished: {finished_count}")
                 tmp_map = copy.deepcopy(self.__maze_map)
                 for rdeer in self.__reindeer:
                     self.__print_debug(rdeer)
