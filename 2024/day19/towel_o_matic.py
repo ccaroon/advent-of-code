@@ -90,9 +90,63 @@ class TowelOMatic:
         return found_match
 
 
-    def __find_match2(self, design, depth=1):
-        pass
+    def analyze(self):
+        possible_designs = 0
+        # no_match_count = 0
         # bwu, wr, rb, gb, br, r, b, g
+        # Sort self.__towel by len, longests first
+        self.__towels.sort(key=lambda ptrn: len(ptrn), reverse=True)
+        # print(self.__towels)
+
+        # self.__designs = ["rbugwrbrgggbwbgrwwrrwrguuurbbuwwwgubrbwbrrrrgwggruurrbrg"]
+        # self.__designs = ["ubwu"]
+
+        for design in self.__designs:
+            width = len(design)
+            # print(f"[{design}]")
+            # input()
+            for towel in self.__towels:
+                if towel in design:
+                    prev_design = design
+                    design = design.replace(towel, "." * len(towel))
+                    print(f"[{prev_design:{width}}] - [{towel:5}] => [{design:{width}}]")
+                # else:
+                #     print(f"...[{towel:5}] -> NO")
+
+                # input()
+
+                # if len(design) == 0:
+                    # if design == "." * width:
+                    #     possible_designs += 1
+                    #     break
+
+            # if len(design) > 0:
+            #     no_match_count += 1
+            #     print(f"No Match: [{design}]")
+            # if len(design) == 0:
+            #     possible_designs += 1
+            if design == "." * width:
+                possible_designs += 1
+
+        # print(no_match_count)
+
+        return possible_designs
+
+
+        # DESIGN: bwurrg
+        # look for bwu -> YES
+        # -> ...rrg
+        # look for wr -> NO
+        # look for rb -> NO
+        # look for gb -> NO
+        # look for br -> NO
+        # look for r -> YES
+        # -> .....g
+        # look for b -> NO
+        # look for g -> YES
+        # -> ......
+        # -> design is empty
+        # END -> MATCH
 
         # DESIGN -> brwrr
         # look for bwu -> NO
@@ -133,15 +187,15 @@ class TowelOMatic:
 
 
 
-    def analyze(self):
+    def analyze_recurse(self):
         possible_designs = 0
 
-        self.__designs = ["rbugwrbrgggbwbgrwwrrwrguuurbbuwwwgubrbwbrrrrgwggruurrbrg"]
+        # self.__designs = ["rbugwrbrgggbwbgrwwrrwrguuurbbuwwwgubrbwbrrrrgwggruurrbrg"]
         # self.__designs = ["ubwu", "bggr"]
         for idx, design in enumerate(self.__designs):
             # self.__print_debug(f"### {idx} - {design} ###")
             print(f"### {idx} - {design} ###")
-            possible = self.__find_match(design)
+            possible = self.__find_match2(design)
             self.__print_debug(f"--> {possible}")
             if possible:
                 possible_designs += 1
