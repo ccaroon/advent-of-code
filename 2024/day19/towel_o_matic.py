@@ -32,6 +32,10 @@ class TowelOMatic:
         return self.__designs
 
 
+    def analyze(self):
+        return self.analyze2()
+
+
     def __print_debug(self, msg):
         if self.__debug:
             print(msg)
@@ -90,7 +94,43 @@ class TowelOMatic:
         return found_match
 
 
-    def analyze(self):
+    def __check_design(self, design):
+        width = 60 #len(design)
+        for towel in self.__towels:
+            if towel in design:
+                prev_design = design
+                design = design.replace(towel, "")
+                self.__print_debug(f"[{prev_design:{width}}] - [{towel:5}] => [{design:{width}}]")
+                self.__check_design(design)
+
+        return design == ""
+
+
+    def analyze3(self):
+        possible_designs = 0
+        # bwu, wr, rb, gb, br, r, b, g
+        # Sort self.__towel by len, longests first
+        self.__towels.sort(key=lambda ptrn: len(ptrn), reverse=True)
+        # print(self.__towels.index("gu"))
+        # print(self.__towels)
+
+        # self.__designs = ["guubgbbuwwgwugbwuwrbbuggubuwbbburgwwuwbggugrggwbg"]
+        # self.__designs = ["rbugwrbrgggbwbgrwwrrwrguuurbbuwwwgubrbwbrrrrgwggruurrbrg"]
+        # self.__designs = ["ubwu"]
+
+        for idx, design in enumerate(self.__designs):
+            possible = self.__check_design(design)
+
+            self.__print_debug(f"#{idx}) [{design}] -> {possible}")
+
+            if possible:
+                possible_designs += 1
+
+
+        return possible_designs
+
+
+    def analyze2(self):
         possible_designs = 0
         # no_match_count = 0
         # bwu, wr, rb, gb, br, r, b, g
@@ -104,9 +144,8 @@ class TowelOMatic:
 
         for design in self.__designs:
             width = len(design)
-            while design:
-            # and towel_counter < len(self.__towels):
-                # print(f"[{design:{width}}]")
+            more_towels = True
+            while design and more_towels:
                 for idx, towel in enumerate(self.__towels):
                     if towel in design:
                         prev_design = design
@@ -114,9 +153,8 @@ class TowelOMatic:
                         self.__print_debug(f"[{prev_design:{width}}] - [{towel:5}] => [{design:{width}}]")
                         break
 
-                print(idx, len(self.__towels))
-                if idx >= len(self.__towels)-1:
-                    break
+                    if idx == len(self.__towels) - 1:
+                        more_towels = False
 
             if len(design) == 0:
                 possible_designs += 1
@@ -124,62 +162,7 @@ class TowelOMatic:
 
         return possible_designs
 
-
-        # DESIGN: bwurrg
-        # look for bwu -> YES
-        # -> ...rrg
-        # look for wr -> NO
-        # look for rb -> NO
-        # look for gb -> NO
-        # look for br -> NO
-        # look for r -> YES
-        # -> .....g
-        # look for b -> NO
-        # look for g -> YES
-        # -> ......
-        # -> design is empty
-        # END -> MATCH
-
-        # DESIGN -> brwrr
-        # look for bwu -> NO
-        # look for WR -> Yes
-        # -> br..r
-        # look for rb -> NO
-        # look for gb -> NO
-        # look for br -> YES
-        # -> ....r
-        # look for r -> YES
-        # -> .....
-        # END -> MATCH
-
-        # DESIGN: bggr
-        # look for bwu -> NO
-        # look for wr -> NO
-        # look for rb -> NO
-        # look for gb -> NO
-        # look for br -> NO
-        # look for r -> YES
-        # -> bgg.
-        # look for b -> YES
-        # -> .gg.
-        # look for g -> YES (TWICE)
-        # -> ....
-        # END -> MATCH
-
-        # DESIGN: ubwu
-        # look for bwu -> YES
-        # -> u...
-        # look for wr,rb,gb,br,r,b  -> NO
-        # look for g -> NO
-        # -> not more towels
-        # -> still colors in design
-        # END -> NO MATCH
-
-
-
-
-
-    def analyze_recurse(self):
+    def analyze1(self):
         possible_designs = 0
 
         # self.__designs = ["rbugwrbrgggbwbgrwwrrwrguuurbbuwwwgubrbwbrrrrgwggruurrbrg"]
@@ -187,7 +170,7 @@ class TowelOMatic:
         for idx, design in enumerate(self.__designs):
             # self.__print_debug(f"### {idx} - {design} ###")
             print(f"### {idx} - {design} ###")
-            possible = self.__find_match2(design)
+            possible = self.__find_match(design)
             self.__print_debug(f"--> {possible}")
             if possible:
                 possible_designs += 1
@@ -198,7 +181,7 @@ class TowelOMatic:
 
     # NOTE: Only works on small data sets
     # Larger towel patterns will cause TOO many combos and use much RAM
-    def analyze_simple(self):
+    def analyze0(self):
         possible_designs = 0
 
         for design in self.__designs:
