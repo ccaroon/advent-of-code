@@ -96,6 +96,7 @@ class TowelOMatic:
         # bwu, wr, rb, gb, br, r, b, g
         # Sort self.__towel by len, longests first
         self.__towels.sort(key=lambda ptrn: len(ptrn), reverse=True)
+        # print(self.__towels.index("gu"))
         # print(self.__towels)
 
         # self.__designs = ["rbugwrbrgggbwbgrwwrrwrguuurbbuwwwgubrbwbrrrrgwggruurrbrg"]
@@ -103,32 +104,23 @@ class TowelOMatic:
 
         for design in self.__designs:
             width = len(design)
-            # print(f"[{design}]")
-            # input()
-            for towel in self.__towels:
-                if towel in design:
-                    prev_design = design
-                    design = design.replace(towel, "." * len(towel))
-                    print(f"[{prev_design:{width}}] - [{towel:5}] => [{design:{width}}]")
-                # else:
-                #     print(f"...[{towel:5}] -> NO")
+            while design:
+            # and towel_counter < len(self.__towels):
+                # print(f"[{design:{width}}]")
+                for idx, towel in enumerate(self.__towels):
+                    if towel in design:
+                        prev_design = design
+                        design = design.replace(towel, "")
+                        self.__print_debug(f"[{prev_design:{width}}] - [{towel:5}] => [{design:{width}}]")
+                        break
 
-                # input()
+                print(idx, len(self.__towels))
+                if idx >= len(self.__towels)-1:
+                    break
 
-                # if len(design) == 0:
-                    # if design == "." * width:
-                    #     possible_designs += 1
-                    #     break
-
-            # if len(design) > 0:
-            #     no_match_count += 1
-            #     print(f"No Match: [{design}]")
-            # if len(design) == 0:
-            #     possible_designs += 1
-            if design == "." * width:
+            if len(design) == 0:
                 possible_designs += 1
 
-        # print(no_match_count)
 
         return possible_designs
 
