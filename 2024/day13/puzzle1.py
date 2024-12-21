@@ -5,34 +5,23 @@ from claw_machine import ClawMachine
 
 def main(input_file:str, **kwargs) -> None:
     """Day 13 // Puzzle 01"""
-
-    tokens_used = 0
-    prize_count = 0
-
     machines = ClawMachine.create(input_file)
 
-    m = machines[0]
-    print(m)
-    # prize = m.run_hack(80, 40)
-    # print(prize)
-
-    m.reverse_engineer()
-
-
-    # for mch in machines:
-    #     print(mch)
-        # a_pushes, b_pushes = mch.reverse_engineer()
-        # tokens_used = a_pushes*3 + b_pushes*1
-        # prize = mch.run_hack(a_pushes, b_pushes)
-        # if prize:
-        #     prize_count += 1
+    prizes = []
+    tokens = 0
+    for mch in machines:
+        (a, b) = mch.reverse_engineer()
+        prize = mch.run_hack(a, b)
+        if prize:
+            tokens += (a*3) + (b*1)
+            prizes.append(prize)
 
 
     print(f"""{main.__doc__}
 -> Input File: {input_file}
 -> Machines: {len(machines)}
--> Tokens Used: {tokens_used}:
--> Prized Won: {prize_count}
+-> Tokens Used: {tokens}
+-> Prized Won: {len(prizes)}
 """)
 
 

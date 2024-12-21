@@ -44,7 +44,6 @@ class Equation:
 
 
 class ClawMachine:
-
     PRIZES = (
         "Linux Sticker",
         "Rubik's Cube",
@@ -118,6 +117,7 @@ class ClawMachine:
     def __str__(self):
         return f"A{self.__button_a} B{self.__button_b} P{self.__prize_loc}"
 
+
     def __solve_eqs(self, eq_a:Equation, eq_b:Equation):
         """
         Ax + By = C
@@ -126,22 +126,20 @@ class ClawMachine:
         x = 0
         y = 0
 
-        mul_a = eq_b.a
-        mul_b = eq_a.a * -1
+        # Multiply each Equation by the othe's A coefficent
+        # such that when the Equations are added, the A's cancel out
+        # eliminating the X variable.
+        step1a = eq_a * eq_b.a
+        step1b = eq_b * (eq_a.a * -1)
 
-        next_a = eq_a * mul_a
-        print(next_a)
-        next_b = eq_b * mul_b
-        print(next_b)
+        # Add EqA + EqB to eliminate X variable
+        solve_for_y = step1a + step1b
 
-        solve_for_y = next_a + next_b
-        print(solve_for_y)
-
+        # Solve for Y
         y = solve_for_y.c // solve_for_y.b
-        print(y)
-        print(eq_a, eq_b)
+
+        # Solve for X using the Y value found above
         x = (eq_a.c - eq_a.b * y) // eq_a.a
-        print(x)
 
         return (x,y)
 
@@ -164,24 +162,6 @@ class ClawMachine:
         """
         Button A -> 3 tokens
         Button B -> 1 token
-
-        Button A: X+94, Y+34
-        Button B: X+22, Y+67
-        Prize: X=8400, Y=5400
-
-        |   A=80   |   B=40   |
-        +----------|----------+
-        |    X     |    Y     |
-        |   94     |   34     |
-        |   22     |   67     |
-        |   8400   |   5400   |
-
-        a*94 + b*22 = 8400
-
-        a*34 + b*67 = 5400
-
-        94x+22y=8400
-        34x+67y=5400
         """
         a_pushes = 0
         b_pushes = 0
@@ -191,14 +171,14 @@ class ClawMachine:
             self.__button_b[0],
             self.__prize_loc[0]
         )
-        print(eq_a)
+        # print(eq_a)
 
         eq_b = Equation(
             self.__button_a[1],
             self.__button_b[1],
             self.__prize_loc[1]
         )
-        print(eq_b)
+        # print(eq_b)
 
         (a_pushes, b_pushes) = self.__solve_eqs(eq_a, eq_b)
 
