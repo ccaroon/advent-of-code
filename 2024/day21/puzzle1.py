@@ -2,17 +2,17 @@
 import argparse
 import pprint
 
-from keycoder import KeyCoder
+from remote_control import RemoteControl
 
 def main(args) -> None:
     """Day 21 // Puzzle 01"""
 
-    coder = KeyCoder(args.input_file)
-    coder.encode()
+    rc = RemoteControl(args.input_file)
+    rc.enter_codes()
 
     print(f"""{main.__doc__}
 -> Input File: {args.input_file}
--> Codes: {coder.codes}
+-> Codes: {rc.codes}
 """)
 
 

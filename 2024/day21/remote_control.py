@@ -1,7 +1,7 @@
 from keybot import KeyBot
 from keypad import KeyPad
 
-class KeyCoder:
+class RemoteControl:
     def __init__(self, input_file:str):
         self.__input_file = input_file
         self.__codes = []
@@ -49,7 +49,7 @@ class KeyCoder:
         return self.__codes
 
 
-    def encode(self):
+    def enter_codes(self):
         sequences = []
         # Directional Pad that I'M controlling
         arrow_pad = KeyPad(KeyPad.LAYOUT_DIRECTIONAL)
