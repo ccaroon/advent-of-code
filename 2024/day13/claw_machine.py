@@ -44,6 +44,9 @@ class Equation:
 
 
 class ClawMachine:
+
+    UNIT_CORRECTION = 10000000000000
+
     PRIZES = (
         "Linux Sticker",
         "Rubik's Cube",
@@ -55,7 +58,9 @@ class ClawMachine:
         "Python Sticker",
         "No Tea",
         "Happy SamX Sticker",
-        "Stuffed Hippo"
+        "Stuffed Hippo",
+        "Bogus Boquet",
+        "Space Invader Plush"
     )
 
     def __init__(self, button_a:tuple, button_b:tuple, prize_loc:tuple):
@@ -67,7 +72,9 @@ class ClawMachine:
 
 
     @classmethod
-    def create(cls, input_file:str):
+    def create(cls, input_file:str, **kwargs):
+        correct_units = kwargs.get("correct_units", False)
+
         machines = []
         with open(input_file) as fptr:
             button_a = None
@@ -80,6 +87,12 @@ class ClawMachine:
                     button_b = (int(match.group(1)), int(match.group(2)))
                 elif match := re.match(r"Prize: X=(\d+),\s+Y=(\d+)", line):
                     prize = (int(match.group(1)), int(match.group(2)))
+                    if correct_units:
+                        prize = (
+                            prize[0] + cls.UNIT_CORRECTION,
+                            prize[1] + cls.UNIT_CORRECTION
+                        )
+
                     if button_a and button_b and prize:
                         machines.append(
                             ClawMachine(button_a, button_b, prize)
@@ -91,14 +104,14 @@ class ClawMachine:
         return machines
 
 
-    def push_a(self):
-        self.__x += self.__button_a[0]
-        self.__y += self.__button_a[1]
+    def push_a(self, times=1):
+        self.__x += self.__button_a[0] * times
+        self.__y += self.__button_a[1] * times
 
 
-    def push_b(self):
-        self.__x += self.__button_b[0]
-        self.__y += self.__button_b[1]
+    def push_b(self, times=1):
+        self.__x += self.__button_b[0] * times
+        self.__y += self.__button_b[1] * times
 
 
     def reset(self):
@@ -118,11 +131,11 @@ class ClawMachine:
         return f"A{self.__button_a} B{self.__button_b} P{self.__prize_loc}"
 
 
+    # https://math.libretexts.org/Courses/Kansas_State_University/Your_Guide_to_Intermediate_Algebra/05%3A_Everything_else_you_need_to_know/5.07%3A_Solve_Systems_of_Linear_Equations_with_Two_Variables
     def __solve_eqs(self, eq_a:Equation, eq_b:Equation):
         """
         Ax + By = C
         """
-        # TODO: how to know if not solveable?
         x = 0
         y = 0
 
@@ -147,11 +160,8 @@ class ClawMachine:
     def run_hack(self, a_presses, b_presses):
         self.reset()
 
-        for _ in range(a_presses):
-            self.push_a()
-
-        for _ in range(b_presses):
-            self.push_b()
+        self.push_a(a_presses)
+        self.push_b(b_presses)
 
         item = self.grab()
 
@@ -183,11 +193,3 @@ class ClawMachine:
         (a_pushes, b_pushes) = self.__solve_eqs(eq_a, eq_b)
 
         return (a_pushes, b_pushes)
-
-
-
-
-
-
-
-#
