@@ -8,13 +8,14 @@ def main(args) -> None:
     """Day 21 // Puzzle 01"""
 
     rc = RemoteControl(args.input_file)
-    rc.enter_codes()
+    rc.systems_test()
+    # rc.enter_codes()
 
     print(f"""{main.__doc__}
 -> Input File: {args.input_file}
+-> Remote: {rc}
 -> Codes: {rc.codes}
 """)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=main.__doc__)

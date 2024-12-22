@@ -4,20 +4,33 @@ class KeyPad:
         ("7", "8", "9"),
         ("4", "5", "6"),
         ("1", "2", "3"),
-        (" ", "0", "A")
+        ("",  "0", "A")
     )
 
     LAYOUT_DIRECTIONAL = (
-        (" ", "^", "A"),
+        ("",  "^", "A"),
         ("<", "v", ">")
     )
 
+
     def __init__(self, layout):
         self.__layout = layout
-        self.__linked_pad = None
+        self.__receiver = None
 
 
-    def __str__(self) -> str:
+    def __str__(self):
+        output = ""
+        if self.__layout == self.LAYOUT_DIRECTIONAL:
+            output = "D-PAD"
+        elif self.__layout == self.LAYOUT_NUMERIC:
+            output = "N-PAD"
+        else:
+            output = "Un-Known"
+
+        return output
+
+
+    def visual_layout(self) -> str:
         output = "+---+---+---+\n"
         for row in self.__layout:
             for col in row:
@@ -50,18 +63,20 @@ class KeyPad:
         return self.__layout[pos[0]][pos[1]]
 
 
-    def link(self, keypad):
-        self.__linked_pad = keypad
+    def connect_to(self, other):
+        self.__receiver = other
 
 
-    def press(self, key):
-        if self.__linked_pad:
-            self.__linked_pad.press(key)
-        else:
-            print(f"-> {key}")
+    def press(self, key:str):
+        result = key
+        if self.__receiver:
+            # print(f"Sending '{key}' to {self.__receiver}...")
+            result = self.__receiver.input(key)
+        # else:
+        #     result = key
+        #     print(f"'{key}'")
 
-
-
+        return result
 
 
 
