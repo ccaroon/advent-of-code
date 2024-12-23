@@ -30,11 +30,18 @@ class KeyPad:
         return output
 
 
-    def visual_layout(self) -> str:
+    def visual_layout(self, marked_key=None) -> str:
         output = "+---+---+---+\n"
         for row in self.__layout:
             for col in row:
-                output += f"| {col} "
+                key = col
+                if col == "":
+                    key = " "
+                if key == marked_key:
+                    key = f"({key})"
+                    output += f"|{key}"
+                else:
+                    output += f"| {key} "
 
             output += "|\n"
             output += "+---+---+---+\n"

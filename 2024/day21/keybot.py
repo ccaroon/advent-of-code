@@ -54,6 +54,13 @@ class KeyBot:
         self.__keypad.connect_to(other_bot)
 
 
+    def display_keypad(self):
+        output = f"--- {self.uid} ---\n"
+        key = self.__keypad.key(self.__arm_positon)
+        output += self.__keypad.visual_layout(marked_key=key)
+        return output
+
+
     def input(self, key:str):
         result = None
         if key == self.ACTIVATE_KEY:

@@ -5,7 +5,7 @@ import pprint
 from remote_control import RemoteControl
 
 def main(args) -> None:
-    """Day 21 // Puzzle 01"""
+    """Day 21 // Puzzle 02"""
 
     rc = RemoteControl(args.input_file)
     # rc.systems_test()
