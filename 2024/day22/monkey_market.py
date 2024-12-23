@@ -65,6 +65,10 @@ class MonkeyMarket:
 
 
     def __compute_to(self, secret_number, count):
+        """
+        Given an initial `secret_number`, compute up-to the `count`th next
+        number.
+        """
         working_number = secret_number
         for _ in range(count):
             working_number = self.__compute_next(working_number)
@@ -79,18 +83,3 @@ class MonkeyMarket:
             total += self.__compute_to(initial_num, 2000)
 
         return total
-        # result = self.__compute_to(123, 10)
-        # print(result)
-
-        # secret = 123
-        # for _ in range(10):
-        #     secret = self.__compute_next(secret)
-        #     print(secret)
-
-
-
-
-
-
-
-#
