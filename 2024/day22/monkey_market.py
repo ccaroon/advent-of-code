@@ -64,9 +64,56 @@ class MonkeyMarket:
         return next_number
 
 
+    def __compute_price(self, secret_number):
+        s1 = secret_number - (secret_number // 10)
+        s2 = secret_number - s1
+        price = secret_number - s2 * 10
+
+        return price
+
+
+    def __track_prices(self, secret_number, count):
+        """
+        Given an initial `secret_number`, compute the price and price changes
+        up-to the `count`TH number.
+        """
+        market_prices = []
+        prev_price = self.__compute_price(secret_number)
+        market_prices.append((prev_price, None))
+        working_number = secret_number
+        for _ in range(count):
+            working_number = self.__compute_next(working_number)
+
+            # Track Price
+            price = self.__compute_price(working_number)
+            market_prices.append((price, price - prev_price))
+            prev_price = price
+
+        return market_prices
+
+
+    def __analyze_prices(self, price_changes):
+        best_price = 0
+        best_index = 0
+        for idx, info in enumerate(price_changes):
+            # Don't care unless we have at least 4 changes
+            if idx >= 4:
+                price = info[0]
+                if price > best_price:
+                    best_price = price
+                    best_index = idx
+
+        seq = []
+        for i in range(3, -1, -1):
+            info = price_changes[best_index-i]
+            seq.append(info[1])
+
+        return seq
+
+
     def __compute_to(self, secret_number, count):
         """
-        Given an initial `secret_number`, compute up-to the `count`th next
+        Given an initial `secret_number`, compute up-to the `count`TH next
         number.
         """
         working_number = secret_number
@@ -76,10 +123,31 @@ class MonkeyMarket:
         return working_number
 
 
-    def hack(self):
+    def hack(self, **kwargs):
         total = 0
+        mode = kwargs.get("mode", "sn2000_sum")
 
-        for initial_num in self.__secret_numbers:
-            total += self.__compute_to(initial_num, 2000)
+        if mode == "sn2000_sum":
+            for initial_num in self.__secret_numbers:
+                total += self.__compute_to(initial_num, 2000)
+        elif mode == "buy_bananas":
+            all_market_changes = []
+            for initial_num in self.__secret_numbers:
+                market_changes = self.__track_prices(initial_num, 10)
+                all_market_changes.append(market_changes)
+
+                best_seq = self.__analyze_prices(market_changes)
+                print(market_changes, best_seq)
+
+            # TODO: what if multiple seq at same price point?
+            # find all best price seq
+            # count how may times each appears in all other number's changes
+            # one with the most is the winner?
 
         return total
+
+
+
+
+
+#
