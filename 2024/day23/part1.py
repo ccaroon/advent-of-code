@@ -12,7 +12,7 @@ def main(args) -> None:
 
     print(f"""{main.__doc__}
 -> Input File: {args.input_file}
-->T-Count: {count}
+-> T-Count: {count}
 """)
 
 if __name__ == "__main__":

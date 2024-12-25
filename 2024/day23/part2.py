@@ -8,11 +8,11 @@ def main(args) -> None:
     """Day 23 // Part 02"""
 
     net = NetworkAnalyzer(args.input_file)
-    count = net.analyze()
+    passwd = net.decode_passwd()
 
     print(f"""{main.__doc__}
 -> Input File: {args.input_file}
-->T-Count: {count}
+-> LAN Passwd: {passwd}
 """)
 
 if __name__ == "__main__":
