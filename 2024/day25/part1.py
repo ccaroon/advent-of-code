@@ -8,11 +8,11 @@ def main(args) -> None:
     """Day 25 // Part 01"""
 
     smith = LockSmith(args.input_file)
-    smith.find_key_lock_pairs()
-
+    count = smith.count_key_lock_pairs()
 
     print(f"""{main.__doc__}
 -> Input File: {args.input_file}
+-> Key/Lock Fits: {count}
 """)
 
 if __name__ == "__main__":

@@ -3,6 +3,8 @@ class LockSmith:
     EMPTY = "."
     SOLID = "#"
 
+    MAX_HEIGHT = 5
+
     LOCK = 1
     KEY = 2
 
@@ -70,35 +72,26 @@ class LockSmith:
 
         return heights
 
+    def __key_fits_lock(self, key, lock):
+        key_fits = True
+        for idx in range(len(key)):
+            if key[idx] + lock[idx] > self.MAX_HEIGHT:
+                key_fits = False
+                break
 
-    def find_key_lock_pairs(self):
-        self.display_schematic(self.__keys[0])
-        h = self.__schematic_to_heights(self.__keys[0])
-        print(h)
-
-        self.display_schematic(self.__locks[0])
-        h = self.__schematic_to_heights(self.__locks[0])
-        print(h)
-
-        # print(self.__locks)
-
-        # with open(self.__input_file, "r") as fptr:
-        #     line = fptr.readline()
-        #     while line:
-        #         line = fptr.readline()
-        #         print(f"[{line}]")
+        return key_fits
 
 
+    def count_key_lock_pairs(self):
+        count = 0
+        for lock in self.__locks:
+            lock_heights = self.__schematic_to_heights(lock)
+            for key in self.__keys:
+                key_heights = self.__schematic_to_heights(key)
+                if self.__key_fits_lock(key_heights, lock_heights):
+                    count += 1
+                    # print(f"Fit: {lock_heights} -> {key_heights}")
+                # else:
+                #     print(f"NoFit: {lock_heights} -> {key_heights}")
 
-
-
-
-
-
-
-
-
-
-
-
-#
+        return count
