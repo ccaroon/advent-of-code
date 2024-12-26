@@ -34,6 +34,7 @@ EVENT_EXIT = 4
 GUARD = "^"
 POSITION_MARK  = "X"
 OBSTACLE = "#"
+EMPTY = "."
 LOOP_OBSTACLE = "O"
 
 def load_map(filename:str) -> list[list[str]]:
@@ -42,61 +43,72 @@ def load_map(filename:str) -> list[list[str]]:
     """
     map_data = []
     with open(filename, "r") as fptr:
-        line = fptr.readline()
-        while line:
+        while line := fptr.readline():
             map_data.append(list(line.strip()))
-            line = fptr.readline()
 
     return map_data
 
 
-def walk_map(area_map:list[list[str]], start_pos, start_dir, event_handler) -> None:
-    width = len(area_map[0])
-    height = len(area_map)
+def print_map(area_map):
+    for row in area_map:
+        for col in row:
+            print(f"{col:2}", end="")
+        print("")
 
+
+def walk_map(area_map:list[list[str]], start_pos, start_dir, event_handler) -> None:
     curr_row = start_pos[0]
     curr_col = start_pos[1]
     curr_dir = start_dir
-    turn_record = []
-    while True:
-        event_handler(area_map, EVENT_MOVE, position=(curr_row, curr_col))
+    cache = {}
+    on_map = True
+    while on_map:
+        event_handler(area_map,
+            EVENT_MOVE,
+            cache=cache,
+            direction=curr_dir,
+            position=(curr_row, curr_col)
+        )
 
-        # move
-        new_row = curr_row + curr_dir[0]
-        new_col = curr_col + curr_dir[1]
-
-        # check if guard has exited the area
-        if new_row < 0 or new_row >= height or new_col < 0 or new_col >= width :
-            event_handler(area_map, EVENT_EXIT, position=(curr_row, curr_col))
-            break
+        # Look a head to figure out what to do
+        ahead_row = curr_row + curr_dir[0]
+        ahead_col = curr_col + curr_dir[1]
+        ahead_space = None
+        try:
+            ahead_space = area_map[ahead_row][ahead_col]
+        except IndexError:
+            # In front of the Guard is the VOID, exit carefully
+            event_handler(area_map,
+                EVENT_EXIT, direction=curr_dir, position=(curr_row, curr_col))
+            on_map = False
 
         # check for obstacle & turn
-        if area_map[new_row][new_col] == OBSTACLE:
-            event_handler(area_map, EVENT_OBSTACLE, position=(new_row,new_col))
+        if ahead_space == OBSTACLE:
+            # print("...obstacle // turn")
+            # At Guard's current pos/dir, there's an OBSTACLE in front of her
+            event_handler(area_map,
+                EVENT_OBSTACLE,
+                cache=cache,
+                direction=curr_dir,
+                position=(ahead_row,ahead_col)
+            )
 
             # turn
             new_dir = TURN[curr_dir]
 
-            turn_record.append({
-                "prev_dir": curr_dir,
-                "new_dir": new_dir,
-                "position": (curr_row, curr_col)
-            })
-
             event_handler(
                 area_map,
                 EVENT_TURN,
-                turns=turn_record
+                cache=cache,
+                position=(curr_row,curr_col),
+                direction=new_dir
             )
 
             curr_dir = new_dir
-            # update pos
-            curr_row += curr_dir[0]
-            curr_col += curr_dir[1]
         else:
-            # update pos -- keep moving in same dir
-            curr_row = new_row
-            curr_col = new_col
+            # print("...empty // move")
+            curr_row = ahead_row
+            curr_col = ahead_col
 
 
 def find_guard(area_map:list[list[str]]) -> tuple[int,int]:
@@ -157,49 +169,50 @@ def analyze_map(area_map:list[list[str]], event_handler) -> list[list[str]]:
 class StupidError(Exception):
     pass
 
-STUPID_COUNT = 0
 def stupid_handler(area_map, event, **kwargs):
-    global STUPID_COUNT
-    if event == EVENT_OBSTACLE:
-        STUPID_COUNT += 1
+    if event in (EVENT_MOVE, EVENT_OBSTACLE):
+        cache = kwargs.get("cache")
+        direction = kwargs.get("direction")
+        position = kwargs.get("position")
 
-        # print(STUPID_COUNT)
-        if STUPID_COUNT >= 50000:
-            raise StupidError()
-    elif event == EVENT_EXIT:
-        STUPID_COUNT = 0
-        # pos = kwargs.get("position")
-        # print(f"Exit @ ({pos[0]},{pos[1]})")
+        vector = (position[0], position[1], direction[0], direction[1])
+        if vector in cache:
+        # if position in cache and cache.get(position) == direction:
+            # print("...move // loop?")
+            raise StupidError("Stuck in a Loop!")
+        else:
+            cache[vector] = 1
 
 
 def stupid_solution(area_map):
-    global STUPID_COUNT
     guard_dir = UP
     guard_row, guard_col = find_guard(area_map)
+    # print(f"Guard @ ({guard_row},{guard_col})")
 
     count = 0
     for ridx, row in enumerate(area_map):
         for cidx, col in enumerate(row):
-            # skip guard star pos
-            if ridx == guard_row and cidx == guard_col:
-                continue
-            # place obstacle at r,c
-            STUPID_COUNT = 0
-            test_map = copy.deepcopy(area_map)
-            # print(f"Trying ({ridx},{cidx})")
-            test_map[ridx][cidx] = OBSTACLE
-            # check if loop
-            # ...if loop count
-            try:
-                walk_map(
-                    test_map,
-                    (guard_row, guard_col),
-                    guard_dir,
-                    stupid_handler
-                )
-            except StupidError:
-                count += 1
-                print(f"({ridx},{cidx}) - Loop Count: {count}")
+            if col == EMPTY:
+                print(f"Trying ({ridx},{cidx})...")
+                # place obstacle at r,c
+                test_map = copy.deepcopy(area_map)
+                # print(f"Trying ({ridx},{cidx})")
+                test_map[ridx][cidx] = OBSTACLE
+
+                # print_map(test_map)
+                # input()
+
+                # check if loop
+                try:
+                    walk_map(
+                        test_map,
+                        (guard_row, guard_col),
+                        guard_dir,
+                        stupid_handler
+                    )
+                except StupidError:
+                    count += 1
+                    # print(f"({ridx},{cidx}) - Loop Count: {count}")
 
     return count
 
