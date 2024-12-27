@@ -16,7 +16,7 @@ def main(input_file:str) -> None:
     # count each unique location
     pos_cnt = utils.count(marked_map, utils.POSITION_MARK)
 
-    print(f"""--- Day 06 // Puzzle 01 ---
+    print(f"""--- Day 06 // Part 01 ---
 -> Input File: {input_file}
 -> Map Size: {width}x{height}
 -> Guard Positions: {pos_cnt}
