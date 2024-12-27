@@ -1,9 +1,14 @@
-from functools import cache
+# from functools import cache
 import time
 
 class PlutonianPebbles:
     def __init__(self, filename:str):
         self.__filename = filename
+
+        # Call Cache / Memoize Cache for __measure_growth() recursive calls.
+        # Does the same thing as `functools.cache`, just wanted to implement it
+        # myself.
+        self.__cache = {}
 
         self.__pebbles = None
         self.__read_pebble_data()
@@ -84,20 +89,25 @@ class PlutonianPebbles:
         Optimized version of blink that just **counts** the number of Pebbles
         after a certain number of `blinks`.
         """
+        # Reset Memoize Cache
+        self.__cache = {}
+
         count = len(self.__pebbles)
         for pebble in self.__pebbles:
             # --- UNCOMMENT for perf data ---
             # print(f"({pebble}) - {count} pebbles")
             # start = time.perf_counter()
+
             count += self.__measure_growth(pebble, blinks)
+
             # end = time.perf_counter()
-            # bench = end-start
+            # bench = end - start
             # print(f"...-> {count} pebbles {bench:0.2f}s")
 
         return count
 
 
-    @cache
+    # @cache
     def __measure_growth(self, pebble:int, blinks:int):
         """
         Measures the growth of a single Pebble over X `blinks`.
@@ -107,8 +117,14 @@ class PlutonianPebbles:
         """
         add_count = 0
 
+        # My own `functools.cache`
+        key = f"{pebble}|{blinks}"
+        result = self.__cache.get(key, None)
+
+        if result is not None:
+            return result
+
         if blinks > 0:
-            # print(f"({pebble}) -> Blinks: {blinks}")
             blinks -= 1
             engraving = str(pebble)
             if pebble == 0:
@@ -124,5 +140,8 @@ class PlutonianPebbles:
                 add_count += self.__measure_growth(int(right), blinks)
             else:
                 add_count += self.__measure_growth(pebble * 2024, blinks)
+
+        # Cache a known result
+        self.__cache[key] = add_count
 
         return add_count
