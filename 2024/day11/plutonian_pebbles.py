@@ -1,3 +1,4 @@
+from functools import cache
 import time
 
 class PlutonianPebbles:
@@ -26,17 +27,9 @@ class PlutonianPebbles:
         return self.__pebbles
 
 
-    # def cache(self):
-    #     with open("./cache.dat", "w") as fptr:
-    #         for pebble in self.__pebbles:
-    #             fptr.write(f"{pebble} ")
-
-    #         fptr.write("\n")
-
-
     def blink(self):
         """
-        Blink
+        Blink - Can't be used for a blink counts over 30'ish
 
         Rules (Verbose):
             - If the stone is engraved with the number 0, it is replaced by a stone engraved with the number 1.
@@ -88,24 +81,29 @@ class PlutonianPebbles:
 
     def blink2(self, blinks:int):
         """
-        Optimized version of blink that just counts the number of Pebbles
-        after a certain number of `blinks`
+        Optimized version of blink that just **counts** the number of Pebbles
+        after a certain number of `blinks`.
         """
         count = len(self.__pebbles)
         for pebble in self.__pebbles:
-            print(f"({pebble}) - {count} pebbles")
-            start = time.perf_counter()
+            # --- UNCOMMENT for perf data ---
+            # print(f"({pebble}) - {count} pebbles")
+            # start = time.perf_counter()
             count += self.__measure_growth(pebble, blinks)
-            end = time.perf_counter()
-            bench = end-start
-            print(f"...-> {count} pebbles {bench:0.2f}s")
+            # end = time.perf_counter()
+            # bench = end-start
+            # print(f"...-> {count} pebbles {bench:0.2f}s")
 
         return count
 
 
-    def __measure_growth(self, pebble:int, blinks:int, **kwargs):
+    @cache
+    def __measure_growth(self, pebble:int, blinks:int):
         """
-        Measures the growth of a single Pebble over X `blinks`
+        Measures the growth of a single Pebble over X `blinks`.
+
+        Without caching/memoization (@cache) it will take toooo long for values
+        of `blinks` over 40'ish.
         """
         add_count = 0
 
@@ -128,12 +126,3 @@ class PlutonianPebbles:
                 add_count += self.__measure_growth(pebble * 2024, blinks)
 
         return add_count
-
-
-
-
-
-
-
-
-#
