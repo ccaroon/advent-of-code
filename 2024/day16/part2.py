@@ -5,7 +5,7 @@ import pprint
 from maze_mapper import MazeMapper
 
 def main(args) -> None:
-    """Day 16 // Puzzle 01"""
+    """Day 16 // Part 02"""
 
     mm = MazeMapper(args.input_file)
     # print(mm)

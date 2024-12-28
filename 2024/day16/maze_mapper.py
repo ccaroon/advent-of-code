@@ -21,8 +21,13 @@ class Reindeer:
         self.__location = start_loc
         self.__direction = start_dir
         self.__score = score
-        self.__trail = set()
-        self.__trail.add(start_loc)
+
+        existing_trail = kwargs.get("trail")
+        if existing_trail:
+            self.__trail = existing_trail
+        else:
+            self.__trail = set()
+            self.__trail.add(start_loc)
 
         self.__id = kwargs.get("id", 1)
 
@@ -56,6 +61,7 @@ class Reindeer:
     def can_move(self):
         return not self.finished and not self.stuck
 
+
     def status(self):
         status = "M"
         if self.finished:
@@ -74,7 +80,8 @@ class Reindeer:
             self.__location.copy(),
             self.__direction.copy(),
             self.__score,
-            id=self.__id + 1
+            id=self.__id + 1,
+            trail=self.__trail.copy()
         )
 
 
@@ -103,9 +110,6 @@ class MazeMapper:
     WALL = "#"
     OPEN = "."
     REINDEER = "@"
-
-    MAX_REINDEER = 1000
-
 
     def __init__(self, input_file:str, **kwargs):
         self.__input_file = input_file
@@ -182,6 +186,12 @@ class MazeMapper:
         left -> clone and turn
         right -> clone and turn
         forward -> move
+
+
+        THOUGHTS:
+        - instead of killing if hit wall when can turn, allow at least 1 clone
+          to turn and keep moving
+
         """
         new_deer = []
 
@@ -241,7 +251,7 @@ class MazeMapper:
                 if whats_left == self.END:
                     clone.finished = True
                 elif whats_left == self.START:
-                    reindeer.stuck = True
+                    clone.stuck = True
 
             if right_valid:
                 if whats_right != self.WALL:
@@ -252,7 +262,7 @@ class MazeMapper:
                 if whats_right == self.END:
                     clone.finished = True
                 elif whats_right == self.START:
-                    reindeer.stuck = True
+                    clone.stuck = True
 
             if forward_valid:
                 if whats_forward != self.WALL:
@@ -271,6 +281,7 @@ class MazeMapper:
         lowest_score = 999_999_999_999
         self.__reindeer = []
 
+        max_rdeer = kwargs.get("max_rdeer", 1000)
         max_iterations = kwargs.get("max_iter", 50)
         visual = kwargs.get("visual", False)
 
@@ -281,7 +292,7 @@ class MazeMapper:
         finished_count = 0
         still_going = True
         counter = 0
-        while still_going and finished_count < 10 and counter < max_iterations:
+        while still_going and finished_count < (max_rdeer*.75) and counter < max_iterations:
         # while still_going and counter < max_iterations:
             counter += 1
             new_deer = []
@@ -289,8 +300,22 @@ class MazeMapper:
                 clones = self.__move(rdeer)
                 new_deer.extend(clones)
 
-            if len(self.__reindeer) < self.MAX_REINDEER:
+            # --- Add all new reindeer ---
+            if len(self.__reindeer) < max_rdeer:
                 self.__reindeer.extend(new_deer)
+
+
+            # self.__reindeer.extend(new_deer)
+            # --- Trim the oldest rdeer ---
+            # self.__reindeer = self.__reindeer[-max_rdeer:]
+            # --- Trim the newest rdeer ---
+            # self.__reindeer = self.__reindeer[0:max_rdeer]
+
+            # Get rid of rdeer with highest rid's; been in the maze too long
+            # max_rid = 15
+            # trimmed_rdeer = filter(lambda rd: rd.rid <= max_rid, self.__reindeer)
+            # self.__reindeer = list(trimmed_rdeer)
+
 
             # Track "finished" reindeer
             finished = filter(lambda rd: rd.finished, self.__reindeer)
@@ -306,7 +331,7 @@ class MazeMapper:
 
             still_going = len(self.__reindeer) > 0
 
-            if counter % 100 == 0:
+            if counter % 50 == 0:
                 print(f"Iteration #{counter:03} | Reindeer: {len(self.__reindeer)} | Added: {len(new_deer)} | Finished: {finished_count}")
                 # input()
 
@@ -321,6 +346,9 @@ class MazeMapper:
                     time.sleep(.25)
                 elif visual == "manual":
                     input()
+
+
+        print(f"==> StillGoing: {still_going}/{len(self.__reindeer)} | {counter}/{max_iterations} | Fin: {finished_count} <==")
 
         return lowest_score
 
