@@ -162,4 +162,4 @@ class Location:
 
 
     def __str__(self):
-        return f"({self.row},{self.col})"
+        return f"({self.row:2},{self.col:2})"
