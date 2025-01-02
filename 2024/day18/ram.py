@@ -1,4 +1,5 @@
 import copy
+import time
 
 class RAM:
     FREE_BYTE = "."
@@ -9,7 +10,7 @@ class RAM:
 
     OUT_OF_BOUNDS = "!"
 
-    HISTORIANS = "O"
+    HISTORIANS = "X"
     VISITED = "o"
 
     UP    = (-1, 0)
@@ -80,12 +81,12 @@ class RAM:
 
 
     def __display_matrix(self, matrix):
+        output = ""
         for row in matrix:
-            output = ""
             for col in row:
                 output += f"{col:2}"
-            print(output)
-        print()
+            output += "\n"
+        print(output)
 
 
     def display_memory_space(self):
@@ -111,19 +112,20 @@ class RAM:
         self.__byte_maze = copy.deepcopy(self.__memory_space)
 
 
-    def __run_run_run(self):
+    def __run_run_run(self, **kwargs):
         step_counter = 0
         curr_loc = [0, 0]
         trail = set()
         trail.add(tuple(curr_loc))
         found_exit = False
 
+        visual = kwargs.get("visual", None)
+
         while not found_exit:
-            print(f"[{step_counter:03}]".center(self.__width*2, "-"))
             self.__byte_maze[curr_loc[0]][curr_loc[1]] = self.VISITED
 
-            # Check Options
-            options = {}
+            # Analyze Surroundings
+            surroundings = {}
             for code, mv_dir in self.MOVE_DIRS.items():
                 loc = (curr_loc[0] + mv_dir[0], curr_loc[1] + mv_dir[1])
                 what = None
@@ -132,13 +134,13 @@ class RAM:
                 else:
                     what = self.__byte_maze[loc[0]][loc[1]]
 
-                options[code] = {"what": what, "visited": loc in trail}
+                surroundings[code] = {"what": what, "visited": loc in trail}
 
 
             # Find all valid directions
             primary_moves = {}
             secondary_moves = {}
-            for mdir, info in options.items():
+            for mdir, info in surroundings.items():
                 # Valid Space AND NOT already visited
                 if (
                     info["what"] not in (self.CORRUPTED_BYTE, self.OUT_OF_BOUNDS)
@@ -155,55 +157,86 @@ class RAM:
                    ):
                     secondary_moves[mdir] = info
 
-            # if none left -> ???
-            # - must move to visited location
-            # - -1 steps
-            # if 1+ left -> move RDLU order
             move_options = None
+            step_inc = 0
+            backtracking = False
             if len(primary_moves) != 0:
+                print("--Primary Moves--")
                 move_options = primary_moves
-                step_counter += 1
+                step_inc = 1
             else:
+                print("--Secondary Moves--")
                 move_options = secondary_moves
-                step_counter -= 1
-
-            match move_options:
-                case {"R": {}}:
-                    curr_loc[0] += self.RIGHT[0]
-                    curr_loc[1] += self.RIGHT[1]
-                case {"D": {}}:
-                    curr_loc[0] += self.DOWN[0]
-                    curr_loc[1] += self.DOWN[1]
-                case {"L": {}}:
-                    curr_loc[0] += self.LEFT[0]
-                    curr_loc[1] += self.LEFT[1]
-                case {"U": {}}:
-                    curr_loc[0] += self.UP[0]
-                    curr_loc[1] += self.UP[1]
-                case _:
-                    print("CAN'T MOVE")
-
+                step_inc = -1
+                backtracking = True
 
             # if tuple(curr_loc) in trail:
-            #     step_counter -= 1
-            # else:
-            #     step_counter += 1
-            #     trail.add(tuple(curr_loc))
+            #     print("--Backtracking--")
+            #     backtracking = True
 
-            trail.add(tuple(curr_loc))
+            # --- TODO ---
+            # --- IDEAS ---
+            # if start stuck and **must** backtrack,
+            # - go U & L until reach unvisited square
+            # - along the way mark those backtracked spots as CORRUPTED
+            #   ...so that that path will not be followed again
 
+            if backtracking:
+                match move_options:
+                    case {"U": {}}:
+                        curr_loc[0] += self.UP[0]
+                        curr_loc[1] += self.UP[1]
+                    case {"L": {}}:
+                        curr_loc[0] += self.LEFT[0]
+                        curr_loc[1] += self.LEFT[1]
+                    case {"R": {}}:
+                        curr_loc[0] += self.RIGHT[0]
+                        curr_loc[1] += self.RIGHT[1]
+                    case {"D": {}}:
+                        curr_loc[0] += self.DOWN[0]
+                        curr_loc[1] += self.DOWN[1]
+                    case _:
+                        print("CAN'T MOVE")
+            else:
+                match move_options:
+                    case {"R": {}}:
+                        curr_loc[0] += self.RIGHT[0]
+                        curr_loc[1] += self.RIGHT[1]
+                    case {"D": {}}:
+                        curr_loc[0] += self.DOWN[0]
+                        curr_loc[1] += self.DOWN[1]
+                    case {"L": {}}:
+                        curr_loc[0] += self.LEFT[0]
+                        curr_loc[1] += self.LEFT[1]
+                    case {"U": {}}:
+                        curr_loc[0] += self.UP[0]
+                        curr_loc[1] += self.UP[1]
+                    case _:
+                        print("CAN'T MOVE")
+
+
+            # Freedom!
             if self.__byte_maze[curr_loc[0]][curr_loc[1]] == self.EXIT:
                 found_exit = True
-            else:
-                self.__byte_maze[curr_loc[0]][curr_loc[1]] = self.HISTORIANS
 
-            self.display_byte_maze()
-            input()
+            # Update Info
+            step_counter += step_inc
+            trail.add(tuple(curr_loc))
+            # Mark current location on the map
+            self.__byte_maze[curr_loc[0]][curr_loc[1]] = self.HISTORIANS
+
+            if visual:
+                print(f"[{step_counter:03}]".center(self.__width*2, "-"))
+                self.display_byte_maze()
+                if visual == "manual":
+                    input()
+                else:
+                    time.sleep(0.25)
 
         return step_counter
 
 
-    def make_a_run_for_it(self):
+    def make_a_run_for_it(self, **kwargs):
         """
         Phase 2 -- Find the Exit, Quick!
 
@@ -215,7 +248,7 @@ class RAM:
         # Stop Time...
         self.__snapshot_memory_space()
         # ...RUN!!!!!!!
-        step_count = self.__run_run_run()
+        step_count = self.__run_run_run(**kwargs)
 
         return step_count
 
@@ -228,7 +261,7 @@ class RAM:
         """
         visual = kwargs.get("visual", None)
 
-        nanoseconds = ticks if ticks < len(self.__bytes) else len(self.__bytes)
+        nanoseconds = ticks if ticks < len(self.__bytes) else len(self.__bytes)-1
         for i in range(nanoseconds):
             self.tick()
 
@@ -237,8 +270,9 @@ class RAM:
                 self.display_memory_space()
                 if visual == "manual":
                     input()
+                else:
+                    time.sleep(0.25)
 
-        self.display_memory_space()
 
 
 
