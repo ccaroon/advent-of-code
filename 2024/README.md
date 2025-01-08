@@ -7,44 +7,44 @@ As each location is checked, they will mark it on their list with a star. They f
 
 Collect stars by solving puzzles. Two puzzles will be made available on each day in the Advent calendar; the second puzzle is unlocked when you complete the first. Each puzzle grants one star. Good luck!
 
-* [x] [Day 01](./day01/README.md)
-* [x] [Day 02](./day02/README.md)
-* [x] [Day 03](./day03/README.md)
-* [x] [Day 04](./day04/README.md)
-* [x] [Day 05](./day05/README.md)
-* [x] [Day 06](./day06/README.md)
-* [x] [Day 07](./day07/README.md)
-* [x] [Day 08](./day08/README.md)
-* [x] [Day 09](./day09/README.md)
-* [x] [Day 10](./day10/README.md)
-* [x] [Day 11](./day11/README.md)
-* [ ] [Day 12](./day12/README.md)
+* [x] [Day 01 - Historian Hysteria](./day01/README.md)
+* [x] [Day 02 - Red-Nosed Reports](./day02/README.md)
+* [x] [Day 03 - Mull It Over](./day03/README.md)
+* [x] [Day 04 - Ceres Search](./day04/README.md)
+* [x] [Day 05 - Print Queue](./day05/README.md)
+* [x] [Day 06 - Guard Gallivant](./day06/README.md)
+* [x] [Day 07 - Bridge Repair](./day07/README.md)
+* [x] [Day 08 - Resonant Collinearity](./day08/README.md)
+* [x] [Day 09 - Disk Fragmenter](./day09/README.md)
+* [x] [Day 10 - Hoof It](./day10/README.md)
+* [x] [Day 11 - Plutonian Pebbles](./day11/README.md)
+* [ ] [Day 12 - Garden Groups](./day12/README.md)
   - [x] Part 1
   - [ ] Part 2
-* [x] [Day 13](./day13/README.md)
-* [x] [Day 14](./day14//README.md)
-* [ ] [Day 15](./day15/README.md)
+* [x] [Day 13 - Claw Contraption](./day13/README.md)
+* [x] [Day 14 - Restroom Redoubt](./day14//README.md)
+* [ ] [Day 15 - Warehouse Woes](./day15/README.md)
   - [x] Part 1
   - [ ] Part 2
-* [ ] [Day 16](./day16/README.md)
+* [ ] [Day 16 - Reindeer Maze](./day16/README.md)
   - [ ] Part 1
   - [ ] Part 2
-* [ ] [Day 17](./day17/README.md)
+* [ ] [Day 17 - Chronospatial Computer](./day17/README.md)
   - [x] Part 1
   - [ ] Part 2
-* [ ] [Day 18](./day18/README.md)
-* [ ] [Day 19](/day19/README.md)
-* [ ] Day 20
-* [ ] [Day 21](./day21/README.md)
-* [ ] [Day 22](./day22/README.md)
+* [ ] [Day 18 - RAM Run](./day18/README.md)
+* [ ] [Day 19 - Linen Layout](/day19/README.md)
+* [ ] Day 20 - Race Condition
+* [ ] [Day 21 - Keypad Conundrum](./day21/README.md)
+* [ ] [Day 22 - Monkey Market](./day22/README.md)
   - [x] Part 1
   - [ ] Part 2
-* [ ] [Day 23](./day23/README.md)
+* [ ] [Day 23 - LAN Party](./day23/README.md)
   - [x] Part 1
   - [ ] Part 2
-* [ ] [Day 24](./day24/README.md)
+* [ ] [Day 24 - Crossed Wires](./day24/README.md)
   - [x] Part 1
   - [ ] Part 2
-* [ ] [Day 25](./day25/README.md)
+* [ ] [Day 25 - Code Chronicle](./day25/README.md)
   - [x] Part 1
   - [ ] Part 2
