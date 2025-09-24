@@ -15,12 +15,12 @@ class Plot:
     SIDE_BOTTOM = (BOT_LEFT, BOT_RGHT)
     SIDE_RIGHT = (TOP_RGHT, BOT_RGHT)
 
-    VERTEX_NAMES = {
-        "top-left": TOP_LEFT,
-        "top-right": TOP_RGHT,
-        "bottom-left": BOT_LEFT,
-        "bottom-right": BOT_RGHT
-    }
+    # VERTEX_NAMES = {
+    #     "top-left": TOP_LEFT,
+    #     "top-right": TOP_RGHT,
+    #     "bottom-left": BOT_LEFT,
+    #     "bottom-right": BOT_RGHT
+    # }
 
     def __init__(self, location):
         self.__loc = location
@@ -41,6 +41,18 @@ class Plot:
         return str(self.__loc)
 
 
+    def __repr__(self):
+        return repr(self.__loc)
+
+
+    def __lt__(self, other):
+        return self.__loc < other.__loc
+
+
+    def __gt__(self, other):
+        return self.__loc > other.__loc
+
+
     def __eq__(self, other):
         return self.__loc == other.__loc
 
@@ -49,11 +61,11 @@ class Plot:
         return hash((self.__loc))
 
 
-    def vertex_uid(self, name:str):
+    def vertex_uid(self, vtx:tuple):
         """ Unique ID for one of the four vertexes by name """
-        vtx = self.VERTEX_NAMES.get(name)
-        if vtx is None:
-            raise ValueError(f"Invalid Vertex Name: '{name}'")
+        # vtx = self.VERTEX_NAMES.get(name)
+        # if vtx is None:
+        #     raise ValueError(f"Invalid Vertex Name: '{name}'")
 
         return f"{self.__loc.row},{self.__loc.col}:{vtx[0]},{vtx[1]}"
 
@@ -63,6 +75,11 @@ class Region:
         self.__plant_type = plant_type
         # The Locations of each Plot in the Region
         self.__plots = set()
+
+
+    @property
+    def plant_type(self):
+        return self.__plant_type
 
 
     def __str__(self):
@@ -108,44 +125,56 @@ class Region:
           4 |R R R R|
             +-+-+-+-+
                 3
-
-              0 1 2 3
-            0 A A A A
-            1 B B C D
-            2 B B C C
-            3 E E E C
-
-
-            1 => 4
-            2 => 4 - (2 + 2) = 0 => 4
-            3 => 4 - (2)     = 2 => 6
-            4 => 4 - (2)     = 2 => 8
         """
         # Number of sides == Number of vertices
         # Minimum number of sides is 4, i.e. it has to at least be a rectangle
         # Assume a Rectangle
-        side_count = 4
-
+        vtx_count = 4
         counted_vtxs = {}
 
-        for plot in self.__plots[1:]:
+        # plots = list(self.__plots)
+        plots = self.sorted_plots()
+        for plot in plots[1:]:
+            print(f"-> Sides: Working on {plot}...")
             for direction in Direction.enumerate(("N","E","S","W")):
-                non_shared_sides = 4
-                # N => shares TOP
-                if direction.code == "N":
-                    shared_side = Plot.SIDE_TOP
-                    # vtx1 =
-
-                # S => shares BOTTOM
-                # E => shares RIGHT
-                # W => shares LEFT
-
-
-                neighbor = plot.location + direction
+                neighbor = self.get_plot(plot.location + direction)
                 if neighbor in self.__plots:
-                    pass
+                    non_shared_vtxs = 4
+                    shared_vtx = {"self": [], "neighbor": []}
 
-        return side_count
+                    match direction.code:
+                        # N => shares TOP
+                        case "N":
+                            shared_vtx["self"].extend(Plot.SIDE_TOP)
+                            shared_vtx["neighbor"].extend(Plot.SIDE_BOTTOM)
+                        # S => shares BOTTOM
+                        case "S":
+                            shared_vtx["self"].extend(Plot.SIDE_BOTTOM)
+                            shared_vtx["neighbor"].extend(Plot.SIDE_TOP)
+                        # E => shares RIGHT
+                        case "E":
+                            shared_vtx["self"].extend(Plot.SIDE_RIGHT)
+                            shared_vtx["neighbor"].extend(Plot.SIDE_LEFT)
+                        # W => shares LEFT
+                        case "W":
+                            shared_vtx["self"].extend(Plot.SIDE_LEFT)
+                            shared_vtx["neighbor"].extend(Plot.SIDE_RIGHT)
+
+                    for plot_name in ("self", "neighbor"):
+                        print(f"{plot_name:10} -> {shared_vtx[plot_name]}")
+                        for vtx in shared_vtx[plot_name]:
+                            uid = plot.vertex_uid(vtx)
+                            if uid not in counted_vtxs:
+                                # -1 for each Plot that shares the vtx
+                                non_shared_vtxs -= 1
+                                counted_vtxs[uid] = True
+
+                    print(f"NSVtx: [{non_shared_vtxs}]")
+                    vtx_count += non_shared_vtxs
+
+        # print(counted_vtxs)
+        print(f"[{self.plant_type}] - Sides: {vtx_count}")
+        return vtx_count
 
 
     @property
@@ -181,6 +210,11 @@ class Region:
     @property
     def is_empty(self):
         return len(self.__plots) == 0
+
+
+    def sorted_plots(self):
+        plot_list = list(self.__plots)
+        return sorted(plot_list)
 
 
     def get_plot(self, location:Location):
@@ -340,9 +374,9 @@ class Garden:
 
         for region in self.__regions:
             if with_discount:
-                # region_cost = region.area * region.sides
-                region_cost = 0
-                print(region)
+                print(f"{region.plant_type}: {region.sorted_plots()}")
+                region_cost = region.area * region.sides
+                # print(f"--- Region ({region.plant_type}) | Sides: {region.sides} ---")
             else:
                 region_cost = region.area * region.perimeter
             # print(f"{region} = {region.area}x{region.perimeter} == ${region_cost}")

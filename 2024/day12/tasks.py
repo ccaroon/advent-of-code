@@ -26,16 +26,7 @@ def part2(ctx, input_file="garden-plot.map", debug=False):
     print(part2.__doc__)
 
     garden = Garden(input_file, debug=debug)
-    # print(garden)
     fencing_cost = garden.calculate_fencing(with_discount=True)
-
-    if debug:
-        import pprint
-        pprint.pprint(garden.regions)
-        region = garden.regions[2]
-        print("-------")
-        pprint.pprint(region.sorted_plots())
-        print(region.sides)
 
 
     print(f"""
