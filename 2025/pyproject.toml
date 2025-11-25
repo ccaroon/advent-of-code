@@ -9,8 +9,8 @@ readme = "README.md"
 # dynamic = ["version"]
 dependencies = ["invoke ~= 2.2"]
 
-[tool.hatch.version]
-path = "aoc/version.py"
+# [tool.hatch.version]
+# path = "aoc/version.py"
 
 [tool.hatch.build.targets.sdist]
 exclude = ["/docs"]
