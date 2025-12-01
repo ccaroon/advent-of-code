@@ -15,19 +15,21 @@ class SecretEntrance(Puzzle):
         self.__data.append(line)
 
 
-    def _part1(self):
-        zero_count = 0
+    def __rotate(self):
+        zero_stats = {
+            "during_rotation": 0,
+            "end_of_rotation": 0
+        }
+
         for rot_code in self.__data:
             code = rot_code[0] # "L" or "R"
             count = int(rot_code[1:]) # 0 ... INF
 
-            # count // 100
             # => How many times around & back to same number
             # => I.e. How many times it passes 0
-            # times_past_zero = count // 100
+            times_past_zero = count // 100
 
-            # count % 100
-            # ==> How many actual clicks/positions the dial moves
+            # => How many actual clicks/positions the dial moves
             clicks = count % 100
 
             # ------------------------------------------------------------------
@@ -37,8 +39,23 @@ class SecretEntrance(Puzzle):
             if code == "L":
                 new_pos = self.__dial_pos - clicks
                 if new_pos < 0:
+                    # wrap
                     new_pos = new_pos + 100
-                self._debug(f"{self.__dial_pos}+{rot_code} => {new_pos}")
+
+                    # Did the dial go past zero when...
+                    # ...it did NOT start on ZERO (did not pass it)
+                    # ...it did NOT end on ZERO (counted in `clicks`)
+                    # ...then count as pointing to zero during the rotation
+                    # NOTE: I guess instead of this code you could just subtract
+                    # the number of end_of_rotation zeros from the overall total
+                    # so they don't get counted twice
+                    # b/c if the dial is on ZERO at the end of a rotation it's
+                    # also on ZERO at the start of the next rotation
+                    if self.__dial_pos != 0 and new_pos != 0:
+                        times_past_zero += 1
+
+                self._debug(f"=> {self.__dial_pos} -> {rot_code}: {new_pos}")
+
                 self.__dial_pos = new_pos
             # ------------------------------------------------------------------
             # RIGHT -> higher number -> add
@@ -47,20 +64,42 @@ class SecretEntrance(Puzzle):
             elif code == "R":
                 new_pos = self.__dial_pos + clicks
                 if new_pos >= 100:
+                    # wrap
                     new_pos = new_pos - 100
-                self._debug(f"{self.__dial_pos}+{rot_code} => {new_pos}")
+
+                    # Did the dial go past zero when...
+                    # ...it did NOT start on ZERO (did not pass it)
+                    # ...it did NOT end on ZERO (counted in `clicks`)
+                    # ...then count as pointing to zero during the rotation
+                    # NOTE: I guess instead of this code you could just subtract
+                    # the number of end_of_rotation zeros from the overall total
+                    # so they don't get counted twice
+                    # b/c if the dial is on ZERO at the end of a rotation it's
+                    # also on ZERO at the start of the next rotation
+                    if self.__dial_pos != 0 and new_pos != 0:
+                        times_past_zero += 1
+
+                self._debug(f"=> {self.__dial_pos} -> {rot_code}: {new_pos}")
+
                 self.__dial_pos = new_pos
             else:
                 raise ValueError(f"Invalid Rotation Code [{rot_code}]")
 
+            zero_stats["during_rotation"] += times_past_zero
             if self.__dial_pos == 0:
-                zero_count += 1
+                zero_stats["end_of_rotation"] += 1
 
-        return zero_count
+        return zero_stats
+
+
+    def _part1(self):
+        stats = self.__rotate()
+        return stats["end_of_rotation"]
 
 
     def _part2(self):
-        pass
+        stats = self.__rotate()
+        return stats["during_rotation"] + stats["end_of_rotation"]
 
 
 

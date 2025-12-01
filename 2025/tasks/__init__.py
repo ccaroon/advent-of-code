@@ -6,16 +6,16 @@ PUZZLES = {
 }
 
 @task(
-    iterable=["args"],
+    iterable=["arg"],
     help={
         "day": "Day Ordinal: 1,2,3...12 | day1, day2 ... day12",
         "part": "Puzzle Part: 1 or 2",
         "test": "Use test-input.txt instead of input.txt",
         "debug": "Enable debug messages",
-        "args": "Arguments to pass to the puzzle in name=value pairs"
+        "arg": "Arguments to pass to the puzzle in name=value pairs"
     }
 )
-def run(ctx, day, part, test=False, debug=False, args=None):
+def run(ctx, day, part, test=False, debug=False, arg=None):
     """ Run an AOC-2025 Puzzle by `day` & `part` """
 
     day_name = None
@@ -39,10 +39,10 @@ def run(ctx, day, part, test=False, debug=False, args=None):
             "__test_mode": test,
             "__debug_mode": debug
         }
-        for arg in args:
-            if "=" in arg:
-                (key, value) = arg.split("=", 2)
-                kwargs[key] = value
+        for arg_pair in arg:
+            if "=" in arg_pair:
+                (name, value) = arg_pair.split("=", 2)
+                kwargs[name] = value
             else:
                 kwargs[arg] = True
 
