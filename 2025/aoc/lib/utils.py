@@ -1,4 +1,3 @@
+import os
 
-
-def foo(bar):
-    print(f"Foo({bar})")
+pass
