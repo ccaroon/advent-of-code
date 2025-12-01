@@ -1,4 +1,5 @@
 import importlib
+
 from invoke import task
 
 PUZZLES = {

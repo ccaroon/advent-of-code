@@ -1,7 +1,7 @@
 import inspect
 import os
-
 from abc import ABC, abstractmethod
+
 
 class Puzzle(ABC):
     def __init__(self, **kwargs):
@@ -37,7 +37,7 @@ class Puzzle(ABC):
         file = f"{self.__path}/" + ("test-input.txt" if self.__test_mode else "input.txt")
 
         f"{self.__path}/input.txt"
-        with open(file, "r") as fptr:
+        with open(file) as fptr:
             while line := fptr.readline():
                 handler(line.strip())
 

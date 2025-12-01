@@ -1,5 +1,6 @@
 from aoc.lib.puzzle import Puzzle
 
+
 class SecretEntrance(Puzzle):
     """ AOC-2025 // Day01 -- Secret Entrance """
 
@@ -107,4 +108,3 @@ class SecretEntrance(Puzzle):
 
 
 
-#
