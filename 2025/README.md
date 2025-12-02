@@ -2,7 +2,7 @@
 https://adventofcode.com/2025
 
 * [x] [Day 01 - Secret Entrance](./aoc/day01/README.md) ⭐️⭐️
-* [-] [Day 02 - Gift Shop](./aoc/day02/README.md) ⭐️
+* [x] [Day 02 - Gift Shop](./aoc/day02/README.md) ⭐️⭐️
 * [ ] [Day 03 - ?????](./aoc/day03/README.md)
 * [ ] [Day 04 - ?????](./aoc/day04/README.md)
 * [ ] [Day 05 - ?????](./aoc/day05/README.md)
