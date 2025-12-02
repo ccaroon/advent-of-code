@@ -1,0 +1,5 @@
+# Day 3: ?????
+https://adventofcode.com/2025/day/3
+
+* Part 1: `inv run day03 1` => `?????`
+* Part 2: `inv run day03 2` => `?????`
