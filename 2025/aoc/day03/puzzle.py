@@ -1,5 +1,6 @@
 from aoc.lib.puzzle import Puzzle
 
+
 class TODODay03(Puzzle):
     """ AOC-2025 // Day03 -- ????? """
 

@@ -1,5 +1,7 @@
 import re
+
 from aoc.lib.puzzle import Puzzle
+
 
 class GiftShop(Puzzle):
     """ AOC-2025 // Day02 -- Gift Shop """
