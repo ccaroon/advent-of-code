@@ -3,7 +3,8 @@ import importlib
 from invoke import task
 
 PUZZLES = {
-    "day01": "SecretEntrance"
+    "day01": "SecretEntrance",
+    "day02": "GiftShop"
 }
 
 @task(
