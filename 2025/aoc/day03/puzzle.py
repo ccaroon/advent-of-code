@@ -16,13 +16,13 @@ class Lobby(Puzzle):
             self.__data.append(line)
 
 
-    def __find_largest_battery(self, bank:list[int]):
+    def __find_largest_battery(self, bank:list[int], start=0):
         found_idx = None
         max = 0
-        for idx, battery in enumerate(bank):
+        for idx, battery in enumerate(bank[start:]):
             if battery > max:
                 max = battery
-                found_idx = idx
+                found_idx = start + idx
 
         return found_idx, max
 
@@ -41,12 +41,13 @@ class Lobby(Puzzle):
             self._debug(f"=> {bank}")
             # find the largest battery in the bank, EXCLUDING the last one
             # ...since no battery can follow it
-            (idx, batt1) = self.__find_largest_battery(batteries[:-1])
-            self._debug(f"  -> #1 -> [{idx}] - {batt1}")
+            (b1_idx, batt1) = self.__find_largest_battery(batteries[:-1])
+            self._debug(f"  -> #1 -> [{b1_idx}] - {batt1}")
 
             # find the largest battery AFTER the position of the first largest
-            (idx, batt2) = self.__find_largest_battery(batteries[idx+1:])
-            self._debug(f"  -> #2 -> [{idx}] - {batt2}")
+            (b2_idx, batt2) = self.__find_largest_battery(
+                batteries, start=b1_idx+1)
+            self._debug(f"  -> #2 -> [{b2_idx}] - {batt2}")
 
             joltage = int(f"{batt1}{batt2}")
             total_joltage += joltage
@@ -56,4 +57,45 @@ class Lobby(Puzzle):
 
 
     def _part2(self):
-        pass
+        # find the twelve highest numbers & remember their idx
+        # create a 12 digit number from those twelve w/ each digit
+        # in it's relative position to the other based on idx.
+        for bank in self.__data:
+            bank_len = len(bank)
+            found_batts = []
+            # convert to a list of ints
+            batteries = [int(chr) for chr in list(bank)]
+
+            self._debug(f"=> {bank}")
+
+            for _ in range(0,12):
+                if found_batts:
+                    lowest_idx = found_batts[0] // 1000
+                    start = lowest_idx + 1 if lowest_idx < (bank_len - 12) else 0
+                else:
+                    lowest_idx = 0
+                    start = 0
+
+                self._debug(f"  -> LiDX [{lowest_idx}] | Start [{start}]")
+
+                (idx, batt) = self.__find_largest_battery(
+                    batteries,
+                    start=start
+                )
+                found_batts.append(idx * 1000 + batt)
+                found_batts.sort()
+
+                # remove/mark the found battery
+                # batteries.pop(idx)
+                batteries[idx] = 0
+                self._debug(f"  -> {batteries}")
+
+                # 234234234234278
+                # 434 234 234 278
+
+            self._debug(f"  -> {found_batts}")
+
+
+
+
+#
