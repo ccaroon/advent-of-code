@@ -4,7 +4,8 @@ from invoke import task
 
 PUZZLES = {
     "day01": "SecretEntrance",
-    "day02": "GiftShop"
+    "day02": "GiftShop",
+    "day03": "Lobby"
 }
 
 @task(
