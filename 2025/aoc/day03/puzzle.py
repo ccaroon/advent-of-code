@@ -2,7 +2,7 @@ from aoc.lib.puzzle import Puzzle
 
 
 class Lobby(Puzzle):
-    """ AOC-2025 // Day03 -- Lobby """
+    """AOC-2025 // Day03 -- Lobby"""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -10,22 +10,19 @@ class Lobby(Puzzle):
         self.__data = []
         self._read_input(self.__parse_input)
 
-
     def __parse_input(self, line):
         if not line.startswith("#"):
             self.__data.append(line)
 
-
-    def __find_largest_battery(self, bank:list[int], start=0):
+    def __find_largest_battery(self, bank: list[int], start=0):
         found_idx = None
-        max = 0
+        max_value = 0
         for idx, battery in enumerate(bank[start:]):
-            if battery > max:
-                max = battery
+            if battery > max_value:
+                max_value = battery
                 found_idx = start + idx
 
-        return found_idx, max
-
+        return found_idx, max_value
 
     def _part1(self):
         total_joltage = 0
@@ -36,7 +33,7 @@ class Lobby(Puzzle):
         # concat, convert to int
         for bank in self.__data:
             # convert to a list of ints
-            batteries = [int(chr) for chr in list(bank)]
+            batteries = [int(b) for b in list(bank)]
 
             self._debug(f"=> {bank}")
             # find the largest battery in the bank, EXCLUDING the last one
@@ -45,8 +42,7 @@ class Lobby(Puzzle):
             self._debug(f"  -> #1 -> [{b1_idx}] - {batt1}")
 
             # find the largest battery AFTER the position of the first largest
-            (b2_idx, batt2) = self.__find_largest_battery(
-                batteries, start=b1_idx+1)
+            (b2_idx, batt2) = self.__find_largest_battery(batteries, start=b1_idx + 1)
             self._debug(f"  -> #2 -> [{b2_idx}] - {batt2}")
 
             joltage = int(f"{batt1}{batt2}")
@@ -54,7 +50,6 @@ class Lobby(Puzzle):
             self._debug(f"  -> {joltage}/{total_joltage}")
 
         return total_joltage
-
 
     def _part2(self):
         # find the twelve highest numbers & remember their idx
@@ -64,7 +59,7 @@ class Lobby(Puzzle):
             bank_len = len(bank)
             found_batts = []
             # convert to a list of ints
-            batteries = [int(chr) for chr in list(bank)]
+            batteries = [int(b) for b in list(bank)]
 
             self._debug(f"=> {bank}")
 
@@ -78,10 +73,7 @@ class Lobby(Puzzle):
 
                 self._debug(f"  -> LiDX [{lowest_idx}] | Start [{start}]")
 
-                (idx, batt) = self.__find_largest_battery(
-                    batteries,
-                    start=start
-                )
+                (idx, batt) = self.__find_largest_battery(batteries, start=start)
                 found_batts.append(idx * 1000 + batt)
                 found_batts.sort()
 
@@ -94,7 +86,3 @@ class Lobby(Puzzle):
                 # 434 234 234 278
 
             self._debug(f"  -> {found_batts}")
-
-
-
-

@@ -17,3 +17,9 @@ exclude = ["/docs"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["aoc"]
+
+# https://docs.astral.sh/ruff/configuration/
+[tool.ruff.lint]
+ignore = [
+    "T201",  # `print` found
+]

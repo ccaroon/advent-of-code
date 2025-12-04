@@ -4,6 +4,9 @@ from abc import ABC, abstractmethod
 
 
 class Puzzle(ABC):
+    PART1 = 1
+    PART2 = 2
+
     def __init__(self, **kwargs):
         module = inspect.getmodule(self.__class__)
         self.__path = os.path.dirname(module.__file__)
@@ -11,21 +14,17 @@ class Puzzle(ABC):
         self.__test_mode = kwargs.get("__test_mode", False)
         self.__debug_mode = kwargs.get("__debug_mode", False)
 
-
     @abstractmethod
     def _part1(self):
-        """ Entry point for the Part 1 Puzzle Code """
-
+        """Entry point for the Part 1 Puzzle Code"""
 
     @abstractmethod
     def _part2(self):
-        """ Entry point for the Part 2 Puzzle Code """
-
+        """Entry point for the Part 2 Puzzle Code"""
 
     def _debug(self, msg):
         if self.__debug_mode:
             print(msg)
-
 
     def _read_input(self, handler):
         """
@@ -41,7 +40,6 @@ class Puzzle(ABC):
             while line := fptr.readline():
                 handler(line.strip())
 
-
     def _submit_answer(self, answer, part):
         title = self.__class__.__doc__ + f" // Part #{part}"
         title += " (TEST)" if self.__test_mode else ""
@@ -49,12 +47,11 @@ class Puzzle(ABC):
         print(f"{divider}\n{title}\n{divider}")
         print(f"Answer: {answer}")
 
-
-    def main(self, part:int):
+    def main(self, part: int):
         answer = None
-        if part == 1:
+        if part == self.PART1:
             answer = self._part1()
-        elif part == 2:
+        elif part == self.PART2:
             answer = self._part2()
 
         self._submit_answer(answer, part)

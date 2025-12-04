@@ -6,8 +6,9 @@ PUZZLES = {
     "day01": "SecretEntrance",
     "day02": "GiftShop",
     "day03": "Lobby",
-    "day04": "PrintingDepartment"
+    "day04": "PrintingDepartment",
 }
+
 
 @task(
     iterable=["arg"],
@@ -16,11 +17,11 @@ PUZZLES = {
         "part": "Puzzle Part: 1 or 2",
         "test": "Use test-input.txt instead of input.txt",
         "debug": "Enable debug messages",
-        "arg": "Arguments to pass to the puzzle in name=value pairs"
-    }
+        "arg": "Arguments to pass to the puzzle in name=value pairs",
+    },
 )
-def run(ctx, day, part, test=False, debug=False, arg=None):
-    """ Run an AOC-2025 Puzzle by `day` & `part` """
+def run(_, day, part, *, test=False, debug=False, arg=None):
+    """Run an AOC-2025 Puzzle by `day` & `part`"""
 
     day_name = None
     if day.startswith("day"):
@@ -37,12 +38,9 @@ def run(ctx, day, part, test=False, debug=False, arg=None):
         # aoc.<day_name>.puzzle.<cls_name>
         # aoc.day01.puzzle.SecretEntrance
         module = importlib.import_module(f"aoc.{day_name}.puzzle")
-        PuzzleClass = getattr(module, cls_name)
+        puzzle_class = getattr(module, cls_name)
 
-        kwargs = {
-            "__test_mode": test,
-            "__debug_mode": debug
-        }
+        kwargs = {"__test_mode": test, "__debug_mode": debug}
         for arg_pair in arg:
             if "=" in arg_pair:
                 (name, value) = arg_pair.split("=", 2)
@@ -50,5 +48,5 @@ def run(ctx, day, part, test=False, debug=False, arg=None):
             else:
                 kwargs[arg] = True
 
-        puzzle = PuzzleClass(**kwargs)
+        puzzle = puzzle_class(**kwargs)
         puzzle.main(part=int(part))

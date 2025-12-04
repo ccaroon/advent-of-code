@@ -4,7 +4,7 @@ from aoc.lib.puzzle import Puzzle
 
 
 class GiftShop(Puzzle):
-    """ AOC-2025 // Day02 -- Gift Shop """
+    """AOC-2025 // Day02 -- Gift Shop"""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -12,23 +12,21 @@ class GiftShop(Puzzle):
         self.__data = []
         self._read_input(self.__parse_input)
 
-
     def __parse_input(self, line):
         if not line.startswith("#"):
             prd_id_rng = line.split(",")
             self.__data.extend(prd_id_rng)
 
-
     def _part1(self):
         invalid_ids = []
         for id_range in self.__data:
-            (start,end) = id_range.split("-", 2)
+            (start, end) = id_range.split("-", 2)
             sid = int(start)
             eid = int(end)
 
             # Examine each PrdId in the Id Range
-            for id in range(sid, eid+1):
-                id_str = str(id)
+            for pid in range(sid, eid + 1):
+                id_str = str(pid)
                 id_len = len(id_str)
 
                 # To Be INvalid...
@@ -36,24 +34,23 @@ class GiftShop(Puzzle):
                 # ...first half and last half must match
                 if len(id_str) % 2 == 0:
                     # split in half, do both sides match?
-                    first_half = id_str[0:id_len // 2]
-                    last_half = id_str[id_len // 2:]
+                    first_half = id_str[0 : id_len // 2]
+                    last_half = id_str[id_len // 2 :]
                     if first_half == last_half:
-                        invalid_ids.append(id)
+                        invalid_ids.append(pid)
 
         return sum(invalid_ids)
-
 
     def _part2(self):
         invalid_ids = []
         for id_range in self.__data:
-            (start,end) = id_range.split("-", 2)
+            (start, end) = id_range.split("-", 2)
             sid = int(start)
             eid = int(end)
 
             # Examine each PrdId in the Id Range
-            for id in range(sid, eid+1):
-                id_str = str(id)
+            for pid in range(sid, eid + 1):
+                id_str = str(pid)
                 id_len = len(id_str)
 
                 self._debug(f"=> {id_str}({id_len})")
@@ -75,16 +72,16 @@ class GiftShop(Puzzle):
                 # "^(123){2,}$" ~= "123123" -> Yup. Invalid! Stop!
                 for idx in range(id_len):
                     # 1, 12, 123, etc.
-                    pattern = id_str[0:idx+1]
+                    pattern = id_str[0 : idx + 1]
 
                     # Must match against whole string
-                    regex = fr"^({pattern}){{2,}}$"
+                    regex = rf"^({pattern}){{2,}}$"
                     self._debug(f"  -> Checking {id_str} =~ /{regex}/")
                     # If pattern/regex matches (two or more times)
                     # then it's invalid
                     if re.match(regex, id_str):
                         self._debug(f"  -> MATCH: {id_str} =~ /{regex}/")
-                        invalid_ids.append(id)
+                        invalid_ids.append(pid)
                         break
 
         self._debug(invalid_ids)

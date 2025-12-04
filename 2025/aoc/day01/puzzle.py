@@ -2,7 +2,9 @@ from aoc.lib.puzzle import Puzzle
 
 
 class SecretEntrance(Puzzle):
-    """ AOC-2025 // Day01 -- Secret Entrance """
+    """AOC-2025 // Day01 -- Secret Entrance"""
+
+    DIAL_POSITIONS = 100
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -11,27 +13,22 @@ class SecretEntrance(Puzzle):
         self.__data = []
         self._read_input(self.__parse_input)
 
-
     def __parse_input(self, line):
         self.__data.append(line)
 
-
     def __rotate(self):
-        zero_stats = {
-            "during_rotation": 0,
-            "end_of_rotation": 0
-        }
+        zero_stats = {"during_rotation": 0, "end_of_rotation": 0}
 
         for rot_code in self.__data:
-            code = rot_code[0] # "L" or "R"
-            count = int(rot_code[1:]) # 0 ... INF
+            code = rot_code[0]  # "L" or "R"
+            count = int(rot_code[1:])  # 0 ... INF
 
             # => How many times around & back to same number
             # => I.e. How many times it passes 0
-            times_past_zero = count // 100
+            times_past_zero = count // self.DIAL_POSITIONS
 
             # => How many actual clicks/positions the dial moves
-            clicks = count % 100
+            clicks = count % self.DIAL_POSITIONS
 
             # ------------------------------------------------------------------
             # LEFT -> lower number -> subtract
@@ -41,7 +38,7 @@ class SecretEntrance(Puzzle):
                 new_pos = self.__dial_pos - clicks
                 if new_pos < 0:
                     # wrap
-                    new_pos = new_pos + 100
+                    new_pos = new_pos + self.DIAL_POSITIONS
 
                     # Did the dial go past zero when...
                     # ...it did NOT start on ZERO (did not pass it)
@@ -64,9 +61,9 @@ class SecretEntrance(Puzzle):
             # ------------------------------------------------------------------
             elif code == "R":
                 new_pos = self.__dial_pos + clicks
-                if new_pos >= 100:
+                if new_pos >= self.DIAL_POSITIONS:
                     # wrap
-                    new_pos = new_pos - 100
+                    new_pos = new_pos - self.DIAL_POSITIONS
 
                     # Did the dial go past zero when...
                     # ...it did NOT start on ZERO (did not pass it)
@@ -84,7 +81,8 @@ class SecretEntrance(Puzzle):
 
                 self.__dial_pos = new_pos
             else:
-                raise ValueError(f"Invalid Rotation Code [{rot_code}]")
+                err = f"Invalid Rotation Code [{rot_code}]"
+                raise ValueError(err)
 
             zero_stats["during_rotation"] += times_past_zero
             if self.__dial_pos == 0:
@@ -92,19 +90,10 @@ class SecretEntrance(Puzzle):
 
         return zero_stats
 
-
     def _part1(self):
         stats = self.__rotate()
         return stats["end_of_rotation"]
 
-
     def _part2(self):
         stats = self.__rotate()
         return stats["during_rotation"] + stats["end_of_rotation"]
-
-
-
-
-
-
-
