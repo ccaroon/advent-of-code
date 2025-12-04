@@ -6,6 +6,7 @@ class PrintingDepartment(Puzzle):
     """AOC-2025 // Day04 -- Printing Department"""
 
     PAPER_ROLL = "@"
+    REMOVED_ROLL = "x"
     MAX_NEARBY_ROLLS = 4
 
     def __init__(self, **kwargs):
@@ -56,4 +57,22 @@ class PrintingDepartment(Puzzle):
         return count
 
     def _part2(self):
-        pass
+        total_removed = 0
+
+        can_remove = True
+        while can_remove:
+            num_removed = 0
+            for ridx, row in enumerate(self.__data):
+                for cidx, item in enumerate(row):
+                    if item == self.PAPER_ROLL:
+                        num_rolls = self.__count_rolls(ridx, cidx)
+                        if num_rolls < self.MAX_NEARBY_ROLLS:
+                            self.__data[ridx][cidx] = self.REMOVED_ROLL
+                            num_removed += 1
+
+            if num_removed > 0:
+                total_removed += num_removed
+            else:
+                can_remove = False
+
+        return total_removed
