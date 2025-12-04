@@ -68,7 +68,7 @@ class Lobby(Puzzle):
 
             self._debug(f"=> {bank}")
 
-            for _ in range(0,12):
+            for _ in range(12):
                 if found_batts:
                     lowest_idx = found_batts[0] // 1000
                     start = lowest_idx + 1 if lowest_idx < (bank_len - 12) else 0
@@ -98,4 +98,3 @@ class Lobby(Puzzle):
 
 
 
-#

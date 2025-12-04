@@ -26,7 +26,7 @@ class PrintingDepartment(Puzzle):
         for row in self.__data:
             for col in row:
                 print(f"{col} ", end="")
-            print("")
+            print()
 
 
     def __count_rolls(self, row:int, col:int):
@@ -65,4 +65,3 @@ class PrintingDepartment(Puzzle):
 
 
 
-#
