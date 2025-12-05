@@ -1,18 +1,18 @@
 # Advent Of Code 2025
 https://adventofcode.com/2025
 
-* [x] [Day 01 - Secret Entrance](./aoc/day01/README.md) ⭐️⭐️
-* [x] [Day 02 - Gift Shop](./aoc/day02/README.md) ⭐️⭐️
-* [-] [Day 03 - Lobby](./aoc/day03/README.md) ⭐️
-* [x] [Day 04 - Printing Department](./aoc/day04/README.md) ⭐️⭐️
-* [ ] [Day 05 - ?????](./aoc/day05/README.md)
-* [ ] [Day 06 - ?????](./aoc/day06/README.md)
-* [ ] [Day 07 - ?????](./aoc/day07/README.md)
-* [ ] [Day 08 - ?????](./aoc/day08/README.md)
-* [ ] [Day 09 - ?????](./aoc/day09/README.md)
-* [ ] [Day 10 - ?????](./aoc/day10/README.md)
-* [ ] [Day 11 - ?????](./aoc/day11/README.md)
-* [ ] [Day 12 - ?????](./aoc/day12/README.md)
+* [x] ⭐️⭐️ [Day 01 - Secret Entrance](./aoc/day01/README.md)
+* [x] ⭐️⭐️ [Day 02 - Gift Shop](./aoc/day02/README.md)
+* [-] ⭐️🚫 [Day 03 - Lobby](./aoc/day03/README.md)
+* [x] ⭐️⭐️ [Day 04 - Printing Department](./aoc/day04/README.md)
+* [-] ⭐️🚫 [Day 05 - Cafeteria](./aoc/day05/README.md)
+* [ ] 🚫🚫 [Day 06 - ?????](./aoc/day06/README.md)
+* [ ] 🚫🚫 [Day 07 - ?????](./aoc/day07/README.md)
+* [ ] 🚫🚫 [Day 08 - ?????](./aoc/day08/README.md)
+* [ ] 🚫🚫 [Day 09 - ?????](./aoc/day09/README.md)
+* [ ] 🚫🚫 [Day 10 - ?????](./aoc/day10/README.md)
+* [ ] 🚫🚫 [Day 11 - ?????](./aoc/day11/README.md)
+* [ ] 🚫🚫 [Day 12 - ?????](./aoc/day12/README.md)
 
 
 ## Development
