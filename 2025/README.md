@@ -6,7 +6,7 @@ https://adventofcode.com/2025
 * [-] ⭐️🚫 [Day 03 - Lobby](./aoc/day03/README.md)
 * [x] ⭐️⭐️ [Day 04 - Printing Department](./aoc/day04/README.md)
 * [-] ⭐️🚫 [Day 05 - Cafeteria](./aoc/day05/README.md)
-* [ ] 🚫🚫 [Day 06 - ?????](./aoc/day06/README.md)
+* [-] ⭐️🚫 [Day 06 - Trash Compactor](./aoc/day06/README.md)
 * [ ] 🚫🚫 [Day 07 - ?????](./aoc/day07/README.md)
 * [ ] 🚫🚫 [Day 08 - ?????](./aoc/day08/README.md)
 * [ ] 🚫🚫 [Day 09 - ?????](./aoc/day09/README.md)

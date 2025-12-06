@@ -112,7 +112,6 @@ class Cafeteria(Puzzle):
             # 4(overlap1) - 3(overlap) => 1
             # +1
 
-
         return fresh_iids
 
 
