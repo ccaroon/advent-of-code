@@ -26,7 +26,7 @@ class Puzzle(ABC):
         if self.__debug_mode:
             print(msg)
 
-    def _read_input(self, handler, nostrip=False):
+    def _read_input(self, handler, *, nostrip=False):
         """
         Open an INPUT file, read & pass each line to a handler function
 

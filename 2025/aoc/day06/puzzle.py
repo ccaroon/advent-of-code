@@ -1,5 +1,3 @@
-import re
-
 from aoc.lib.puzzle import Puzzle
 
 
@@ -10,6 +8,8 @@ class TrashCompactor(Puzzle):
         super().__init__(**kwargs)
 
         self.__data = []
+        # nostrip b/c must preserve any starting or trailing whitespace
+        # for part2
         self._read_input(self.__parse_input, nostrip=True)
 
     def __parse_input(self, line):
@@ -25,7 +25,9 @@ class TrashCompactor(Puzzle):
 
         # Split each additional line and add/mult each number for the
         # appropriate column
-        # Exlude first line and last line
+        # Exclude first line and last line
+        # ...first line used to init totals
+        # ...last line contains operators
         for line in self.__data[1:-1]:
             numbers = [int(num) for num in line.split()]
             for idx, num in enumerate(numbers):
@@ -37,7 +39,6 @@ class TrashCompactor(Puzzle):
 
         return sum(answers)
 
-
     def _part2(self):
         # The last line contains the operator for each column of numbers
         ops = self.__data[-1].split()
@@ -46,15 +47,28 @@ class TrashCompactor(Puzzle):
         ops_idx = len(ops) - 1
         total = 0
         nums = []
-        for cidx in range(row_len-1 , -1, -1):
+        # Go 1 past the start of each row i.e. to -1 instead of 0
+        # b/c we need to ensure that all the digits in col[0] get processed
+        for ridx in range(row_len - 1, -2, -1):
+            # A Column consists of all the numbers (vertically) that make up
+            # a single mathematics operation
+            # Columns are divided by there being a space at the same ridx
+            # in every row
+            # 1 Math Problem == 1 Column
             col_total = 0
             digits = []
             for row in self.__data[0:-1]:
-                digits.append(row[cidx])
+                digits.append(row[ridx])  # noqa: PERF401
+            # --------------------------------------------------
+            # PERF401 wants me to do this. I don't want to.
+            # digits = [row[ridx] for row in self.__data[0:-1]]
+            # --------------------------------------------------
 
             num_str = "".join(digits)
-            if num_str.strip() == "" or cidx == 0:
-                # found column divider or in first column
+            # ...ridx == -1 ... b/c we need the else below to fire
+            # ...in order for all the digits in col[0] to form a number
+            if num_str.strip() == "" or ridx == -1:
+                # found column divider or beyond first (0th) column
                 nums = [int(n) for n in nums]
                 op = ops[ops_idx]
                 if op == "+":
@@ -64,18 +78,16 @@ class TrashCompactor(Puzzle):
                     for n in nums:
                         col_total *= n
 
-                self._debug(f"{nums} = {col_total}")
+                self._debug(f"{nums}({op}) = {col_total}")
+
+                # Add to column total
                 total += col_total
+                # Reset nums to build next list of numbers
                 nums = []
+                # Jump to the operator for the next column's problem
                 ops_idx -= 1
             else:
+                # Still collecting all the numbers in a math problem column
                 nums.append(num_str)
 
         return total
-
-
-
-
-
-
-#

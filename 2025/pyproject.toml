@@ -24,3 +24,5 @@ ignore = [
     "T201",  # `print` found
     "FA102", # Missing `from __future__ import annotations`
 ]
+# fixable = ["ALL"]
+unfixable = ["ALL"]
