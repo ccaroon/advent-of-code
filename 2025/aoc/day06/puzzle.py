@@ -1,3 +1,5 @@
+import re
+
 from aoc.lib.puzzle import Puzzle
 
 
@@ -8,10 +10,10 @@ class TrashCompactor(Puzzle):
         super().__init__(**kwargs)
 
         self.__data = []
-        self._read_input(self.__parse_input)
+        self._read_input(self.__parse_input, nostrip=True)
 
     def __parse_input(self, line):
-        self.__data.append(line)
+        self.__data.append(line.rstrip("\n"))
 
     def _part1(self):
         # The last line contains the operator for each column of numbers
@@ -35,9 +37,41 @@ class TrashCompactor(Puzzle):
 
         return sum(answers)
 
-    def _part2(self):
-        pass
 
+    def _part2(self):
+        # The last line contains the operator for each column of numbers
+        ops = self.__data[-1].split()
+        row_len = len(self.__data[0])
+
+        ops_idx = len(ops) - 1
+        total = 0
+        nums = []
+        for cidx in range(row_len-1 , -1, -1):
+            col_total = 0
+            digits = []
+            for row in self.__data[0:-1]:
+                digits.append(row[cidx])
+
+            num_str = "".join(digits)
+            if num_str.strip() == "" or cidx == 0:
+                # found column divider or in first column
+                nums = [int(n) for n in nums]
+                op = ops[ops_idx]
+                if op == "+":
+                    col_total = sum(nums)
+                elif op == "*":
+                    col_total = 1
+                    for n in nums:
+                        col_total *= n
+
+                self._debug(f"{nums} = {col_total}")
+                total += col_total
+                nums = []
+                ops_idx -= 1
+            else:
+                nums.append(num_str)
+
+        return total
 
 
 

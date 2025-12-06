@@ -26,7 +26,7 @@ class Puzzle(ABC):
         if self.__debug_mode:
             print(msg)
 
-    def _read_input(self, handler):
+    def _read_input(self, handler, nostrip=False):
         """
         Open an INPUT file, read & pass each line to a handler function
 
@@ -38,7 +38,7 @@ class Puzzle(ABC):
         f"{self.__path}/input.txt"
         with open(file) as fptr:
             while line := fptr.readline():
-                handler(line.strip())
+                handler(line if nostrip else line.strip())
 
     def _submit_answer(self, answer, part):
         title = self.__class__.__doc__ + f" // Part #{part}"
