@@ -21,9 +21,7 @@ class Laboratories(Puzzle):
         start_r = 0
         start_c = self.__tachyon_grid[0].index(self.START)
         self.__start_pos = const.Position(start_r, start_c)
-        self.__beams.add(
-            const.move(self.__start_pos, const.S)
-        )
+        self.__beams.add(const.move(self.__start_pos, const.S))
         self.__exit_row = len(self.__tachyon_grid) - 1
 
     def __parse_input(self, line):
@@ -69,13 +67,6 @@ class Laboratories(Puzzle):
 
     def _part2(self):
         pass
-
-
-
-
-
-
-
 
 
 #

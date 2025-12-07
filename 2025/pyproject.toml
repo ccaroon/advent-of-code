@@ -21,8 +21,9 @@ packages = ["aoc"]
 # https://docs.astral.sh/ruff/configuration/
 [tool.ruff.lint]
 ignore = [
-    "T201",  # `print` found
-    "FA102", # Missing `from __future__ import annotations`
+    "T201",   # `print` found
+    "FA102",  # Missing `from __future__ import annotations`
+    "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
 ]
 # fixable = ["ALL"]
 unfixable = ["ALL"]

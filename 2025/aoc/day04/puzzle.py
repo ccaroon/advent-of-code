@@ -31,9 +31,9 @@ class PrintingDepartment(Puzzle):
     def __count_rolls(self, row: int, col: int):
         """Count the number of paper rolls around a given location"""
         count = 0
-        for offset in const.DIRECTIONS:
-            row_idx = row + offset[0]
-            col_idx = col + offset[1]
+        for direction in const.DIRECTIONS:
+            row_idx = row + direction.row_offset
+            col_idx = col + direction.col_offset
 
             if (
                 (row_idx >= 0 and row_idx < self.__row_cnt)
