@@ -14,13 +14,14 @@ class Laboratories(Puzzle):
         super().__init__(**kwargs)
 
         # list fo active beam positions
-        self.__beams = set()
         self.__tachyon_grid = []
         self._read_input(self.__parse_input)
 
+        # TOOD: move this to part1?
         start_r = 0
         start_c = self.__tachyon_grid[0].index(self.START)
         self.__start_pos = const.Position(start_r, start_c)
+        self.__beams = set()
         self.__beams.add(const.move(self.__start_pos, const.S))
         self.__exit_row = len(self.__tachyon_grid) - 1
 
@@ -67,6 +68,18 @@ class Laboratories(Puzzle):
 
     def _part2(self):
         pass
+        # need to figure out all the combinations of the particle going
+        # left or right
+        # ...based on number of splitters and number row rows?
+
+
+
+
+
+
+
+
+
 
 
 #
