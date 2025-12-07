@@ -9,6 +9,7 @@ PUZZLES = {
     "day04": "PrintingDepartment",
     "day05": "Cafeteria",
     "day06": "TrashCompactor",
+    "day07": "Laboratories",
 }
 
 
