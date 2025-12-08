@@ -8,7 +8,7 @@ https://adventofcode.com/2025
 * [ ] ⭐️🚫 [Day 05 - Cafeteria](./aoc/day05/README.md)
 * [x] ⭐️⭐️ [Day 06 - Trash Compactor](./aoc/day06/README.md)
 * [ ] ⭐️🚫 [Day 07 - Laboratories](./aoc/day07/README.md)
-* [ ] 🚫🚫 [Day 08 - ?????](./aoc/day08/README.md)
+* [ ] 🚫🚫 [Day 08 - Playground](./aoc/day08/README.md)
 * [ ] 🚫🚫 [Day 09 - ?????](./aoc/day09/README.md)
 * [ ] 🚫🚫 [Day 10 - ?????](./aoc/day10/README.md)
 * [ ] 🚫🚫 [Day 11 - ?????](./aoc/day11/README.md)
