@@ -71,15 +71,3 @@ class Laboratories(Puzzle):
         # need to figure out all the combinations of the particle going
         # left or right
         # ...based on number of splitters and number row rows?
-
-
-
-
-
-
-
-
-
-
-
-#

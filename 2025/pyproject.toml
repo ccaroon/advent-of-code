@@ -22,8 +22,9 @@ packages = ["aoc"]
 [tool.ruff.lint]
 ignore = [
     "T201",   # `print` found
+    "T203",   # `pprint` found
     "FA102",  # Missing `from __future__ import annotations`
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
 ]
-# fixable = ["ALL"]
-unfixable = ["ALL"]
+# fixable = ["I001"]
+# unfixable = ["ALL"]

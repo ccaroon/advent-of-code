@@ -113,6 +113,3 @@ class Cafeteria(Puzzle):
             # +1
 
         return fresh_iids
-
-
-#

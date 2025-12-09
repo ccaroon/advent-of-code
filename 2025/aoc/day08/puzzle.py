@@ -4,6 +4,7 @@ import pprint
 from aoc.lib.point import Point
 from aoc.lib.puzzle import Puzzle
 
+
 class Playground(Puzzle):
     """AOC-2025 // Day08 -- Playground"""
 
@@ -13,13 +14,11 @@ class Playground(Puzzle):
         self.__data = []
         self._read_input(self.__parse_input)
 
-
     def __parse_input(self, line):
-        (x,y,z) = line.split(",", 3)
+        (x, y, z) = line.split(",", 3)
         self.__data.append(Point(int(x), int(y), int(z)))
 
     def _part1(self):
-
         # find the two junction boxes which are closest together but aren't
         # ...already directly connected
         #
@@ -50,8 +49,6 @@ class Playground(Puzzle):
 
         pprint.pprint(circuits)
         print(len(circuits))
-
-        return None
 
     def _part2(self):
         pass
