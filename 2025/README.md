@@ -10,7 +10,7 @@ https://adventofcode.com/2025
 * [ ] ⭐️🚫 [Day 07 - Laboratories](./aoc/day07/README.md)
 * [ ] 🚫🚫 [Day 08 - Playground](./aoc/day08/README.md)
 * [ ] ⭐️🚫 [Day 09 - Movie Theater](./aoc/day09/README.md)
-* [ ] 🚫🚫 [Day 10 - ?????](./aoc/day10/README.md)
+* [ ] ⭐️🚫 [Day 10 - Factory](./aoc/day10/README.md)
 * [ ] 🚫🚫 [Day 11 - ?????](./aoc/day11/README.md)
 * [ ] 🚫🚫 [Day 12 - ?????](./aoc/day12/README.md)
 

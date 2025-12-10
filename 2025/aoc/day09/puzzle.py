@@ -33,7 +33,6 @@ class MovieTheater(Puzzle):
 
         return max_area
 
-
     # def __find_
 
     def _part2(self):
@@ -50,8 +49,8 @@ class MovieTheater(Puzzle):
         bbox_corners = set()
         for loc in self.__data:
             self._debug(f"=> {loc}...")
-            same_row = list(filter(lambda l: l.row == loc.row, self.__data))
-            same_col = list(filter(lambda l: l.col == loc.col, self.__data))
+            same_row = list(filter(lambda oloc: oloc.row == loc.row, self.__data))
+            same_col = list(filter(lambda oloc: oloc.col == loc.col, self.__data))
 
             bbox_corners.update(same_row)
             bbox_corners.update(same_col)
@@ -63,13 +62,3 @@ class MovieTheater(Puzzle):
             #     self._debug(f"  -> Col: {same_col}")
 
         # print(bbox_corners)
-
-
-
-
-
-
-
-
-
-#
