@@ -55,5 +55,6 @@ def run(_, day, part, *, test=False, debug=False, arg=None):
             else:
                 kwargs[arg] = True
 
+
         puzzle = puzzle_class(**kwargs)
         puzzle.main(part=int(part))
