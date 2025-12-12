@@ -14,7 +14,9 @@ class Puzzle(ABC):
         self.__test_mode = kwargs.get("__test_mode", False)
         self.__debug_mode = kwargs.get("__debug_mode", False)
         self.__input_file = kwargs.get(
-            "input", "test-input.txt" if self.__test_mode else "input.txt")
+            "input",
+            "test-input.txt" if self.__test_mode else "input.txt",
+        )
 
     @abstractmethod
     def _part1(self):

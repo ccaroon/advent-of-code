@@ -13,7 +13,8 @@ PUZZLES = {
     "day08": "Playground",
     "day09": "MovieTheater",
     "day10": "Factory",
-    "day11": "Reactor"
+    "day11": "Reactor",
+    "day12": "ChristmasTreeFarm",
 }
 
 
@@ -54,7 +55,6 @@ def run(_, day, part, *, test=False, debug=False, arg=None):
                 kwargs[name] = value
             else:
                 kwargs[arg] = True
-
 
         puzzle = puzzle_class(**kwargs)
         puzzle.main(part=int(part))

@@ -12,7 +12,7 @@ https://adventofcode.com/2025
 * [ ] ⭐️🚫 [Day 09 - Movie Theater](./aoc/day09/README.md)
 * [ ] ⭐️🚫 [Day 10 - Factory](./aoc/day10/README.md)
 * [ ] ⭐️🚫 [Day 11 - Reactor](./aoc/day11/README.md)
-* [ ] 🚫🚫 [Day 12 - ?????](./aoc/day12/README.md)
+* [ ] 🚫🚫 [Day 12 - Christmas Tree Farm](./aoc/day12/README.md)
 
 
 ## Development
