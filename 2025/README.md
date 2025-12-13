@@ -1,6 +1,7 @@
 # Advent Of Code 2025
 https://adventofcode.com/2025
 
+## Python
 * [x] ⭐️⭐️ [Day 01 - Secret Entrance](./aoc/day01/README.md)
 * [x] ⭐️⭐️ [Day 02 - Gift Shop](./aoc/day02/README.md)
 * [ ] ⭐️🚫 [Day 03 - Lobby](./aoc/day03/README.md)
@@ -14,8 +15,7 @@ https://adventofcode.com/2025
 * [ ] ⭐️🚫 [Day 11 - Reactor](./aoc/day11/README.md)
 * [ ] 🚫🚫 [Day 12 - Christmas Tree Farm](./aoc/day12/README.md)
 
-
-## Development
+### Development
 1. `pip install hatch`
 2. `hatch shell`
 3. ...write code...
@@ -23,3 +23,15 @@ https://adventofcode.com/2025
     * Example: `inv run day01 1`
 5. ...repeat...
 6. `exit` to exit `hatch shell`
+
+## Go Lang
+* [x] ⭐️⭐️ [Day 01 - Secret Entrance](./agoc/src/caroon.org/aoc25/day01/)
+* [x] ⭐️🚫 [Day 02 - Gift Shop](./agoc/src/caroon.org/aoc25/day02/)
+
+### Development
+1. `export GOPATH=<PATH-TO-THIS-REPO>/2025/agoc`
+2. `cd $GOPATH/src/caroon.org/aoc25`
+3. `go build`
+4. `./aoc25 <dayN> <part1|part2> <input-file>`
+   - `dayN` - in the format `day01, day02 ... day12`
+   - `input-file` - is assumed to be relative to `../../../../aoc/`
