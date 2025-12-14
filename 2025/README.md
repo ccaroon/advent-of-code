@@ -26,7 +26,8 @@ https://adventofcode.com/2025
 
 ## Go Lang
 * [x] ⭐️⭐️ [Day 01 - Secret Entrance](./agoc/src/caroon.org/aoc25/day01/)
-* [x] ⭐️🚫 [Day 02 - Gift Shop](./agoc/src/caroon.org/aoc25/day02/)
+* [x] ⭐️⭐️ [Day 02 - Gift Shop](./agoc/src/caroon.org/aoc25/day02/)
+* [ ] 🚫🚫 [Day 03 - Lobby](./agoc/src/caroon.org/aoc25/day03/)
 
 ### Development
 1. `export GOPATH=<PATH-TO-THIS-REPO>/2025/agoc`
