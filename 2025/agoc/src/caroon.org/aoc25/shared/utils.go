@@ -24,3 +24,13 @@ func ReadInputFile(filename string) []string {
 
 	return data
 }
+
+func SumIntList(numList []int) int {
+	var sum int = 0
+
+	for _, number := range numList {
+		sum += number
+	}
+
+	return sum
+}
