@@ -28,12 +28,11 @@ https://adventofcode.com/2025
 * [x] ⭐️⭐️ [Day 01 - Secret Entrance](./agoc/src/caroon.org/aoc25/day01/)
 * [x] ⭐️⭐️ [Day 02 - Gift Shop](./agoc/src/caroon.org/aoc25/day02/)
 * [ ] ⭐️🚫 [Day 03 - Lobby](./agoc/src/caroon.org/aoc25/day03/)
+* [x] ⭐️⭐️ [Day 04 - Printing Department](./agoc/src/caroon.org/aoc25/day04/)
 
 ### Development
-0. TODO: Not Needed
-1. `export GOPATH=<PATH-TO-THIS-REPO>/2025/agoc`
-2. `cd $GOPATH/src/caroon.org/aoc25`
-3. `go build`
-4. `./aoc25 <dayN> <part1|part2> <input-file>`
+1. `cd <PATH-TO-THIS-REPO>/2025/agoc/src/caroon.org/aoc25`
+2. `go build`
+3. `./aoc25 <dayN> <part1|part2> <input-file>`
    - `dayN` - in the format `day01, day02 ... day12`
    - `input-file` - is assumed to be relative to `../../../../aoc/`
