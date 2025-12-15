@@ -17,7 +17,7 @@ func ReadInputFile(filename string) []string {
 	file := bufio.NewScanner(fptr)
 	for file.Scan() {
 		line := file.Text()
-		if line[0] != '#' {
+		if line != "" && line[0] != '#' {
 			data = append(data, file.Text())
 		}
 	}
