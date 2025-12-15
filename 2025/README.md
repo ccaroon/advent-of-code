@@ -30,6 +30,7 @@ https://adventofcode.com/2025
 * [ ] ⭐️🚫 [Day 03 - Lobby](./agoc/src/caroon.org/aoc25/day03/)
 * [x] ⭐️⭐️ [Day 04 - Printing Department](./agoc/src/caroon.org/aoc25/day04/)
 * [ ] ⭐️🚫 [Day 05 - Cafeteria](./agoc/src/caroon.org/aoc25/day05/)
+* [x] ⭐️⭐️ [Day 06 - Trash Compactor](./agoc/src/caroon.org/aoc25/day06/)
 
 ### Development
 1. `cd <PATH-TO-THIS-REPO>/2025/agoc/src/caroon.org/aoc25`

@@ -25,12 +25,23 @@ func ReadInputFile(filename string) []string {
 	return data
 }
 
+// TODO: Remove this after updating places that use it
+// in favor of TotalIntList
 func SumIntList(numList []int) int {
-	var sum int = 0
+	return TotalIntList(numList, "+")
+}
 
-	for _, number := range numList {
-		sum += number
+func TotalIntList(numList []int, operator string) int {
+	var total int = numList[0]
+
+	for _, number := range numList[1:] {
+		switch operator {
+		case "+":
+			total += number
+		case "*":
+			total *= number
+		}
 	}
 
-	return sum
+	return total
 }
