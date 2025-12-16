@@ -54,7 +54,6 @@ class Laboratories(Puzzle):
                         new_beam2 = beam.nearby(const.SE)
                         beams_to_add.add(new_beam2)
                     elif next_space == self.EMPTY:
-                        pass
                         # Move down/S
                         new_loc = beam.nearby(const.S)
                         # Add new beam pos
