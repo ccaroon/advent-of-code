@@ -1,4 +1,5 @@
 import aoc.lib.constants as const
+from aoc.lib.location import Location
 from aoc.lib.puzzle import Puzzle
 
 
@@ -17,19 +18,19 @@ class Laboratories(Puzzle):
         self.__tachyon_grid = []
         self._read_input(self.__parse_input)
 
-        # TOOD: move this to part1?
+        # TODO: move this to part1?
         start_r = 0
         start_c = self.__tachyon_grid[0].index(self.START)
-        self.__start_pos = const.Position(start_r, start_c)
+        self.__start_loc = Location(start_r, start_c)
         self.__beams = set()
-        self.__beams.add(const.move(self.__start_pos, const.S))
+        self.__beams.add(self.__start_loc.nearby(const.S))
         self.__exit_row = len(self.__tachyon_grid) - 1
 
     def __parse_input(self, line):
         self.__tachyon_grid.append(list(line))
 
     def _part1(self):
-        self._debug(f"Start Pos: {self.__start_pos}")
+        self._debug(f"Start Loc: {self.__start_loc}")
 
         split_count = 0
         while self.__beams:
@@ -39,24 +40,25 @@ class Laboratories(Puzzle):
             for beam in self.__beams:
                 if beam.row != self.__exit_row:
                     # look south of beam to see what's there
-                    next_pos = const.move(beam, const.S)
-                    next_space = self.__tachyon_grid[next_pos.row][next_pos.col]
+                    next_loc = beam.nearby(const.S)
+                    next_space = self.__tachyon_grid[next_loc.row][next_loc.col]
 
                     if next_space == self.SPLITTER:
                         split_count += 1
                         self._debug(f"  -> Split Count: [{split_count}]")
 
                         # Split the beam into two new beams
-                        new_beam1 = const.move(beam, const.SW)
+                        new_beam1 = beam.nearby(const.SW)
                         beams_to_add.add(new_beam1)
 
-                        new_beam2 = const.move(beam, const.SE)
+                        new_beam2 = beam.nearby(const.SE)
                         beams_to_add.add(new_beam2)
                     elif next_space == self.EMPTY:
+                        pass
                         # Move down/S
-                        new_pos = const.move(beam, const.S)
+                        new_loc = beam.nearby(const.S)
                         # Add new beam pos
-                        beams_to_add.add(new_pos)
+                        beams_to_add.add(new_loc)
 
                 # Remove the old beam
                 beams_to_remove.add(beam)
