@@ -1,4 +1,4 @@
-package shared
+package grid
 
 type Direction struct {
 	RowOffset int

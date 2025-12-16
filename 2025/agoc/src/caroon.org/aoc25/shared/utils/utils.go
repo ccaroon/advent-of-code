@@ -1,4 +1,4 @@
-package shared
+package utils
 
 import (
 	"bufio"
@@ -23,12 +23,6 @@ func ReadInputFile(filename string) []string {
 	}
 
 	return data
-}
-
-// TODO: Remove this after updating places that use it
-// in favor of TotalIntList
-func SumIntList(numList []int) int {
-	return TotalIntList(numList, "+")
 }
 
 func TotalIntList(numList []int, operator string) int {

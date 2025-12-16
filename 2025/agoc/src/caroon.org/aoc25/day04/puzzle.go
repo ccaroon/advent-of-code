@@ -1,7 +1,7 @@
 package day04
 
 import (
-	"caroon.org/aoc25/shared"
+	"caroon.org/aoc25/shared/grid"
 	"fmt"
 	"strings"
 )
@@ -15,7 +15,7 @@ func countRolls(paperRolls [][]string, row int, col int) int {
 	var width int = len(paperRolls[0])
 	var height int = len(paperRolls)
 
-	for _, direction := range shared.Directions {
+	for _, direction := range grid.Directions {
 		ridx := row + direction.RowOffset
 		cidx := col + direction.ColOffset
 

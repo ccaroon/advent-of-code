@@ -1,7 +1,7 @@
 package day06
 
 import (
-	"caroon.org/aoc25/shared"
+	"caroon.org/aoc25/shared/utils"
 	"fmt"
 	"regexp"
 	"strconv"
@@ -51,7 +51,7 @@ func solvePart1(data []string) int {
 		}
 	}
 
-	return shared.SumIntList(answers)
+	return utils.TotalIntList(answers, "+")
 }
 
 func solvePart2(data []string) int {
@@ -90,7 +90,7 @@ func solvePart2(data []string) int {
 		// Found Column divider or beyond first (0th) column
 		// Compute the answer and reset for the next problem
 		if numStr == "" || cidx == 0 {
-			colTotal = shared.TotalIntList(nums, ops[opsIdx])
+			colTotal = utils.TotalIntList(nums, ops[opsIdx])
 
 			// Add to column total
 			total += colTotal

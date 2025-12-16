@@ -11,7 +11,8 @@ import (
 	"caroon.org/aoc25/day04"
 	"caroon.org/aoc25/day05"
 	"caroon.org/aoc25/day06"
-	"caroon.org/aoc25/shared"
+	"caroon.org/aoc25/day07"
+	"caroon.org/aoc25/shared/utils"
 )
 
 func main() {
@@ -27,7 +28,7 @@ func main() {
 		dayNum := strings.ToUpper(os.Args[1])
 		partNum := strings.ToUpper(os.Args[2])
 		inputFilePath := fmt.Sprintf("%s/%s/%s", baseInputFilePath, strings.ToLower(dayNum), os.Args[3])
-		data := shared.ReadInputFile(inputFilePath)
+		data := utils.ReadInputFile(inputFilePath)
 
 		switch dayNum {
 		case "DAY01":
@@ -42,6 +43,8 @@ func main() {
 			result, err = day05.Exec(partNum, data)
 		case "DAY06":
 			result, err = day06.Exec(partNum, data)
+		case "DAY07":
+			result, err = day07.Exec(partNum, data)
 		default:
 			err = fmt.Errorf("Unknown Day [%s]\n", dayNum)
 		}
