@@ -14,6 +14,7 @@ import (
 	"caroon.org/aoc25/day07"
 	"caroon.org/aoc25/day08"
 	"caroon.org/aoc25/day09"
+	"caroon.org/aoc25/day10"
 	"caroon.org/aoc25/shared/utils"
 )
 
@@ -51,6 +52,8 @@ func main() {
 			result, err = day08.Exec(partNum, data)
 		case "DAY09":
 			result, err = day09.Exec(partNum, data)
+		case "DAY10":
+			result, err = day10.Exec(partNum, data)
 		default:
 			err = fmt.Errorf("Unknown Day [%s]\n", dayNum)
 		}

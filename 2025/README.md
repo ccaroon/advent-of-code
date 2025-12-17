@@ -34,6 +34,7 @@ https://adventofcode.com/2025
 * [ ] ⭐️🚫 [Day 07 - Laboratories](./agoc/src/caroon.org/aoc25/day07/)
 * [ ] 🚫🚫 [Day 08 - Playground](./agoc/src/caroon.org/aoc25/day08/)
 * [ ] ⭐️🚫 [Day 09 - Movie Theater](./agoc/src/caroon.org/aoc25/day09/)
+* [ ] 🚫🚫 [Day 10 - Factory](./agoc/src/caroon.org/aoc25/day10/)
 
 ### Development
 1. `cd <PATH-TO-THIS-REPO>/2025/agoc/src/caroon.org/aoc25`
