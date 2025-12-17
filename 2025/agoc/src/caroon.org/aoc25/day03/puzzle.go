@@ -42,7 +42,7 @@ func solvePart1(data []string) int {
 		// find the largest battery AFTER the position of the first largest
 		_, batt2 := findLargestBattery(batteries, b1Idx+1)
 
-		joltage, _ := strconv.Atoi(fmt.Sprintf("%d%d", batt1, batt2))
+		joltage := (batt1 * 10) + batt2
 		totalJoltage += joltage
 	}
 

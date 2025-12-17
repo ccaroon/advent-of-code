@@ -45,7 +45,7 @@ class Lobby(Puzzle):
             (b2_idx, batt2) = self.__find_largest_battery(batteries, start=b1_idx + 1)
             self._debug(f"  -> #2 -> [{b2_idx}] - {batt2}")
 
-            joltage = int(f"{batt1}{batt2}")
+            joltage = (batt1 * 10) + batt2
             total_joltage += joltage
             self._debug(f"  -> {joltage}/{total_joltage}")
 
