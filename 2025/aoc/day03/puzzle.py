@@ -1,3 +1,4 @@
+from functools import cache
 from aoc.lib.puzzle import Puzzle
 
 
@@ -51,38 +52,60 @@ class Lobby(Puzzle):
 
         return total_joltage
 
+    @cache
+    def __compute_joltage(self, bank, conn_len):
+        joltage = 0
+        bank_len = len(bank)
+
+        # find the largest battery excluding last
+        idx, batt = self.__find_largest_battery(bank[:-1], start=0)
+
+        # update joltage => battery * index found
+        joltage += (conn_len - idx**10) + batt
+
+        # recurse
+        if bank_len > 1:
+            joltage += self.__compute_joltage(bank[:what:])
+
+        return joltage
+
+        # bank:234234234234278 => 434234234278
+        # found:.............7.
+        # -> batt + 10**1 | => 70
+        # -> why 1? => (len(bank) - 1) - idx => (15-1)-13 = 1
+        # -> recurse: start at bank[idx]
+        # bank:8
+        # found:8
+        # -> batt + 10**0 | => 8
+        # -> why 0? => (len(bank) - 1) - idx => (1-1)-0 = 0
+        # ->
+
+
     def _part2(self):
+        total_joltage = 0
         # find the twelve highest numbers & remember their idx
         # create a 12 digit number from those twelve w/ each digit
         # in it's relative position to the other based on idx.
         for bank in self.__data:
-            bank_len = len(bank)
-            found_batts = []
+            self._debug(f"=> {bank}")
             # convert to a list of ints
             batteries = [int(b) for b in list(bank)]
 
-            self._debug(f"=> {bank}")
+            joltage = self.__compute_joltage(bank, 12)
 
-            for _ in range(12):
-                if found_batts:
-                    lowest_idx = found_batts[0] // 1000
-                    start = lowest_idx + 1 if lowest_idx < (bank_len - 12) else 0
-                else:
-                    lowest_idx = 0
-                    start = 0
 
-                self._debug(f"  -> LiDX [{lowest_idx}] | Start [{start}]")
+        return total_joltage
 
-                (idx, batt) = self.__find_largest_battery(batteries, start=start)
-                found_batts.append(idx * 1000 + batt)
-                found_batts.sort()
 
-                # remove/mark the found battery
-                # batteries.pop(idx)
-                batteries[idx] = 0
-                self._debug(f"  -> {batteries}")
 
-                # 234234234234278
-                # 434 234 234 278
 
-            self._debug(f"  -> {found_batts}")
+
+
+
+
+
+
+
+
+
+#
