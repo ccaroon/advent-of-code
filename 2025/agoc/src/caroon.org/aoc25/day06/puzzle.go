@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const Title string = "Trash Compactor"
+
 // Ex: "1   2 3  4 55    7" => [1,2,3,4,55,7]
 func spaceSepNumsToIntArray(numStr string) []int {
 	var numberList []int

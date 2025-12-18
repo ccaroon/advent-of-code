@@ -11,6 +11,7 @@ class Puzzle(ABC):
         module = inspect.getmodule(self.__class__)
         self.__path = os.path.dirname(module.__file__)
 
+        self.__day = kwargs.get("day", "Day??").upper()
         self.__test_mode = kwargs.get("__test_mode", False)
         self.__debug_mode = kwargs.get("__debug_mode", False)
         self.__input_file = kwargs.get(
@@ -43,11 +44,16 @@ class Puzzle(ABC):
                 handler(line if nostrip else line.strip())
 
     def _submit_answer(self, answer, part):
-        title = self.__class__.__doc__ + f" // Part #{part}"
-        title += " (TEST)" if self.__test_mode else ""
-        divider = "#" * len(title)
-        print(f"{divider}\n{title}\n{divider}")
-        print(f"Answer: {answer}")
+        title = self.__class__.__name__
+        test = "(TEST)" if self.__test_mode else ""
+
+        print("+--------------------------------------------+")
+        print("|        *** Advent of Code - 2025 ***       |")
+        print("+--------------------------------------------+")
+        print(f"| {self.__day} / <{title}> / Part #{part}")
+        print(f"| Answer: [{answer}] {test}")
+        print("+--------------------------------------------+")
+
 
     def main(self, part: int):
         answer = None

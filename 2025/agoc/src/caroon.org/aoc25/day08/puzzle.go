@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const Title string = "Playground"
+
 func solvePart1(boxPos []space.Point) int {
 	var pointList itertools.List
 
@@ -16,10 +18,10 @@ func solvePart1(boxPos []space.Point) int {
 		pointList = append(pointList, point)
 	}
 
-	combos := itertools.CombinationsList(pointList, 2)
-	for thing := range combos {
-		fmt.Println(thing[0], thing[1])
-	}
+	// combos := itertools.CombinationsList(pointList, 2)
+	// for thing := range combos {
+	// 	fmt.Println(thing[0], thing[1])
+	// }
 
 	return 0
 }

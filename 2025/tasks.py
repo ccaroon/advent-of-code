@@ -31,12 +31,14 @@ PUZZLES = {
 def run(_, day, part, *, test=False, debug=False, arg=None):
     """Run an AOC-2025 Puzzle by `day` & `part`"""
 
+    day_id = None
     day_name = None
     if day.startswith("day"):
-        day_name = day.lower()
+        day_id = int(day[3:])
     else:
         day_id = int(day)
-        day_name = f"day{day_id:02}"
+
+    day_name = f"day{day_id:02}"
 
     cls_name = PUZZLES.get(day_name)
 
@@ -48,7 +50,11 @@ def run(_, day, part, *, test=False, debug=False, arg=None):
         module = importlib.import_module(f"aoc.{day_name}.puzzle")
         puzzle_class = getattr(module, cls_name)
 
-        kwargs = {"__test_mode": test, "__debug_mode": debug}
+        kwargs = {
+            "day": day_name,
+            "__test_mode": test,
+            "__debug_mode": debug,
+        }
         for arg_pair in arg:
             if "=" in arg_pair:
                 (name, value) = arg_pair.split("=", 2)

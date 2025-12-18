@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+const Title string = "Laboratories"
+
 const startMarker string = "S"
 const splitterMarker string = "^"
 const emptyMarker string = "."

@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+const Title string = "Printing Department"
+
 const removedRollMark string = "x"
 const maxNearbyRolls int = 4
 const paperRollMark string = "@"

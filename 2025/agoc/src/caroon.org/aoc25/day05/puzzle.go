@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+const Title string = "Cafeteria"
+
 type IngredientIdRange struct {
 	start int
 	end   int

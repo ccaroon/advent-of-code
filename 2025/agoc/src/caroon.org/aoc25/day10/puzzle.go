@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+const Title string = "Factory"
+
 func solvePart1(machines []*FactoryMachine) int {
 	// Fewest number of button presses to turn on the indicated lights
 	// for each machine

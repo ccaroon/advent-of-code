@@ -5,6 +5,8 @@ import (
 	"strconv"
 )
 
+const Title string = "Lobby"
+
 func findLargestBattery(bank []int, start int) (int, int) {
 	var foundIdx int = 0
 	var maxValue int = 0

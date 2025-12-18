@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+const Title string = "Secret Entrance"
 const dialPositions int = 100
 
 func rotateDial(data []string) map[string]int {

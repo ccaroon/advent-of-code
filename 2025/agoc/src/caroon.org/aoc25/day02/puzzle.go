@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+const Title string = "Gift Shop"
+
 func solvePart1(data []string) int {
 	var invalidIds []int
 	var sum int

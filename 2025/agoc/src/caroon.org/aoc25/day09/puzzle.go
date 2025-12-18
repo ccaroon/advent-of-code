@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+const Title string = "Movie Theater"
+
 func solvePart1(tileLocs []grid.Location) int {
 	// For every combination of 2 red-tiles, compute the
 	// area and find the max
