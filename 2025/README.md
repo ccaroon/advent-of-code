@@ -40,7 +40,12 @@ https://adventofcode.com/2025
 
 ### Development
 1. `cd <PATH-TO-THIS-REPO>/2025/agoc/src/caroon.org/aoc25`
-2. `go build`
-3. `./aoc25 <dayN> <part1|part2> <input-file>`
-   - `dayN` - in the format `day01, day02 ... day12`
-   - `input-file` - is assumed to be relative to `../../../../aoc/`
+2. ...write code...
+3. Run the code
+    * `go build`
+    * `./aoc25 <dayN> <part1|part2> <input-file>`
+        - `dayN` - in the format `day01, day02 ... day12`
+        - `input-file` - is assumed to be relative to `../../../../aoc/`
+    * -OR-
+    * `inv run <day> <part> [--test]`
+4. ...repeat...
