@@ -2,11 +2,13 @@ package day10
 
 import (
 	"fmt"
-	"github.com/ernestosuarez/itertools"
 	"strconv"
 	"strings"
+
+	"github.com/ernestosuarez/itertools"
 )
 
+const DayName string = "Day10"
 const Title string = "Factory"
 
 func solvePart1(machines []*FactoryMachine) int {
@@ -76,7 +78,7 @@ func solvePart1(machines []*FactoryMachine) int {
 }
 
 func solvePart2(manual []*FactoryMachine) int {
-	return 0
+	return -42
 }
 
 func processInput(data []string) []*FactoryMachine {
@@ -131,7 +133,11 @@ func Exec(part string, data []string) (int, error) {
 	} else if part == "PART2" {
 		result = solvePart2(machines)
 	} else {
-		err = fmt.Errorf("Day10 - Unknown Part: [%s]\n", part)
+		err = fmt.Errorf("%s - Unknown Part: [%s]\n", DayName, part)
+	}
+
+	if result == -42 {
+		err = fmt.Errorf("%s - %s Not Implemented\n", DayName, part)
 	}
 
 	return result, err

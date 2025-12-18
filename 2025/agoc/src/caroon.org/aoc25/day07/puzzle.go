@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+const DayName string = "Day07"
 const Title string = "Laboratories"
 
 const startMarker string = "S"
@@ -75,7 +76,7 @@ func solvePart1(tachyonManifold [][]string) int {
 }
 
 func solvePart2(tachyonManifold [][]string) int {
-	return 0
+	return -42
 }
 
 func processInput(data []string) [][]string {
@@ -94,12 +95,17 @@ func Exec(part string, data []string) (int, error) {
 	var err error = nil
 
 	tachyonManifold := processInput(data)
+
 	if part == "PART1" {
 		result = solvePart1(tachyonManifold)
 	} else if part == "PART2" {
 		result = solvePart2(tachyonManifold)
 	} else {
-		err = fmt.Errorf("Day07 - Unknown Part: [%s]\n", part)
+		err = fmt.Errorf("%s - Unknown Part: [%s]\n", DayName, part)
+	}
+
+	if result == -42 {
+		err = fmt.Errorf("%s - %s Not Implemented\n", DayName, part)
 	}
 
 	return result, err

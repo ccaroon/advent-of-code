@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+const DayName string = "Day03"
 const Title string = "Lobby"
 
 func findLargestBattery(bank []int, start int) (int, int) {
@@ -52,7 +53,7 @@ func solvePart1(data []string) int {
 }
 
 func solvePart2(data []string) int {
-	return 0
+	return -42
 }
 
 func Exec(part string, data []string) (int, error) {
@@ -64,7 +65,11 @@ func Exec(part string, data []string) (int, error) {
 	} else if part == "PART2" {
 		result = solvePart2(data)
 	} else {
-		err = fmt.Errorf("Day03 - Unknown Part: [%s]\n", part)
+		err = fmt.Errorf("%s - Unknown Part: [%s]\n", DayName, part)
+	}
+
+	if result == -42 {
+		err = fmt.Errorf("%s - %s Not Implemented\n", DayName, part)
 	}
 
 	return result, err

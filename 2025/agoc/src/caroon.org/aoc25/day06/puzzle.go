@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+const DayName string = "Day06"
 const Title string = "Trash Compactor"
 
 // Ex: "1   2 3  4 55    7" => [1,2,3,4,55,7]
@@ -117,7 +118,11 @@ func Exec(part string, data []string) (int, error) {
 	} else if part == "PART2" {
 		result = solvePart2(data)
 	} else {
-		err = fmt.Errorf("Day06 - Unknown Part: [%s]\n", part)
+		err = fmt.Errorf("%s - Unknown Part: [%s]\n", DayName, part)
+	}
+
+	if result == -42 {
+		err = fmt.Errorf("%s - %s Not Implemented\n", DayName, part)
 	}
 
 	return result, err

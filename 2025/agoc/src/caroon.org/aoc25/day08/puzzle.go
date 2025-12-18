@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+const DayName string = "Day08"
 const Title string = "Playground"
 
 func solvePart1(boxPos []space.Point) int {
@@ -23,11 +24,11 @@ func solvePart1(boxPos []space.Point) int {
 	// 	fmt.Println(thing[0], thing[1])
 	// }
 
-	return 0
+	return -42
 }
 
 func solvePart2(boxPos []space.Point) int {
-	return 0
+	return -42
 }
 
 func processInput(data []string) []space.Point {
@@ -56,7 +57,11 @@ func Exec(part string, data []string) (int, error) {
 	} else if part == "PART2" {
 		result = solvePart2(boxPos)
 	} else {
-		err = fmt.Errorf("Day08 - Unknown Part: [%s]\n", part)
+		err = fmt.Errorf("%s - Unknown Part: [%s]\n", DayName, part)
+	}
+
+	if result == -42 {
+		err = fmt.Errorf("%s - %s Not Implemented\n", DayName, part)
 	}
 
 	return result, err

@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+const DayName string = "Day02"
 const Title string = "Gift Shop"
 
 func solvePart1(data []string) int {
@@ -122,7 +123,11 @@ func Exec(part string, data []string) (int, error) {
 	} else if part == "PART2" {
 		result = solvePart2(prdIdRanges)
 	} else {
-		err = fmt.Errorf("Day02 - Unknown Part: [%s]\n", part)
+		err = fmt.Errorf("%s - Unknown Part: [%s]\n", DayName, part)
+	}
+
+	if result == -42 {
+		err = fmt.Errorf("%s - %s Not Implemented\n", DayName, part)
 	}
 
 	return result, err

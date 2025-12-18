@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+const DayName string = "Day01"
 const Title string = "Secret Entrance"
 const dialPositions int = 100
 
@@ -81,7 +82,11 @@ func Exec(part string, data []string) (int, error) {
 	} else if part == "PART2" {
 		result = solvePart2(data)
 	} else {
-		err = fmt.Errorf("Day01 - Unknown Part: [%s]\n", part)
+		err = fmt.Errorf("%s - Unknown Part: [%s]\n", DayName, part)
+	}
+
+	if result == -42 {
+		err = fmt.Errorf("%s - %s Not Implemented\n", DayName, part)
 	}
 
 	return result, err

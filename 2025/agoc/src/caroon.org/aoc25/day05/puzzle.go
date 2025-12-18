@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+const DayName string = "Day05"
 const Title string = "Cafeteria"
 
 type IngredientIdRange struct {
@@ -40,7 +41,7 @@ func solvePart1(iids []int, idRanges []IngredientIdRange) int {
 }
 
 func solvePart2(iids []int, idRanges []IngredientIdRange) int {
-	return 0
+	return -42
 }
 
 func processInput(data []string) ([]int, []IngredientIdRange) {
@@ -67,17 +68,19 @@ func processInput(data []string) ([]int, []IngredientIdRange) {
 func Exec(part string, data []string) (int, error) {
 	var result int = 0
 	var err error = nil
-	var iids []int
-	var idRanges []IngredientIdRange
 
-	iids, idRanges = processInput(data)
+	iids, idRanges := processInput(data)
 
 	if part == "PART1" {
 		result = solvePart1(iids, idRanges)
 	} else if part == "PART2" {
 		result = solvePart2(iids, idRanges)
 	} else {
-		err = fmt.Errorf("Day05 - Unknown Part: [%s]\n", part)
+		err = fmt.Errorf("%s - Unknown Part: [%s]\n", DayName, part)
+	}
+
+	if result == -42 {
+		err = fmt.Errorf("%s - %s Not Implemented\n", DayName, part)
 	}
 
 	return result, err
