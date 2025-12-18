@@ -35,7 +35,7 @@ https://adventofcode.com/2025
 * [ ] 🚫🚫 [Day 08 - Playground](./agoc/src/caroon.org/aoc25/day08/)
 * [ ] ⭐️🚫 [Day 09 - Movie Theater](./agoc/src/caroon.org/aoc25/day09/)
 * [ ] ⭐️🚫 [Day 10 - Factory](./agoc/src/caroon.org/aoc25/day10/)
-* [ ] 🚫🚫 [Day 11 - Reactor](./agoc/src/caroon.org/aoc25/day11/)
+* [ ] ⭐️🚫 [Day 11 - Reactor](./agoc/src/caroon.org/aoc25/day11/)
 * [ ] 🚫🚫 [Day 12 - Christmas Tree Farm](./agoc/src/caroon.org/aoc25/day12/)
 
 ### Development
