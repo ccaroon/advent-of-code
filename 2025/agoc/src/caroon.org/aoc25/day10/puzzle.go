@@ -1,12 +1,9 @@
 package day10
 
 import (
-	// "caroon.org/aoc25/shared/grid"
 	"fmt"
-	// "github.com/ernestosuarez/itertools"
-	// "math"
+	"github.com/ernestosuarez/itertools"
 	"strconv"
-	// "bytes"
 	"strings"
 )
 
@@ -15,38 +12,63 @@ func solvePart1(machines []*FactoryMachine) int {
 	// for each machine
 	var totalPresses int = 0
 
-	machine := machines[0]
-	// fmt.Println(machine.ButtonCount())
-	// fmt.Printf("Before => %v\n", machine)
-	// machine.PushButtons([]int{0, 2})
-	// fmt.Printf("After => %v\n", machine)
+	for _, machine := range machines {
+		// fmt.Printf("=> %v\n", machine)
+		// Indexes of each button i.e. the number of buttons as a list[int]
+		// Ex: if a machine has 5 buttons, the btnIds = [0,1,2,3,4]
+		var btnIds []int
+		for bId := range machine.ButtonCount() {
+			btnIds = append(btnIds, bId)
+		}
 
-	fmt.Println("-> Ready1: ", machine.LightsReady())
-	machine.PushButtons([]int{4, 5})
-	fmt.Println("-> Ready2: ", machine.LightsReady())
-	// for _, machine := range machines {
-	// 	// 	btn_nums = list(range(machine.button_count))
-	// 	var fewestPresses int = 0
-	// 	// 	for presses in range(1, len(btn_nums) + 1):
-	// 	// 		combos = itertools.combinations(btn_nums, presses)
-	// 	var found bool = false
-	// 	// 		for btn_list in combos:
-	// 	for _, btnList := range combos {
-	// 		// 			machine.push_buttons(*btn_list)
-	// 		// 			if machine.lights_ready():
-	// 		// 				fewest_presses = presses
-	// 		// 				found = True
-	// 		// 				break
-	// 		// 			machine.reset_lights()
+		// fmt.Printf("  -> btdIds: %v\n", btnIds)
 
-	// 	}
+		fewestPresses := 0
+		for pressCount := 1; pressCount <= len(btnIds); pressCount++ {
+			combos := itertools.CombinationsInt(btnIds, pressCount)
 
-	// 	if found == true {
-	// 		break
-	// 	}
+			found := false
+			// for btn_list in combos:
+			for btnCombo := range combos {
+				// fmt.Printf("  -> pCnt: %d | Cmb: %v\n", pressCount, btnCombo)
+				// btnCombo holds the idx of each button to be pushed
+				// NOT the actual button num list
+				machine.PushButtons(btnCombo)
 
-	// 	totalPresses += fewestPresses
-	// }
+				// Buttons pushed // check if all the appropriate lights
+				// are on
+				if machine.LightsReady() {
+					// if so, then record the number of buttons pushed
+					fewestPresses = pressCount
+
+					// Stop pressing button. You found what you need!!!!
+					found = true
+					break
+				}
+
+				// Pushing the buttons turns lights on and off
+				// We didn't find the correct buttons yet, so
+				// reset the light to their initial state.
+				machine.ResetLights()
+			}
+
+			if found {
+				// fewest presses found for this machine
+				// Break to start checking the next machine
+				break
+			}
+		}
+
+		// # Debuggin'!
+		// if fewestPresses > 0 {
+		// 	fmt.Printf("  -> Found with %d presses!", fewestPresses)
+		// } else {
+		// 	fmt.Println("  -> WARNING: Machine cannot be activated!")
+		// }
+
+		// # count the presses for th current machine before moving to next
+		totalPresses += fewestPresses
+	}
 
 	return totalPresses
 }
@@ -66,6 +88,7 @@ func processInput(data []string) []*FactoryMachine {
 		lightDia := []byte(lightData[1:])
 
 		// Button Wiring
+		// otherData = (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
 		var buttons [][]int
 		buttonData, joltageData, _ := strings.Cut(otherData, "{")
 		buttonList := strings.Split(strings.TrimSpace(buttonData), " ")
