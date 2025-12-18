@@ -31,13 +31,7 @@ PUZZLES = {
 def run(_, day, part, *, test=False, debug=False, arg=None):
     """Run an AOC-2025 Puzzle by `day` & `part`"""
 
-    day_id = None
-    day_name = None
-    if day.startswith("day"):
-        day_id = int(day[3:])
-    else:
-        day_id = int(day)
-
+    day_id = int(day[3:]) if day.startswith("day") else int(day)
     day_name = f"day{day_id:02}"
 
     cls_name = PUZZLES.get(day_name)

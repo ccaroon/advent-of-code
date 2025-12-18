@@ -1,4 +1,4 @@
-from functools import cache
+# from functools import cache
 from aoc.lib.puzzle import Puzzle
 
 
@@ -52,60 +52,45 @@ class Lobby(Puzzle):
 
         return total_joltage
 
-    @cache
-    def __compute_joltage(self, bank, conn_len):
-        joltage = 0
-        bank_len = len(bank)
+    # @cache
+    # def __compute_joltage(self, bank, conn_len):
+    #     joltage = 0
+    #     # bank_len = len(bank)
 
-        # find the largest battery excluding last
-        idx, batt = self.__find_largest_battery(bank[:-1], start=0)
+    #     # # find the largest battery excluding last
+    #     # idx, batt = self.__find_largest_battery(bank[:-1], start=0)
 
-        # update joltage => battery * index found
-        joltage += (conn_len - idx**10) + batt
+    #     # # update joltage => battery * index found
+    #     # joltage += (conn_len - idx**10) + batt
 
-        # recurse
-        if bank_len > 1:
-            joltage += self.__compute_joltage(bank[:what:])
+    #     # # recurse
+    #     # if bank_len > 1:
+    #     #     joltage += self.__compute_joltage(bank[:what:])
 
-        return joltage
+    #     return joltage
 
-        # bank:234234234234278 => 434234234278
-        # found:.............7.
-        # -> batt + 10**1 | => 70
-        # -> why 1? => (len(bank) - 1) - idx => (15-1)-13 = 1
-        # -> recurse: start at bank[idx]
-        # bank:8
-        # found:8
-        # -> batt + 10**0 | => 8
-        # -> why 0? => (len(bank) - 1) - idx => (1-1)-0 = 0
-        # ->
-
+    #     # bank:234234234234278 => 434234234278
+    #     # found:.............7.
+    #     # -> batt + 10**1 | => 70
+    #     # -> why 1? => (len(bank) - 1) - idx => (15-1)-13 = 1
+    #     # -> recurse: start at bank[idx]
+    #     # bank:8
+    #     # found:8
+    #     # -> batt + 10**0 | => 8
+    #     # -> why 0? => (len(bank) - 1) - idx => (1-1)-0 = 0
+    #     # ->
 
     def _part2(self):
-        total_joltage = 0
+        pass
+        # total_joltage = 0
         # find the twelve highest numbers & remember their idx
         # create a 12 digit number from those twelve w/ each digit
         # in it's relative position to the other based on idx.
-        for bank in self.__data:
-            self._debug(f"=> {bank}")
-            # convert to a list of ints
-            batteries = [int(b) for b in list(bank)]
+        # for bank in self.__data:
+        #     self._debug(f"=> {bank}")
+        #     # convert to a list of ints
+        #     batteries = [int(b) for b in list(bank)]
 
-            joltage = self.__compute_joltage(bank, 12)
+        #     joltage = self.__compute_joltage(bank, 12)
 
-
-        return total_joltage
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
+        # return total_joltage

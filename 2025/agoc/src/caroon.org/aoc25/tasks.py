@@ -1,4 +1,6 @@
+# noqa: INP001
 from invoke import task
+
 
 @task(
     help={
@@ -10,19 +12,10 @@ from invoke import task
 def run(ctx, day, part, *, test=False):
     """Compile `aoc25` and run the specified Day & Part"""
 
-    day_id = None
-    day_name = None
-    if day.startswith("day"):
-        day_id = int(day[3:])
-    else:
-        day_id = int(day)
-
+    day_id = int(day[3:]) if day.startswith("day") else int(day)
     day_name = f"day{day_id:02}"
 
-    if part.startswith("part"):
-        part_name = part.lower()
-    else:
-        part_name = f"part{part}"
+    part_name = part.lower() if part.startswith("part") else f"part{part}"
 
     input_file = "test-input.txt" if test else "input.txt"
 
@@ -35,13 +28,11 @@ def run(ctx, day, part, *, test=False):
 
 @task
 def clean(ctx):
-    """ Go Clean """
+    """Go Clean"""
     ctx.run("go clean")
 
 
-@task(
-    aliases=['format']
-)
+@task(aliases=["format"])
 def fmt(ctx):
-    """ Format the Code """
+    """Format the Code"""
     ctx.run("go fmt ./...")

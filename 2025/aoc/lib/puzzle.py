@@ -54,7 +54,6 @@ class Puzzle(ABC):
         print(f"| Answer: [{answer}] {test}")
         print("+--------------------------------------------+")
 
-
     def main(self, part: int):
         answer = None
         if part == self.PART1:
