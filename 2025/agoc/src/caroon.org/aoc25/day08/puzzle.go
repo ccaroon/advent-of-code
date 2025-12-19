@@ -4,7 +4,6 @@ import (
 	"cmp"
 	"fmt"
 	"slices"
-	"sort"
 	"strconv"
 	"strings"
 
@@ -19,11 +18,6 @@ type JBoxPair struct {
 	jBox1, jBox2 space.Point
 	dist         float64
 }
-type byDist []JBoxPair
-
-func (lst byDist) Len() int           { return len(lst) }
-func (lst byDist) Less(i, j int) bool { return lst[i].dist < lst[j].dist }
-func (lst byDist) Swap(i, j int)      { lst[i], lst[j] = lst[j], lst[i] }
 
 func solvePart1(boxPos []space.Point) int {
 	var pointList itertools.List
@@ -36,6 +30,7 @@ func solvePart1(boxPos []space.Point) int {
 	}
 	combos := itertools.CombinationsList(pointList, 2)
 
+	// Find the distance between each pair of junction boxes
 	for pair := range combos {
 		jBox1 := pair[0].(space.Point)
 		jBox2 := pair[1].(space.Point)
@@ -44,17 +39,19 @@ func solvePart1(boxPos []space.Point) int {
 		jBoxPairs = append(jBoxPairs, JBoxPair{jBox1, jBox2, dist})
 	}
 
-	sort.Sort(byDist(jBoxPairs))
-	// fmt.Printf(" ==> JBoxPair Count [%d] <==\n", len(jBoxPairs))
-	// for idx, pair := range jBoxPairs[:10] {
-	// 	fmt.Printf("%d) %v\n", idx, pair)
-	// }
+	// Sort junction box pairs by distance
+	distCmp := func(a, b JBoxPair) int {
+		return cmp.Compare(a.dist, b.dist)
+	}
+	slices.SortFunc(jBoxPairs, distCmp)
 
+	// circuit ID - mainly for debugging purposes
 	cId := 0
+	// NOTE: for test input, only examine the first 10 pairs
 	for _, jBoxPair := range jBoxPairs[:1000] {
-		// fmt.Printf("-> JBoxPair #%d %v | Circuits [%d]\n", idx, jBoxPair, len(circuits))
-
 		addNewCircuit := true
+		// list if the indexes of the circuits that are modified
+		// i.e. one or more junction boxes are connected to it
 		var modCircuits []int
 		for idx, circuit := range circuits {
 			if circuit.isConnectedTo(jBoxPair.jBox1) && !circuit.isConnectedTo(jBoxPair.jBox2) {
@@ -70,42 +67,24 @@ func solvePart1(boxPos []space.Point) int {
 				// fmt.Printf("->  %v\n", circuit)
 				modCircuits = append(modCircuits, idx)
 			} else if circuit.isConnectedTo(jBoxPair.jBox1) && circuit.isConnectedTo(jBoxPair.jBox2) {
-				// do nothing
-				// fmt.Printf("->  NoOp - jBox1 & jBox2 already connected to Circuit #%d\n", circuit.id)
+				// mark as not needing a new Circuit
 				addNewCircuit = false
+				// fmt.Printf("->  NoOp - jBox1 & jBox2 already connected to Circuit #%d\n", circuit.id)
 				// fmt.Printf("->  %v\n", circuit)
 			}
-			// if jBox1 is part of C1 and jBox2 is part of C2
-			// then ... join the two circuits?
-			// -> JBoxPair #9 {{906 360 560} {984 92 344} 352.936254867646}
-			// ->  Adding jBox2 to Circuit #1
-			// ->  &{1 [{906 360 560} {805 96 715} {739 650 466} {984 92 344}]}
-			// ->  Adding jBox1 to Circuit #2
-			// ->  &{2 [{862 61 35} {984 92 344} {906 360 560}]}
-			//
-			// Pair: {906 360 560} {984 92 344}
-			// &{1 [{906 360 560} {805 96 715} {739 650 466}]}
-			// &{2 [{862 61 35} {984 92 344}]}
 		}
 
-		// if len(modCircuits) > 1 {
-		// 	fmt.Printf("ModCircuits [%d]\n", len(modCircuits))
-		// }
-		// fmt.Printf("ModCount [%d]\n", len(modCircuits))
-		// for _, ct := range modCircuits {
-		// 	fmt.Printf("%d - %v\n", ct.id, ct.junctionBoxes)
-		// }
-		// ...GOOD...
-		// if len(modCircuits) > 1 {
-		// 	modCircuits[0].merge(modCircuits[1])
-		// 	circuits = slices.Delete(circuits, modCircuits[1].id, modCircuits[1].id+1)
-		// }
+		// Merge any Circuits that should now be connected b/c the jBoxPair
+		// is part of more than 1 Circuit
 		if len(modCircuits) > 1 {
 			baseCircuit := circuits[modCircuits[0]]
+			// Merge all modified Circuits into the first one
 			for _, cIdx := range modCircuits[1:] {
 				baseCircuit.merge(circuits[cIdx])
 			}
 
+			// Delete the circuits that were merged
+			// Circuits to be deleted are NOT necessarily consecutive
 			for _, cIdx := range modCircuits[1:] {
 				circuits = slices.Delete(circuits, cIdx, cIdx+1)
 			}
@@ -120,26 +99,19 @@ func solvePart1(boxPos []space.Point) int {
 		}
 	}
 
-	// find the 3 largest circuits
-	// var idxLen [][]int
-	// for idx, circuit := range circuits {
-	// 	idxLen = append(idxLen, []int{idx, circuit.length()})
-	// }
-
-	// lenCmp := func(a, b []int) int {
-	// 	return cmp.Compare(a[1], b[1])
-	// }
-	// slices.SortFunc(idxLen, lenCmp)
-
+	// Sort all Circuits by their length b/c we only need to know the
+	// top three largest by length
 	lenCmp := func(a, b *Circuit) int {
 		return cmp.Compare(a.length(), b.length())
 	}
 	slices.SortFunc(circuits, lenCmp)
 
+	// Print all Circuits for debuggin'
 	// for _, circuit := range circuits {
 	// 	fmt.Printf("%d) len [%d]\n", circuit.id, circuit.length())
 	// }
 
+	// Compute Answer
 	result := 1
 	lastThreeIdx := len(circuits) - 3
 	for _, circuit := range circuits[lastThreeIdx:] {
