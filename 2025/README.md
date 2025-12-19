@@ -32,7 +32,7 @@ https://adventofcode.com/2025
 * [ ] ⭐️🚫 [Day 05 - Cafeteria](./agoc/src/caroon.org/aoc25/day05/)
 * [x] ⭐️⭐️ [Day 06 - Trash Compactor](./agoc/src/caroon.org/aoc25/day06/)
 * [ ] ⭐️🚫 [Day 07 - Laboratories](./agoc/src/caroon.org/aoc25/day07/)
-* [ ] 🚫🚫 [Day 08 - Playground](./agoc/src/caroon.org/aoc25/day08/)
+* [ ] ⭐️🚫 [Day 08 - Playground](./agoc/src/caroon.org/aoc25/day08/)
 * [ ] ⭐️🚫 [Day 09 - Movie Theater](./agoc/src/caroon.org/aoc25/day09/)
 * [ ] ⭐️🚫 [Day 10 - Factory](./agoc/src/caroon.org/aoc25/day10/)
 * [ ] ⭐️🚫 [Day 11 - Reactor](./agoc/src/caroon.org/aoc25/day11/)
