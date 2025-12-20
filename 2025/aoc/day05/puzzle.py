@@ -1,3 +1,4 @@
+from aoc.day05.ingredient_range import IngredientRange
 from aoc.lib.puzzle import Puzzle
 
 
@@ -17,22 +18,9 @@ class Cafeteria(Puzzle):
         # ingredient ids 1 per line
         if "-" in line:
             start, end = line.split("-", 2)
-            self.__iid_ranges.append((int(start), int(end)))
+            self.__iid_ranges.append(IngredientRange(int(start), int(end)))
         elif line:
             self.__iids.append(int(line))
-
-    def __check_freshness(self, iid, irng):
-        """
-        Is `iid` in the `irng` range with start and end being inclusive
-
-        Args:
-            iid (int): Ingredient ID
-            irng (tuple(int,int)): Start and End of Fresh Ingredient Range
-        """
-        is_fresh = False
-        if iid >= irng[0] and iid <= irng[1]:
-            is_fresh = True
-        return is_fresh
 
     def _part1(self):
         fresh_count = 0
@@ -41,12 +29,24 @@ class Cafeteria(Puzzle):
         # ...each ingredient only has be be in one range to be noted as fresh
         for iid in self.__iids:
             for irng in self.__iid_ranges:
-                self._debug(f"[{iid}] in [{irng}]...")
-                if self.__check_freshness(iid, irng):
+                self._debug(f"[{iid}] in {irng}...")
+                if irng.is_fresh(iid):
                     fresh_count += 1
                     break
 
         return fresh_count
+
+    def __largest_range(self):
+        max_size = 0
+        found_irng = None
+
+        for idx, irng in enumerate(self.__iid_ranges):
+            size = len(irng)
+            if size > max_size:
+                max_size = size
+                found_irng = self.__iid_ranges[idx]
+
+        return found_irng
 
     def __find_overlap(self, irng, other_ranges):
         # 12-18 (12,13,14,15,16,17,18) | 10-14 (10,11,12,13,14)
@@ -72,44 +72,29 @@ class Cafeteria(Puzzle):
         return overlap_count
 
     def _part2(self):
-        processed_ranges = []
         fresh_iids = 0
-        for irng in self.__iid_ranges:
-            count = (irng[1] - irng[0]) + 1
-            overlap_count = self.__find_overlap(irng, processed_ranges)
-            count -= overlap_count
 
-            fresh_iids += count
-            processed_ranges.append(irng)
-            # ------------------
-            # 1655071119701-2036139951240
-            # 282420790922884-290825089106666
-            # find where ranges overlay
-            #
-            # 3-5   => 5-3+1   => 3
-            # is 3-5 covered by any previous range? NO +3
+        # rng1 = self.__iid_ranges[2]
+        # rng2 = self.__largest_range()
 
-            # 10-14 => 14-10+1 => 5
-            # is 10-15 covered by any previous range? NO +5
+        rng2 = IngredientRange(1, 5)
+        rng1 = IngredientRange(3, 7)
 
-            # 16-20 => 20-16+1 => 5
-            # is 16-20 covered by any previous range? NO +5
+        print(rng1, rng2)
+        print(rng1.unique_iids(rng2))
 
-            # 12-18 => 18-12+1 => 7
-            # is 12-18 covered by any previous range? YES
+        # r1 = IngredientRange(1,5)
+        # r2 = IngredientRange(3,7)
 
-            # 12-18 (12,13,14,15,16,17,18) | 10-14 (10,11,12,13,14)
-            # -> check start and end for overlap in any previous ranges
-            # overlap: my start to other end
-            # overlap: 12 to 14
-            # overlap: 14-12+1 = 3
-            # 7(range) - 3(overlap) => 4
+        # print(r1.compare(r2)) # -1
+        # print(r2.compare(r1)) # 1
 
-            # 12-18 (12,13,14,15,16,17,18) | 16-20 (16,17,18,19,20)
-            # overlap: my end to other end
-            # overlap: 18 to 20
-            # overlap: 20-18+1 = 3
-            # 4(overlap1) - 3(overlap) => 1
-            # +1
+        # for irng in self.__iid_ranges:
+        #     cmp = irng.compare(max_rng)
+        #     if cmp is not None:
+        #         print(f"{irng} <=> {max_rng} => [{cmp}]")
 
         return fresh_iids
+
+
+#

@@ -5,9 +5,8 @@ https://adventofcode.com/2025/day/5
 * Part 2: `inv run day05 2` => `?????`
 
 
-
-
 ## Scratch
+
 
 ### Tries
 1. `269068590648661` -- too low
