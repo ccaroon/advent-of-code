@@ -25,6 +25,7 @@ ignore = [
     "T203",   # `pprint` found
     "FA102",  # Missing `from __future__ import annotations`
     "PYI024", # Use `typing.NamedTuple` instead of `collections.namedtuple`
+    "PT009",  # Use a regular `assert` instead of unittest-style
 ]
 # fixable = ["I001"]
 # unfixable = ["ALL"]
