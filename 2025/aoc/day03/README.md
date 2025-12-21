@@ -1,9 +1,6 @@
 # Day 3: Lobby
 https://adventofcode.com/2025/day/3
 
-* Part 1: `inv run day03 1` => `17430`
-* Part 2: `inv run day03 2` => `?????`
-
 
 ## Scratch
   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14    23 2
