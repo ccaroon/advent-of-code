@@ -17,6 +17,9 @@ class IngredientRange:
     def __str__(self):
         return f"IngredientRange({self.start}-{self.end})"
 
+    def __repr__(self):
+        return f"IngredientRange({self.start}-{self.end})"
+
     def compare(self, other):
         """
         Compare two Ingredient Ranges: Compare `self` to `other`
@@ -61,16 +64,16 @@ class IngredientRange:
         count = 0
 
         if self.compare(other) is None and other.compare(self) is None:
-            print("No Overlap")
+            # print("No Overlap")
             count = len(self) + len(other)
         elif self.compare(other) == 0:
-            print("self contained in other")
+            # print("self contained in other")
             count = len(other)
         elif other.compare(self) == 0:
-            print("other contained in self")
+            # print("other contained in self")
             count = len(self)
         elif self.compare(other) == -1 or self.compare(other) == 1:
-            print("some overlap")
+            # print("some overlap")
             rng1 = None
             if self.start < other.start:
                 rng1 = IngredientRange(self.start, other.start - 1)
@@ -83,10 +86,22 @@ class IngredientRange:
             else:
                 rng2 = IngredientRange(other.end + 1, self.end)
 
-            print(rng1, rng2)
+            # print(rng1, rng2)
 
             count = len(rng1) + len(rng2)
 
         return count
+
+    def overlap_count(self, other):
+        overlap_count = 0
+
+        if self.start >= other.start and self.start <= other.end:
+            overlap_count += (other.end - self.start) + 1
+            # self._debug(f"{irng} overlaps {other_rng} @ start[{self.start}]: {overlap_count}")
+        elif self.end >= other.start and self.end <= other.end:
+            # self._debug(f"{irng} overlaps {other_rng} @ end[{self.end}]: {overlap_count}")
+            overlap_count += (self.end - other.start) + 1
+
+        return overlap_count
 
     #
