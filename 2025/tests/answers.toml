@@ -1,71 +1,71 @@
 [day01]
-example.part1 = 3
-example.part2 = 6
-answer.part1 = 1092
-answer.part2 = 6616
+part1.example = 3
+part1.answer = 1092
+part2.example = 6
+part2.answer = 6616
 
 [day02]
-example.part1 = 1227775554
-example.part2 = 4174379265
-answer.part1 = 56660955519
-answer.part2 = 79183223243
+part1.example = 1227775554
+part1.answer = 56660955519
+part2.example = 4174379265
+part2.answer = 79183223243
 
 [day03]
-example.part1 = 357
-# example.part2 = nan
-answer.part1 = 17430
-# answer.part2 = nan
+part1.example = 357
+part1.answer = 17430
+# part2.example = 3121910778619
+# part2.answer = nan
 
 [day04]
-example.part1 = 13
-example.part2 = 43
-answer.part1 = 1411
-answer.part2 = 8557
+part1.example = 13
+part1.answer = 1411
+part2.example = 43
+part2.answer = 8557
 
 [day05]
-example.part1 = 3
-# example.part2 =
-answer.part1 = 789
-# answer.part2 =
+part1.example = 3
+part1.answer = 789
+# part2.example = 14
+# part2.answer =
 
 [day06]
-example.part1 = 4277556
-example.part2 = 3263827
-answer.part1 = 5733696195703
-answer.part2 = 10951882745757
+part1.example = 4277556
+part1.answer = 5733696195703
+part2.example = 3263827
+part2.answer = 10951882745757
 
 [day07]
-example.part1 = 21
-# example.part2 =
-answer.part1 = 1622
-# answer.part2 =
+part1.example = 21
+part1.answer = 1622
+# part2.example = 40
+# part2.answer =
 
 [day08]
-example.part1 = 40
-# example.part2 =
-answer.part1 = 83520
-# answer.part2 =
+part1.example = 40
+part1.answer = 83520
+# part2.example = 25272
+# part2.answer =
 
 [day09]
-example.part1 = 50
-# example.part2 =
-answer.part1 = 4786902990
-# answer.part2 =
+part1.example = 50
+part1.answer = 4786902990
+# part2.example = 24
+# part2.answer =
 
 [day10]
-example.part1 = 7
-# example.part2 =
-answer.part1 = 520
-# answer.part2 =
+part1.example = 7
+part1.answer = 520
+# part2.example = 33
+# part2.answer =
 
 [day11]
-example.part1 = 5
-# example.part2 =
-answer.part1 = 714
-# answer.part2 =
+part1.example = 5
+part1.answer = 714
+# part2.example = 2
+# part2.answer =
 
 [day12]
-# # example.part1 =
-# # example.part2 =
-# # answer.part1 =
-# # answer.part2 =
+# part1.example = 2
+# part1.answer =
+# part2.example =
+# part2.answer =

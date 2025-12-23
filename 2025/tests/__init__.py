@@ -31,32 +31,32 @@ class PuzzleTestCase(unittest.TestCase):
         if not hasattr(self, "__answer_data") or self.__answer_data is None:
             self.__answer_data = self.__load_answers()
 
-        self.answers = self.__answer_data.get(f"day{self.DAY_NUM:02}", {}).get("answer", {})
-        self.puzzle = self.PUZZLE_CLASS()
+        self.part1 = self.__answer_data.get(f"day{self.DAY_NUM:02}", {}).get("part1", {})
+        self.part2 = self.__answer_data.get(f"day{self.DAY_NUM:02}", {}).get("part2", {})
 
-        self.test_answers = self.__answer_data.get(f"day{self.DAY_NUM:02}", {}).get("example", {})
+        self.puzzle = self.PUZZLE_CLASS()
         self.test_puzzle = self.PUZZLE_CLASS(__test_mode=True)
 
         self.args = kwargs
 
     def test_part1(self):
-        if self.test_answers.get("part1") is None or self.answers.get("part1") is None:
+        if self.part1.get("example") is None or self.part1.get("answer") is None:
             self.skipTest(f"DAY{self.DAY_NUM}:P1 -> Not Implemented!")
 
         skip_p1_reason = self.args.get("skip_p1", None)
         if skip_p1_reason:
             self.skipTest(f"DAY{self.DAY_NUM}:P1 -> {skip_p1_reason}")
         else:
-            self.assertEqual(self.test_puzzle._part1(), self.test_answers["part1"])
-            self.assertEqual(self.puzzle._part1(), self.answers["part1"])
+            self.assertEqual(self.test_puzzle._part1(), self.part1["example"])
+            self.assertEqual(self.puzzle._part1(), self.part1["answer"])
 
     def test_part2(self):
-        if self.test_answers.get("part2") is None or self.answers.get("part2") is None:
+        if self.part2.get("example") is None or self.part2.get("answer") is None:
             self.skipTest(f"DAY{self.DAY_NUM}:P2 -> Not Implemented!")
 
         skip_p2_reason = self.args.get("skip_p2", None)
         if skip_p2_reason:
             self.skipTest(f"DAY{self.DAY_NUM}:P2 -> {skip_p2_reason}")
         else:
-            self.assertEqual(self.puzzle._part2(), self.answers["part2"])
-            self.assertEqual(self.test_puzzle._part2(), self.test_answers["part2"])
+            self.assertEqual(self.test_puzzle._part2(), self.part2["example"])
+            self.assertEqual(self.puzzle._part2(), self.part2["answer"])
