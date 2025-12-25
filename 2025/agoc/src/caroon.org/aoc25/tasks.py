@@ -25,13 +25,16 @@ def run(ctx, day, part, *, test=False):
     # run
     ctx.run(f"./aoc25 {day_name} {part_name} {input_file}")
 
+
 @task
 def test(ctx):
     ctx.run("go test ./... -coverprofile aoc25.coverprofile", warn=True)
 
+
 @task(pre=[test])
 def coverage(ctx):
     ctx.run("go tool cover -html aoc25.coverprofile -o coverage-report.html")
+
 
 @task
 def clean(ctx):
