@@ -6,8 +6,8 @@ class SecretEntrance(Puzzle):
 
     DIAL_POSITIONS = 100
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, input_file, **kwargs):
+        super().__init__(input_file, **kwargs)
 
         self.__dial_pos = 50
         self.__data = []

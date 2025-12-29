@@ -9,8 +9,8 @@ from .factory_machine import FactoryMachine  # noqa: TID252
 class Factory(Puzzle):
     """AOC-2025 // Day10 -- Factory"""
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, input_file, **kwargs):
+        super().__init__(input_file, **kwargs)
 
         self.__next_uid = 1
         self.__data = []

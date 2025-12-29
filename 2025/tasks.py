@@ -5,7 +5,9 @@ import os
 from cryptography.fernet import Fernet
 from invoke import task
 
-ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+ENC_KEY_FILE = f"{ROOT_DIR}/.aoc-password"
+INPUT_DIR = f"{ROOT_DIR}/input"
 
 
 PUZZLES = {
@@ -62,46 +64,75 @@ def run(_, day, part, *, test=False, debug=False, arg=None):
             else:
                 kwargs[arg] = True
 
-        puzzle = puzzle_class(**kwargs)
+        input_type = "example" if test else "input"
+        input_file = f"{INPUT_DIR}/{day_name}-{input_type}.txt"
+
+        puzzle = puzzle_class(input_file, **kwargs)
         puzzle.main(part=int(part))
 
 
 @task
 def genkey(_, passphrase):
+    """Generate a Base64 Encoded Passphrase Key"""
     # key = Fernet.generate_key()
     # user_key = f"{passphrase:32}"
     user_key = passphrase.center(32, "-")
     b64_key = base64.urlsafe_b64encode(bytes(user_key, "utf-8"))
 
-    with open(f"{ROOT_PATH}/.aoc-password", "wb") as fptr:
+    with open(f"{ROOT_DIR}/.aoc-password", "wb") as fptr:
         fptr.write(b64_key)
-
-    print(ROOT_PATH)
 
 
 @task
 def add_input_file(_, day_num, src_path):
-    # read enc key
-    key_file = f"{ROOT_PATH}/.aoc-password"
-    if os.path.exists(key_file):
-        enc_key = None
-        with open(key_file, "rb") as fptr:
-            enc_key = fptr.read()
+    """Add an Input File to the `input` dir and encrypt it"""
+    enc_key = __read_enc_key()
+    frnt = Fernet(enc_key)
 
-        frnt = Fernet(enc_key)
+    file_data = None
+    with open(src_path, "rb") as fptr:
+        file_data = fptr.read()
 
-        file_data = None
-        with open(src_path, "rb") as fptr:
-            file_data = fptr.read()
+    enc_data = frnt.encrypt(file_data)
+    out_file = f"{INPUT_DIR}/day{int(day_num):02}-input.enc"
+    with open(out_file, "wb") as fptr:
+        fptr.write(enc_data)
 
-        enc_data = frnt.encrypt(file_data)
-        out_file = f"{ROOT_PATH}/input/day{int(day_num):02}-input.enc"
-        with open(out_file, "wb") as fptr:
-            fptr.write(enc_data)
+    os.remove(src_path)
 
-        os.remove(src_path)
-    else:
-        print(f"=> Missing Key File: {key_file}")
+
+@task
+def decrypt_input(_):
+    """Decrypt all `.enc` files in the `input` dir"""
+
+    enc_key = __read_enc_key()
+    frnt = Fernet(enc_key)
+    for root, _, files in os.walk(INPUT_DIR):
+        # print(root, files)
+        for file in files:
+            if file.endswith(".enc"):
+                print(f"-> Decrypting {file}...")
+                enc_data = None
+                with open(f"{root}/{file}", "rb") as fptr:
+                    enc_data = fptr.read()
+
+                out_file = root + "/" + file.replace(".enc", ".txt")
+                with open(out_file, "w") as fptr:
+                    content = frnt.decrypt(enc_data)
+                    fptr.write(content.decode())
+
+
+@task
+def clean(ctx):
+    """De-clutter"""
+    ctx.run("rm -f input/*-input.txt")
+
+
+def __read_enc_key():
+    with open(ENC_KEY_FILE, "rb") as fptr:
+        enc_key = fptr.read()
+
+    return enc_key  # noqa: RET504
 
 
 #

@@ -11,8 +11,8 @@ class Laboratories(Puzzle):
     EMPTY = "."
     BEAM = "|"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, input_file, **kwargs):
+        super().__init__(input_file, **kwargs)
 
         # list fo active beam positions
         self.__tachyon_grid = []

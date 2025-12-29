@@ -43,8 +43,8 @@ class Reactor(Puzzle):
     FFT = "fft"
     OUT = "out"
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, input_file, **kwargs):
+        super().__init__(input_file, **kwargs)
 
         self.__devices = {}
         self._read_input(self.__parse_input)

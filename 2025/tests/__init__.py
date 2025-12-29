@@ -34,8 +34,11 @@ class PuzzleTestCase(unittest.TestCase):
         self.part1 = self.__answer_data.get(f"day{self.DAY_NUM:02}", {}).get("part1", {})
         self.part2 = self.__answer_data.get(f"day{self.DAY_NUM:02}", {}).get("part2", {})
 
-        self.puzzle = self.PUZZLE_CLASS()
-        self.test_puzzle = self.PUZZLE_CLASS(__test_mode=True)
+        self.puzzle = self.PUZZLE_CLASS(f"{self.TEST_DIR}/../input/day{self.DAY_NUM:02}-input.txt")
+        self.test_puzzle = self.PUZZLE_CLASS(
+            f"{self.TEST_DIR}/../input/day{self.DAY_NUM:02}-example.txt",
+            __test_mode=True,
+        )
 
         self.args = kwargs
 

@@ -4,8 +4,8 @@ from aoc.lib.puzzle import Puzzle
 class TrashCompactor(Puzzle):
     """AOC-2025 // Day06 -- Trash Compactor"""
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, input_file, **kwargs):
+        super().__init__(input_file, **kwargs)
 
         self.__data = []
         # nostrip b/c must preserve any starting or trailing whitespace

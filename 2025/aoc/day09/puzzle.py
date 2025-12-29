@@ -7,8 +7,8 @@ from aoc.lib.puzzle import Puzzle
 class MovieTheater(Puzzle):
     """AOC-2025 // Day09 -- MovieTheater"""
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, input_file, **kwargs):
+        super().__init__(input_file, **kwargs)
 
         self.__data = []
         self._read_input(self.__parse_input)
