@@ -1,5 +1,10 @@
 # noqa: INP001
+import os
+
 from invoke import task
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+INPUT_DIR = os.path.normpath(f"{ROOT_DIR}/../../../../input")
 
 
 @task(
@@ -17,13 +22,13 @@ def run(ctx, day, part, *, test=False):
 
     part_name = part.lower() if part.startswith("part") else f"part{part}"
 
-    input_file = "test-input.txt" if test else "input.txt"
+    input_file = f"{day_name}-example.txt" if test else f"{day_name}-input.txt"
 
     # compile
     ctx.run("go build")
 
     # run
-    ctx.run(f"./aoc25 {day_name} {part_name} {input_file}")
+    ctx.run(f"./aoc25 {day_name} {part_name} {INPUT_DIR}/{input_file}")
 
 
 @task

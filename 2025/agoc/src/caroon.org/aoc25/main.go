@@ -28,13 +28,11 @@ func main() {
 		var result int
 		var title string
 		var err error = nil
-		const baseInputFilePath string = "../../../../aoc"
 
 		dayNum := strings.ToUpper(os.Args[1])
 		partNum := strings.ToUpper(os.Args[2])
 		inputFileName := os.Args[3]
-		inputFilePath := fmt.Sprintf("%s/%s/%s", baseInputFilePath, strings.ToLower(dayNum), inputFileName)
-		data := utils.ReadInputFile(inputFilePath)
+		data := utils.ReadInputFile(inputFileName)
 
 		switch dayNum {
 		case "DAY01":
@@ -85,12 +83,12 @@ func main() {
 				testIndicator = "(TEST)"
 			}
 
-			fmt.Println("+--------------------------------------------+")
-			fmt.Println("|        *** Advent of Code - 2025 ***       |")
-			fmt.Println("+--------------------------------------------+")
+			fmt.Println("+------------------------------------------------+")
+			fmt.Println("|        *** Advent of (Go)Code - 2025 ***       |")
+			fmt.Println("+------------------------------------------------+")
 			fmt.Printf("| %s / <%s> / %s\n", dayNum, title, partNum)
 			fmt.Printf("| Answer: [%d] %s\n", result, testIndicator)
-			fmt.Println("+--------------------------------------------+")
+			fmt.Println("+------------------------------------------------+")
 		}
 	}
 }

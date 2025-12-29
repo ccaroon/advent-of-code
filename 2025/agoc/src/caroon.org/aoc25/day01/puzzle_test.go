@@ -4,7 +4,26 @@ import (
 	"testing"
 
 	"caroon.org/aoc25/day01"
+	"caroon.org/aoc25/shared/utils"
 )
+
+// testname := fmt.Sprintf("")
+// t.Run(testname, func(t *testing.T) {
+// 	ans := IntMin(tt.a, tt.b)
+// 	if ans != tt.want {
+// 		t.Errorf("got %d, want %d", ans, tt.want)
+// 	}
+// })
+
+func checkAnswer(t *testing.T, answer int, result int, err error) {
+	if err != nil {
+		t.Errorf("Exec Error: %v", err)
+	}
+
+	if result != answer {
+		t.Errorf("Wrong!")
+	}
+}
 
 func TestSolvePart1(t *testing.T) {
 	var answers = []struct {
@@ -13,22 +32,13 @@ func TestSolvePart1(t *testing.T) {
 		{1092, 6616},
 	}
 
-	// testname := fmt.Sprintf("")
-	// t.Run(testname, func(t *testing.T) {
-	// 	ans := IntMin(tt.a, tt.b)
-	// 	if ans != tt.want {
-	// 		t.Errorf("got %d, want %d", ans, tt.want)
-	// 	}
-	// })
+	data := utils.ReadInputFile("../../../../../input/day01-input.txt")
 
-	data := []string{"R1", "L2"}
-	result1, err := day01.Exec("PART1", data)
+	// Part 1
+	result, err := day01.Exec("PART1", data)
+	checkAnswer(t, answers[0].part1, result, err)
 
-	if err != nil {
-		t.Errorf("Exec Error: %v", err)
-	}
-
-	if result1 != answers[0].part1 {
-		t.Errorf("Wrong!")
-	}
+	// Part 2
+	result, err = day01.Exec("PART2", data)
+	checkAnswer(t, answers[0].part2, result, err)
 }
