@@ -1,6 +1,8 @@
 # Advent Of Code 2025
 https://adventofcode.com/2025
 
+Theme: Finish decorating the North Pole by December 12th
+
 ## Python
 * [x] ⭐️⭐️ [Day 01 - Secret Entrance](./aoc/day01/README.md)
 * [x] ⭐️⭐️ [Day 02 - Gift Shop](./aoc/day02/README.md)

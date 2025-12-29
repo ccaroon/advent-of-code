@@ -1,6 +1,12 @@
+import base64
 import importlib
+import os
 
+from cryptography.fernet import Fernet
 from invoke import task
+
+ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+
 
 PUZZLES = {
     "day01": "SecretEntrance",
@@ -58,3 +64,44 @@ def run(_, day, part, *, test=False, debug=False, arg=None):
 
         puzzle = puzzle_class(**kwargs)
         puzzle.main(part=int(part))
+
+
+@task
+def genkey(_, passphrase):
+    # key = Fernet.generate_key()
+    # user_key = f"{passphrase:32}"
+    user_key = passphrase.center(32, "-")
+    b64_key = base64.urlsafe_b64encode(bytes(user_key, "utf-8"))
+
+    with open(f"{ROOT_PATH}/.aoc-password", "wb") as fptr:
+        fptr.write(b64_key)
+
+    print(ROOT_PATH)
+
+
+@task
+def add_input_file(_, day_num, src_path):
+    # read enc key
+    key_file = f"{ROOT_PATH}/.aoc-password"
+    if os.path.exists(key_file):
+        enc_key = None
+        with open(key_file, "rb") as fptr:
+            enc_key = fptr.read()
+
+        frnt = Fernet(enc_key)
+
+        file_data = None
+        with open(src_path, "rb") as fptr:
+            file_data = fptr.read()
+
+        enc_data = frnt.encrypt(file_data)
+        out_file = f"{ROOT_PATH}/input/day{int(day_num):02}-input.enc"
+        with open(out_file, "wb") as fptr:
+            fptr.write(enc_data)
+
+        os.remove(src_path)
+    else:
+        print(f"=> Missing Key File: {key_file}")
+
+
+#

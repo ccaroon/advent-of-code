@@ -1,4 +1,5 @@
 from functools import cache
+
 from aoc.lib.puzzle import Puzzle
 
 
@@ -70,7 +71,7 @@ class Reactor(Puzzle):
 
     # input: path desc Ex: svr.fft.ggg.out
     # output: fft+dac+out counts
-    @cache
+    @cache  # noqa: B019
     def __trace_route(self, path, dac_count, fft_count, out_count):
         device_path = path.split(".")
         device = self.__devices[device_path[-1]]
@@ -99,7 +100,9 @@ class Reactor(Puzzle):
             if node.name != self.OUT:
                 # packet.start_device = node
                 # new_counts = dac_count * 1_000_000 + fft_count * 1000 + out_count * 1
-                path, dac_count, fft_count, out_count = self.__trace_route(f"{path}.{node.name}", dac_count, fft_count,out_count)
+                path, dac_count, fft_count, out_count = self.__trace_route(
+                    f"{path}.{node.name}", dac_count, fft_count, out_count
+                )
 
         if device.name == self.FFT:
             fft_count -= 1
@@ -115,7 +118,7 @@ class Reactor(Puzzle):
         # self.__trace_route(packet)
 
         # return packet.p1_out_count
-        path, dac_count, fft_count, out_count = self.__trace_route(self.P1_START, 0,0,0)
+        path, dac_count, fft_count, out_count = self.__trace_route(self.P1_START, 0, 0, 0)
 
         return out_count
 
@@ -127,11 +130,9 @@ class Reactor(Puzzle):
         # self.__trace_route(packet)
         # return packet.p2_out_count
         # --------------------------------------------------
-        path, dac_count, fft_count, out_count = self.__trace_route(self.P2_START, 0,0,0)
+        path, dac_count, fft_count, out_count = self.__trace_route(self.P2_START, 0, 0, 0)
 
         return out_count
-
-
 
 
 #
