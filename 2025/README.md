@@ -33,7 +33,7 @@ Theme: Finish decorating the North Pole by December 12th
 * [x] ⭐️⭐️ [Day 04 - Printing Department](./agoc/src/caroon.org/aoc25/day04/)
 * [ ] ⭐️🚫 [Day 05 - Cafeteria](./agoc/src/caroon.org/aoc25/day05/)
 * [x] ⭐️⭐️ [Day 06 - Trash Compactor](./agoc/src/caroon.org/aoc25/day06/)
-* [ ] ⭐️🚫 [Day 07 - Laboratories](./agoc/src/caroon.org/aoc25/day07/)
+* [x] ⭐️⭐️ [Day 07 - Laboratories](./agoc/src/caroon.org/aoc25/day07/)
 * [ ] ⭐️🚫 [Day 08 - Playground](./agoc/src/caroon.org/aoc25/day08/)
 * [ ] ⭐️🚫 [Day 09 - Movie Theater](./agoc/src/caroon.org/aoc25/day09/)
 * [ ] ⭐️🚫 [Day 10 - Factory](./agoc/src/caroon.org/aoc25/day10/)
