@@ -1,10 +1,11 @@
 package day07
 
 import (
-	"caroon.org/aoc25/shared/grid"
 	"fmt"
 	"slices"
 	"strings"
+
+	"caroon.org/aoc25/shared/grid"
 )
 
 const DayName string = "Day07"
@@ -14,7 +15,10 @@ const startMarker string = "S"
 const splitterMarker string = "^"
 const emptyMarker string = "."
 
-// const beamMarker string = "|"
+type Node struct {
+	marker string
+	loc    grid.Location
+}
 
 func solvePart1(tachyonManifold [][]string) int {
 	var splitCount int = 0
@@ -26,7 +30,7 @@ func solvePart1(tachyonManifold [][]string) int {
 	var beams map[grid.Location]bool = map[grid.Location]bool{}
 
 	startCol := slices.Index(tachyonManifold[0], startMarker)
-	startLoc := grid.Location{0, startCol}
+	startLoc := grid.Location{Row: 0, Col: startCol}
 	// Add the first beam to get started
 	beams[startLoc] = true
 
@@ -75,8 +79,56 @@ func solvePart1(tachyonManifold [][]string) int {
 	return splitCount
 }
 
+func traverseManifold(tachyonManifold [][]string, currNode Node, cache map[Node]int) int {
+	var timelines int = 0
+	newNodes := []Node{}
+
+	if cache[currNode] > 0 {
+		timelines = cache[currNode]
+	} else {
+		switch currNode.marker {
+		case startMarker:
+			fallthrough
+		case emptyMarker:
+			loc := currNode.loc.Nearby(grid.S)
+			marker := tachyonManifold[loc.Row][loc.Col]
+			node := Node{marker: marker, loc: loc}
+			newNodes = append(newNodes, node)
+		case splitterMarker:
+			timelines += 1
+			for _, direction := range []grid.Direction{grid.SE, grid.SW} {
+				loc := currNode.loc.Nearby(direction)
+				marker := tachyonManifold[loc.Row][loc.Col]
+				node := Node{marker: marker, loc: loc}
+				newNodes = append(newNodes, node)
+			}
+		}
+
+		for _, node := range newNodes {
+			if node.loc.Row < len(tachyonManifold)-1 {
+				timelines += traverseManifold(tachyonManifold, node, cache)
+			}
+		}
+		cache[currNode] = timelines
+	}
+
+	return timelines
+}
+
 func solvePart2(tachyonManifold [][]string) int {
-	return -42
+	// Start in current timeline ... of which there is 1
+	var timelines int = 1
+	// For memoization
+	var cache map[Node]int = make(map[Node]int)
+
+	startCol := slices.Index(tachyonManifold[0], startMarker)
+	startLoc := grid.Location{Row: 0, Col: startCol}
+	startNode := Node{marker: startMarker, loc: startLoc}
+
+	// cache -> to Memoize the traverseManfold function
+	timelines += traverseManifold(tachyonManifold, startNode, cache)
+
+	return timelines
 }
 
 func processInput(data []string) [][]string {
