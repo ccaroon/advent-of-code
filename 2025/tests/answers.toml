@@ -37,8 +37,8 @@ part2.answer = 10951882745757
 [day07]
 part1.example = 21
 part1.answer = 1622
-# part2.example = 40
-# part2.answer =
+part2.example = 40
+part2.answer = 10357305916520
 
 [day08]
 part1.example = 40

@@ -10,7 +10,7 @@ Theme: Finish decorating the North Pole by December 12th
 * [x] ⭐️⭐️ [Day 04 - Printing Department](./aoc/day04/README.md)
 * [ ] ⭐️🚫 [Day 05 - Cafeteria](./aoc/day05/README.md)
 * [x] ⭐️⭐️ [Day 06 - Trash Compactor](./aoc/day06/README.md)
-* [ ] ⭐️🚫 [Day 07 - Laboratories](./aoc/day07/README.md)
+* [x] ⭐️⭐️ [Day 07 - Laboratories](./aoc/day07/README.md)
 * [ ] 🚫🚫 [Day 08 - Playground](./aoc/day08/README.md)
 * [ ] ⭐️🚫 [Day 09 - Movie Theater](./aoc/day09/README.md)
 * [ ] ⭐️🚫 [Day 10 - Factory](./aoc/day10/README.md)
