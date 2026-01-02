@@ -36,7 +36,6 @@ class Laboratories(Puzzle):
     def __init__(self, input_file, **kwargs):
         super().__init__(input_file, **kwargs)
 
-        # list fo active beam positions
         self.__tachyon_grid = []
         self._read_input(self.__parse_input)
 
@@ -44,8 +43,6 @@ class Laboratories(Puzzle):
         start_c = self.__tachyon_grid[0].index(Node.TYPE_START)
         self.__start_loc = Location(start_r, start_c)
         self.__exit_row = len(self.__tachyon_grid) - 1
-
-        self.__counts = {"exits": 0, "timelines": 1}
 
     def __parse_input(self, line):
         self.__tachyon_grid.append(list(line))
@@ -92,7 +89,6 @@ class Laboratories(Puzzle):
 
     @cache  # noqa: B019
     def __traverse_manifold(self, curr_node):
-        # self._debug(curr_node)
         timelines = 0
         new_nodes = []
 
@@ -104,8 +100,7 @@ class Laboratories(Puzzle):
                 new_nodes.append(node)
             case Node.TYPE_SPLITTER:
                 timelines += 1
-                self.__counts["timelines"] += 1
-                self._debug(f"-> Timelines: {self.__counts["timelines"]}")
+                self._debug(f"-> Timelines: {timelines}")
                 for direction in (const.SE, const.SW):
                     loc = curr_node.loc.nearby(direction)
                     ntype = self.__tachyon_grid[loc.row][loc.col]
@@ -117,8 +112,6 @@ class Laboratories(Puzzle):
                 curr_node.add_path(node)
                 timelines += self.__traverse_manifold(node)
             else:
-                self.__counts["exits"] += 1
-                self._debug(f"-> Exits: {self.__counts["exits"]}")
                 self._debug(f"-> Exit at {node}")
 
         return timelines
@@ -127,12 +120,10 @@ class Laboratories(Puzzle):
         start_node = Node(Node.TYPE_START, self.__start_loc)
         self._debug(start_node)
 
+        # Start in the current timeline
         timelines = 1
+
+        # Also builds a tree of nodes, but it's not used
         timelines += self.__traverse_manifold(start_node)
 
-        # print(self.__counts)
-
         return timelines
-
-
-#
