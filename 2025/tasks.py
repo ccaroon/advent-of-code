@@ -64,10 +64,16 @@ def run(_, day, part, *, test=False, debug=False, arg=None):
             else:
                 kwargs[arg] = True
 
-        input_type = "example" if test else "input"
-        input_file = f"{INPUT_DIR}/{day_name}-{input_type}.txt"
+        input_file = f"{day_name}-input.txt"
+        if test:
+            prefix = f"p{part}"
+            # look for part specific input file
+            input_file = f"{day_name}-{prefix}-example.txt"
+            if not os.path.exists(f"{INPUT_DIR}/{input_file}"):
+                # if not exist, use non-prefixed (shared) example input file
+                input_file = f"{day_name}-example.txt"
 
-        puzzle = puzzle_class(input_file, **kwargs)
+        puzzle = puzzle_class(f"{INPUT_DIR}/{input_file}", **kwargs)
         puzzle.main(part=int(part))
 
 

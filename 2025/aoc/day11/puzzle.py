@@ -25,13 +25,38 @@ class Device:
 
 
 class Packet:
-    def __init__(self, start_device):
-        self.start_device = start_device
-        self.p1_out_count = 0
-        self.p2_out_count = 0
-        # self.path = [start_device.name]
+    # Trace Type 1 & 2 i.e. part1 or part2
+    TT1 = 1
+    TT2 = 2
+
+    def __init__(self, path, trace_type=TT1):
+        self.__path = path
         self.dac_count = 0
         self.fft_count = 0
+        self.__trace_type = trace_type
+
+    @property
+    def path(self):
+        return self.__path
+
+    @property
+    def trace_type(self):
+        return self.__trace_type
+
+    def __len__(self):
+        return len(self.path.split("."))
+
+    def __eq__(self, other):
+        return self.path == other.path
+
+    def __hash__(self):
+        return hash(self.path)
+
+    def __repr__(self):
+        return f"Packet({self.path},{self.trace_type})"
+
+    def __str__(self):
+        return f"{self.path} -> DAC:{self.dac_count} | FFT:{self.fft_count}"
 
 
 class Reactor(Puzzle):
@@ -69,70 +94,55 @@ class Reactor(Puzzle):
 
             device.add_output(output)
 
-    # input: path desc Ex: svr.fft.ggg.out
-    # output: fft+dac+out counts
     @cache  # noqa: B019
-    def __trace_route(self, path, dac_count, fft_count, out_count):
-        device_path = path.split(".")
+    def __trace_route(self, packet):
+        self._debug(f"Enter -> {packet}")
+        device_path = packet.path.split(".")
         device = self.__devices[device_path[-1]]
-        # decode counts
-        # dac_count = counts // 1_000_000
-        # fft_count = counts % 1_000_000 // 1_000
-        # out_count = counts % 1_000
 
-        self._debug(f"Enter -> {device}")
+        dac_count = packet.dac_count
+        fft_count = packet.fft_count
+        out_count = 0
+
         for node in device.outputs:
-            self._debug(f"  -> {path}.{node.name}")
-
             match node.name:
                 case self.OUT:
-                    self._debug("  -> OUT")
-                    out_count += 1
-
-                    # if dac_count > 0 and fft_count > 0:
-                    #     # TODO: Part 2 out count
-                    #     out_count += 1
+                    if packet.trace_type == Packet.TT1:
+                        out_count += 1
+                    elif packet.trace_type == Packet.TT2:  # noqa: SIM102
+                        if dac_count > 0 and fft_count > 0:
+                            out_count += 1
+                    self._debug(f"  -> OUT: {packet}")
                 case self.DAC:
                     dac_count += 1
+                    self._debug(f"  -> DAC: {packet}")
                 case self.FFT:
                     fft_count += 1
+                    self._debug(f"  -> FFT: {packet}")
 
             if node.name != self.OUT:
-                # packet.start_device = node
-                # new_counts = dac_count * 1_000_000 + fft_count * 1000 + out_count * 1
-                path, dac_count, fft_count, out_count = self.__trace_route(
-                    f"{path}.{node.name}", dac_count, fft_count, out_count
-                )
+                new_packet = Packet(f"{packet.path}.{node.name}", packet.trace_type)
+                new_packet.dac_count = dac_count
+                new_packet.fft_count = fft_count
+                out_count += self.__trace_route(new_packet)
 
-        if device.name == self.FFT:
-            fft_count -= 1
-        elif device.name == self.DAC:
-            dac_count -= 1
-
-        self._debug(f"Exit -> {device}")
-
-        return path, dac_count, fft_count, out_count
-
-    def _part1(self):
-        # packet = Packet(self.__devices[self.P1_START])
-        # self.__trace_route(packet)
-
-        # return packet.p1_out_count
-        path, dac_count, fft_count, out_count = self.__trace_route(self.P1_START, 0, 0, 0)
+        self._debug(f"Exit -> {packet} | OUT:{out_count}")
 
         return out_count
+
+    def _part1(self):
+        packet = Packet(self.P1_START)
+        out_count = self.__trace_route(packet)
+
+        return out_count  # noqa: RET504
 
     def _part2(self):
         # Find all of the paths that lead from `svr`` to out.
         # How many of those paths visit both `dac` and `fft`?
-        # --------------------------------------------------
-        # packet = Packet(self.__devices[self.P2_START])
-        # self.__trace_route(packet)
-        # return packet.p2_out_count
-        # --------------------------------------------------
-        path, dac_count, fft_count, out_count = self.__trace_route(self.P2_START, 0, 0, 0)
+        packet = Packet(self.P2_START, Packet.TT2)
+        out_count = self.__trace_route(packet)
 
-        return out_count
+        return out_count  # noqa: RET504
 
 
 #
