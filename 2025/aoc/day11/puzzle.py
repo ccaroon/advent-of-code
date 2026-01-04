@@ -1,5 +1,3 @@
-from functools import cache
-
 from aoc.lib.puzzle import Puzzle
 
 
@@ -94,7 +92,7 @@ class Reactor(Puzzle):
 
             device.add_output(output)
 
-    # @cache  # noqa: B019
+    # @cache
     # NEVER SEE THE SAME PATH MORE THAN ONCE ... so caching is not effective
     def __trace_route(self, packet, cache):
         self._debug(f"Enter -> {packet}")
