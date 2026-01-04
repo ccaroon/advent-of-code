@@ -94,45 +94,55 @@ class Reactor(Puzzle):
 
             device.add_output(output)
 
-    @cache  # noqa: B019
-    def __trace_route(self, packet):
+    # @cache  # noqa: B019
+    # NEVER SEE THE SAME PATH MORE THAN ONCE ... so caching is not effective
+    def __trace_route(self, packet, cache):
         self._debug(f"Enter -> {packet}")
-        device_path = packet.path.split(".")
-        device = self.__devices[device_path[-1]]
 
-        dac_count = packet.dac_count
-        fft_count = packet.fft_count
-        out_count = 0
+        out_count = cache.get(packet.path)
+        if out_count is None:
+            device_path = packet.path.split(".")
+            device = self.__devices[device_path[-1]]
 
-        for node in device.outputs:
-            match node.name:
-                case self.OUT:
-                    if packet.trace_type == Packet.TT1:
-                        out_count += 1
-                    elif packet.trace_type == Packet.TT2:  # noqa: SIM102
-                        if dac_count > 0 and fft_count > 0:
+            dac_count = packet.dac_count
+            fft_count = packet.fft_count
+            out_count = 0
+
+            for node in device.outputs:
+                match node.name:
+                    case self.OUT:
+                        if packet.trace_type == Packet.TT1:
                             out_count += 1
-                    self._debug(f"  -> OUT: {packet}")
-                case self.DAC:
-                    dac_count += 1
-                    self._debug(f"  -> DAC: {packet}")
-                case self.FFT:
-                    fft_count += 1
-                    self._debug(f"  -> FFT: {packet}")
+                        elif packet.trace_type == Packet.TT2:  # noqa: SIM102
+                            if dac_count > 0 and fft_count > 0:
+                                out_count += 1
+                        self._debug(f"  -> OUT: {packet}")
+                    case self.DAC:
+                        dac_count += 1
+                        self._debug(f"  -> DAC: {packet}")
+                    case self.FFT:
+                        fft_count += 1
+                        self._debug(f"  -> FFT: {packet}")
 
-            if node.name != self.OUT:
-                new_packet = Packet(f"{packet.path}.{node.name}", packet.trace_type)
-                new_packet.dac_count = dac_count
-                new_packet.fft_count = fft_count
-                out_count += self.__trace_route(new_packet)
+                if node.name != self.OUT:
+                    new_packet = Packet(f"{packet.path}.{node.name}", packet.trace_type)
+                    new_packet.dac_count = dac_count
+                    new_packet.fft_count = fft_count
+                    out_count += self.__trace_route(new_packet, cache)
 
-        self._debug(f"Exit -> {packet} | OUT:{out_count}")
+            self._debug(f"Exit -> {packet} | OUT:{out_count}")
+
+            print(f"{packet.path} => {out_count}")
+            cache[packet.path] = out_count
+        else:
+            print(f"Cache Hit {packet.path}")
 
         return out_count
 
     def _part1(self):
         packet = Packet(self.P1_START)
-        out_count = self.__trace_route(packet)
+        cache = {}
+        out_count = self.__trace_route(packet, cache)
 
         return out_count  # noqa: RET504
 
@@ -140,7 +150,8 @@ class Reactor(Puzzle):
         # Find all of the paths that lead from `svr`` to out.
         # How many of those paths visit both `dac` and `fft`?
         packet = Packet(self.P2_START, Packet.TT2)
-        out_count = self.__trace_route(packet)
+        cache = {}
+        out_count = self.__trace_route(packet, cache)
 
         return out_count  # noqa: RET504
 
