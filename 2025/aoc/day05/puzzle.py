@@ -116,6 +116,3 @@ class Cafeteria(Puzzle):
             fresh_iids += count
 
         return fresh_iids
-
-
-#

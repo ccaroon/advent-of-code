@@ -103,5 +103,3 @@ class IngredientRange:
             overlap_count += (self.end - other.start) + 1
 
         return overlap_count
-
-    #

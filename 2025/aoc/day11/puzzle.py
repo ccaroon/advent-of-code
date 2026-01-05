@@ -152,6 +152,3 @@ class Reactor(Puzzle):
         out_count = self.__trace_route(packet, cache)
 
         return out_count  # noqa: RET504
-
-
-#

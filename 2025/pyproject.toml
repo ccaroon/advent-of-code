@@ -7,7 +7,10 @@ name = "advent-of-code"
 version = "2025.12"
 readme = "README.md"
 # dynamic = ["version"]
-dependencies = ["invoke ~= 2.2"]
+dependencies = [
+    "invoke ~= 2.2",
+    "cryptography ~= 46.0"
+]
 
 # [tool.hatch.version]
 # path = "aoc/version.py"

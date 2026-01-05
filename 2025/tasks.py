@@ -139,6 +139,3 @@ def __read_enc_key():
         enc_key = fptr.read()
 
     return enc_key  # noqa: RET504
-
-
-#

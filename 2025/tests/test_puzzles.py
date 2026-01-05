@@ -110,6 +110,3 @@ class TestDay12(PuzzleTestCase):
 
     def setUp(self):
         return super().setUp()
-
-
-#
