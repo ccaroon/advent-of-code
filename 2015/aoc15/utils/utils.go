@@ -1,8 +1,7 @@
-package shared
+package utils
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 )
 
@@ -24,13 +23,4 @@ func ReadInputFile(filename string) []string {
 	}
 
 	return data
-}
-
-func PrintAnswer(answer int) {
-	aSpec := `
-----------------------------------------------------
-Answer: %d
-----------------------------------------------------
-			`
-	fmt.Printf(aSpec, answer)
 }
