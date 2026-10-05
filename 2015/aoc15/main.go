@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"aoc15/day01"
+	"aoc15/day02"
 	"aoc15/puzzle"
 	"aoc15/utils"
 )
@@ -35,12 +36,14 @@ func main() {
 		switch dayNum {
 		case 1:
 			puzzle, err = day01.Solve(partNum, input)
+		case 2:
+			puzzle, err = day02.Solve(partNum, input)
 		default:
 			err = fmt.Errorf("Unknown/Unimplemented Day [%d]\n", dayNum)
 		}
 
 		if err != nil {
-			fmt.Printf("Error: %s", err)
+			fmt.Printf("Error: %s\n", err)
 		} else {
 			var testIndicator string
 			if strings.Index(inputFileName, "test-") == 0 {
