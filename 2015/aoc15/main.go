@@ -8,6 +8,7 @@ import (
 
 	"aoc15/day01"
 	"aoc15/day02"
+	"aoc15/day03"
 	"aoc15/puzzle"
 	"aoc15/utils"
 )
@@ -32,12 +33,20 @@ func main() {
 		inputFileName := os.Args[3]
 		input := utils.ReadInputFile(inputFileName)
 
-		var puzzle *puzzle.Puzzle
+		var pzzle puzzle.Puzzle
 		switch dayNum {
 		case 1:
-			puzzle, err = day01.Solve(partNum, input)
+			day := day01.New(partNum, input)
+			err = puzzle.Solve(day)
+			pzzle = puzzle.Puzzle(*day)
 		case 2:
-			puzzle, err = day02.Solve(partNum, input)
+			day := day02.New(partNum, input)
+			err = puzzle.Solve(day)
+			pzzle = puzzle.Puzzle(*day)
+		case 3:
+			day := day03.New(partNum, input)
+			err = puzzle.Solve(day)
+			pzzle = puzzle.Puzzle(*day)
 		default:
 			err = fmt.Errorf("Unknown/Unimplemented Day [%d]\n", dayNum)
 		}
@@ -53,8 +62,8 @@ func main() {
 			fmt.Println("+------------------------------------------------+")
 			fmt.Println("|         *** Advent of Code - 2015 ***          |")
 			fmt.Println("+------------------------------------------------+")
-			fmt.Printf("| Day #%d / <%s> / Part #%d\n", puzzle.Day, puzzle.Title, puzzle.Part)
-			fmt.Printf("| Answer: [%d] %s\n", puzzle.Answer, testIndicator)
+			fmt.Printf("| Day #%d / <%s> / Part #%d\n", pzzle.Day, pzzle.Title, pzzle.Part)
+			fmt.Printf("| Answer: [%d] %s\n", pzzle.Answer, testIndicator)
 			fmt.Println("+------------------------------------------------+")
 		}
 	}

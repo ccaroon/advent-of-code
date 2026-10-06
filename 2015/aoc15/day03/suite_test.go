@@ -1,4 +1,4 @@
-package day01_test
+package day03_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestDay01(t *testing.T) {
+func TestSuite(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Day01 Suite")
+	RunSpecs(t, "Day03 Suite")
 }

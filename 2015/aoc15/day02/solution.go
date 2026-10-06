@@ -1,22 +1,10 @@
 package day02
 
 import (
-	"aoc15/puzzle"
 	"slices"
 	"strconv"
 	"strings"
 )
-
-type Day02 puzzle.Puzzle
-
-func New(part int, input []string) *Day02 {
-	return &Day02{
-		Title: "I Was Told There Would Be No Math",
-		Day:   2,
-		Part:  part,
-		Input: input,
-	}
-}
 
 func area(l, w int) int {
 	return l * w
@@ -42,7 +30,7 @@ func parseSize(size string) []int {
 	return dims
 }
 
-func (day *Day02) solvePart1() error {
+func (day *Day02) SolvePart1() error {
 	for _, size := range day.Input {
 		dims := parseSize(size)
 
@@ -55,7 +43,7 @@ func (day *Day02) solvePart1() error {
 	return nil
 }
 
-func (day *Day02) solvePart2() error {
+func (day *Day02) SolvePart2() error {
 	for _, size := range day.Input {
 		dims := parseSize(size)
 
@@ -66,20 +54,4 @@ func (day *Day02) solvePart2() error {
 	}
 
 	return nil
-}
-
-func Solve(part int, input []string) (*puzzle.Puzzle, error) {
-	var err error
-
-	day := New(part, input)
-
-	if day.Part == 1 {
-		err = day.solvePart1()
-	} else if day.Part == 2 {
-		err = day.solvePart2()
-	}
-
-	puzzle := puzzle.Puzzle(*day)
-
-	return &puzzle, err
 }

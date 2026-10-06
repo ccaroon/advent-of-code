@@ -12,17 +12,19 @@ var _ = Describe("Day01", func() {
 
 	It("Part1", func() {
 		input := utils.ReadInputFile("data/p1-ex1.data")
-		puzzle, err := day01.Solve(1, input)
+		day := day01.New(1, input)
+		err := day.SolvePart1()
 
 		Expect(err).To(BeNil())
-		Expect(puzzle.Answer).To(Equal(3))
+		Expect(day.Answer).To(Equal(3))
 	})
 
 	It("Part2", func() {
 		input := utils.ReadInputFile("data/p2-ex1.data")
-		puzzle, err := day01.Solve(2, input)
+		day := day01.New(2, input)
+		err := day.SolvePart2()
 
 		Expect(err).To(BeNil())
-		Expect(puzzle.Answer).To(Equal(5))
+		Expect(day.Answer).To(Equal(5))
 	})
 })

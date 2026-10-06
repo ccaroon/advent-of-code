@@ -1,23 +1,11 @@
 package day01
 
 import (
-	"aoc15/puzzle"
 	"fmt"
 	"strings"
 )
 
-type Day01 puzzle.Puzzle
-
-func New(part int, input []string) *Day01 {
-	return &Day01{
-		Title: "Not Quite LISP",
-		Day:   1,
-		Part:  part,
-		Input: input,
-	}
-}
-
-func (day *Day01) solvePart1() error {
+func (day *Day01) SolvePart1() error {
 	floor := 0
 	directions := strings.Join(day.Input, "")
 	numDirs := len(directions)
@@ -37,7 +25,7 @@ func (day *Day01) solvePart1() error {
 	return nil
 }
 
-func (day *Day01) solvePart2() error {
+func (day *Day01) SolvePart2() error {
 	var basementPos int
 
 	floor := 0
@@ -61,20 +49,4 @@ func (day *Day01) solvePart2() error {
 
 	day.Answer = basementPos
 	return nil
-}
-
-func Solve(part int, input []string) (*puzzle.Puzzle, error) {
-	var err error
-
-	day := New(part, input)
-
-	if day.Part == 1 {
-		err = day.solvePart1()
-	} else if day.Part == 2 {
-		err = day.solvePart2()
-	}
-
-	puzzle := puzzle.Puzzle(*day)
-
-	return &puzzle, err
 }

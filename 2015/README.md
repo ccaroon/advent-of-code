@@ -4,8 +4,12 @@ https://adventofcode.com/2015
 Theme: Fix Santa's Snow Machine
 
 ## Go
-* [x] ⭐️⭐️ [Day 01: Not Quite Lisp](./aoc15/day01/)
-* [x] ⭐️⭐️ [Day 02: I Was Told There Would Be No Math](./aoc15/day02/)
+⭐️🚫
+
+* [x] ⭐️⭐️ [Day 01: Not Quite Lisp](./aoc15/day01)
+* [x] ⭐️⭐️ [Day 02: I Was Told There Would Be No Math](./aoc15/day02)
+* [x] ⭐️🚫 [Day 03: Perfectly Spherical Houses in a Vacuum](./aoc15/day02)
+
 
 
 ### Development

@@ -12,10 +12,11 @@ var _ = Describe("Day02", func() {
 
 	DescribeTable("Part1", func(inputFile string, expectedValue int) {
 		input := utils.ReadInputFile(inputFile)
-		puzzle, err := day02.Solve(1, input)
+		day := day02.New(1, input)
+		err := day.SolvePart1()
 
 		Expect(err).To(BeNil())
-		Expect(puzzle.Answer).To(Equal(expectedValue))
+		Expect(day.Answer).To(Equal(expectedValue))
 	},
 
 		Entry(nil, "data/part1/example1.data", 58),
@@ -25,14 +26,15 @@ var _ = Describe("Day02", func() {
 
 	DescribeTable("Part2", func(inputFile string, expectedValue int) {
 		input := utils.ReadInputFile(inputFile)
-		puzzle, err := day02.Solve(2, input)
+		day := day02.New(2, input)
+		err := day.SolvePart2()
 
 		Expect(err).To(BeNil())
-		Expect(puzzle.Answer).To(Equal(expectedValue))
+		Expect(day.Answer).To(Equal(expectedValue))
 	},
 
-		Entry(nil, "data/part1/example1.data", 34),
-		Entry(nil, "data/part1/example2.data", 14),
-		Entry(nil, "data/part1/example3.data", 48),
+		Entry(nil, "data/part2/example1.data", 34),
+		Entry(nil, "data/part2/example2.data", 14),
+		Entry(nil, "data/part2/example3.data", 48),
 	)
 })
