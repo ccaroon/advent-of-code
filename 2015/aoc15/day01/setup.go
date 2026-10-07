@@ -6,7 +6,7 @@ type Day01 puzzle.Puzzle
 
 const (
 	title  = "Not Quite LISP"
-	dayNum = 01
+	dayNum = 1
 )
 
 func New(part int, input []string) *Day01 {

@@ -6,7 +6,7 @@ type Day03 puzzle.Puzzle
 
 const (
 	title  = "Perfectly Spherical Houses in a Vacuum"
-	dayNum = 03
+	dayNum = 3
 )
 
 func New(part int, input []string) *Day03 {

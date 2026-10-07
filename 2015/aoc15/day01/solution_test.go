@@ -11,7 +11,7 @@ import (
 var _ = Describe("Day01", func() {
 
 	It("Part1", func() {
-		input := utils.ReadInputFile("data/p1-ex1.data")
+		input := utils.ReadInputFile("data/part1/example1.data")
 		day := day01.New(1, input)
 		err := day.SolvePart1()
 
@@ -20,7 +20,7 @@ var _ = Describe("Day01", func() {
 	})
 
 	It("Part2", func() {
-		input := utils.ReadInputFile("data/p2-ex1.data")
+		input := utils.ReadInputFile("data/part2/example1.data")
 		day := day01.New(2, input)
 		err := day.SolvePart2()
 

@@ -6,7 +6,7 @@ type Day02 puzzle.Puzzle
 
 const (
 	title  = "I Was Told There Would Be No Math"
-	dayNum = 02
+	dayNum = 2
 )
 
 func New(part int, input []string) *Day02 {

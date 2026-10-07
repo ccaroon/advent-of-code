@@ -3,12 +3,14 @@ package main
 import (
 	"fmt"
 	"os"
+	"path"
 	"strconv"
 	"strings"
 
 	"aoc15/day01"
 	"aoc15/day02"
 	"aoc15/day03"
+	"aoc15/day04"
 	"aoc15/puzzle"
 	"aoc15/utils"
 )
@@ -47,6 +49,10 @@ func main() {
 			day := day03.New(partNum, input)
 			err = puzzle.Solve(day)
 			pzzle = puzzle.Puzzle(*day)
+		case 4:
+			day := day04.New(partNum, input)
+			err = puzzle.Solve(day)
+			pzzle = puzzle.Puzzle(*day)
 		default:
 			err = fmt.Errorf("Unknown/Unimplemented Day [%d]\n", dayNum)
 		}
@@ -55,8 +61,8 @@ func main() {
 			fmt.Printf("Error: %s\n", err)
 		} else {
 			var testIndicator string
-			if strings.Index(inputFileName, "test-") == 0 {
-				testIndicator = "(TEST)"
+			if strings.HasPrefix(path.Base(inputFileName), "example") {
+				testIndicator = "(EXAMPLE)"
 			}
 
 			fmt.Println("+------------------------------------------------+")
