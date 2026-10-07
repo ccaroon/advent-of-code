@@ -33,6 +33,8 @@ var _ = Describe("Day03", func() {
 		Expect(day.Answer).To(Equal(expectedValue))
 	},
 
-		Entry(nil, "data/part2/example1.data", 00),
+		Entry(nil, "data/part2/example1.data", 3),
+		Entry(nil, "data/part2/example2.data", 3),
+		Entry(nil, "data/part2/example3.data", 11),
 	)
 })
