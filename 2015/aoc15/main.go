@@ -11,6 +11,7 @@ import (
 	"aoc15/day02"
 	"aoc15/day03"
 	"aoc15/day04"
+	"aoc15/day05"
 	"aoc15/puzzle"
 	"aoc15/utils"
 )
@@ -53,6 +54,10 @@ func main() {
 			day := day04.New(partNum, input)
 			err = puzzle.Solve(day)
 			pzzle = puzzle.Puzzle(*day)
+		case 5:
+			day := day05.New(partNum, input)
+			err = puzzle.Solve(day)
+			pzzle = puzzle.Puzzle(*day)
 		default:
 			err = fmt.Errorf("Unknown/Unimplemented Day [%d]\n", dayNum)
 		}
@@ -67,8 +72,9 @@ func main() {
 
 			fmt.Println("+------------------------------------------------+")
 			fmt.Println("|         *** Advent of Code - 2015 ***          |")
+			fmt.Printf("|               Day #%02d / Part #%d                |\n", pzzle.Day, pzzle.Part)
 			fmt.Println("+------------------------------------------------+")
-			fmt.Printf("| Day #%d / <%s> / Part #%d\n", pzzle.Day, pzzle.Title, pzzle.Part)
+			fmt.Printf("| '%s'\n", pzzle.Title)
 			fmt.Printf("| Answer: [%d] %s\n", pzzle.Answer, testIndicator)
 			fmt.Println("+------------------------------------------------+")
 		}
