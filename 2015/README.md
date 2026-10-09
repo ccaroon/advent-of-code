@@ -11,6 +11,7 @@ Icons: [⭐️🚫]
 * [x] ⭐️⭐️ [Day 03: Perfectly Spherical Houses in a Vacuum](./aoc15/day03)
 * [x] ⭐️⭐️ [Day 04: The Ideal Stocking Stuffer](./aoc15/day04)
 * [x] ⭐️⭐️ [Day 05: Doesn't He Have Intern-Elves For This?](./aoc15/day05)
+* [ ] ⭐️🚫 [Day 06: Probably a Fire Hazard](./aoc15/day06)
 
 ### Development
 Code lives in the `aoc15` go module.
