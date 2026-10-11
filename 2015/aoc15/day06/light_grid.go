@@ -6,34 +6,38 @@ type Coord struct {
 }
 
 const (
-	ON  = true
-	OFF = false
+	ON  = 1
+	OFF = 0
 )
 
-type LightGrid struct {
+type LightType interface {
+	int8 | int16
+}
+
+type LightGrid[LT LightType] struct {
 	numRows int
 	numCols int
-	lights  []bool
+	lights  []LT
 }
 
-func NewLightGrid(rows, cols int) *LightGrid {
-	return &LightGrid{
+func NewLightGrid[LT LightType](rows, cols int) *LightGrid[LT] {
+	return &LightGrid[LT]{
 		numRows: rows,
 		numCols: cols,
-		lights:  make([]bool, rows*cols),
+		lights:  make([]LT, rows*cols),
 	}
 }
 
-func (lg *LightGrid) idxToCoord(idx int) Coord {
-	var coord Coord
+// func (lg *LightGrid) idxToCoord(idx int) Coord {
+// 	var coord Coord
 
-	coord.X = idx % lg.numCols
-	coord.Y = (idx - coord.X) / lg.numCols
+// 	coord.X = idx % lg.numCols
+// 	coord.Y = (idx - coord.X) / lg.numCols
 
-	return coord
-}
+// 	return coord
+// }
 
-func (lg *LightGrid) SetRange(topLeft, btmRight Coord, value bool) {
+func (lg *LightGrid[LT]) SetRange(topLeft, btmRight Coord, value LT) {
 	startX := topLeft.X
 	endX := btmRight.X
 	startY := topLeft.Y
@@ -43,39 +47,61 @@ func (lg *LightGrid) SetRange(topLeft, btmRight Coord, value bool) {
 		for x := startX; x <= endX; x += 1 {
 			// Convert X,Y to Array index
 			idx := (y * lg.numCols) + x
-			lg.lights[idx] = value
-		}
-	}
-}
 
-func (lg *LightGrid) ToggleRange(topLeft, btmRight Coord) {
-	startX := topLeft.X
-	endX := btmRight.X
-	startY := topLeft.Y
-	endY := btmRight.Y
-
-	for y := startY; y <= endY; y += 1 {
-		for x := startX; x <= endX; x += 1 {
-			// Convert X,Y to Array index
-			idx := (y * lg.numCols) + x
-			if lg.lights[idx] == ON {
-				lg.lights[idx] = OFF
-			} else {
-				lg.lights[idx] = ON
+			switch v := any(value).(type) {
+			case int8:
+				lg.lights[idx] = value
+			case int16:
+				if value == OFF && lg.lights[idx] > 0 {
+					lg.lights[idx] -= 1
+				} else {
+					lg.lights[idx] += 1 
+				}
+			default:
+				_ = v
 			}
+
 		}
 	}
 }
 
-func (lg *LightGrid) On(topLeft, btmRight Coord) {
+func (lg *LightGrid[LT]) ToggleRange(topLeft, btmRight Coord) {
+	startX := topLeft.X
+	endX := btmRight.X
+	startY := topLeft.Y
+	endY := btmRight.Y
+
+	for y := startY; y <= endY; y += 1 {
+		for x := startX; x <= endX; x += 1 {
+			// Convert X,Y to Array index
+			idx := (y * lg.numCols) + x
+
+			switch v := any(lg.lights[0]).(type) {
+			case int8:
+				if lg.lights[idx] == ON {
+					lg.lights[idx] = OFF
+				} else {
+					lg.lights[idx] = ON
+				}
+			case int16:
+				lg.lights[idx] += 2
+			default:
+				_ = v
+			}
+
+		}
+	}
+}
+
+func (lg *LightGrid[LT]) On(topLeft, btmRight Coord) {
 	lg.SetRange(topLeft, btmRight, ON)
 }
 
-func (lg *LightGrid) Off(topLeft, btmRight Coord) {
+func (lg *LightGrid[LT]) Off(topLeft, btmRight Coord) {
 	lg.SetRange(topLeft, btmRight, OFF)
 }
 
-func (lg *LightGrid) CountOn() int {
+func (lg *LightGrid[LT]) CountOn() int {
 	var onCount int = 0
 	var numLights int = lg.numRows * lg.numCols
 
@@ -86,4 +112,16 @@ func (lg *LightGrid) CountOn() int {
 	}
 
 	return onCount
+}
+
+func (lg *LightGrid[LT]) GetBrightness() int {
+	var totalBrightness int = 0
+	var numLights int = lg.numRows * lg.numCols
+
+	for idx := 0; idx < numLights; idx += 1 {
+		totalBrightness += int(lg.lights[idx])
+
+	}
+
+	return totalBrightness
 }

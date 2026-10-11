@@ -1,9 +1,7 @@
 package day06
 
-import "fmt"
-
 func (day *Day06) SolvePart1() error {
-	lightGrid := NewLightGrid(1000, 1000)
+	lightGrid := NewLightGrid[int8](1000, 1000)
 
 	for _, input := range day.Input {
 		instr := ParseInstruction(input)
@@ -23,6 +21,24 @@ func (day *Day06) SolvePart1() error {
 	return nil
 }
 
+// 15706847 -- too high
 func (day *Day06) SolvePart2() error {
-	return fmt.Errorf("Day #06 - Part 2 - Not implemented!")
+	lightGrid := NewLightGrid[int16](1000, 1000)
+
+	for _, input := range day.Input {
+		instr := ParseInstruction(input)
+
+		switch instr.Operation {
+		case TurnOff:
+			lightGrid.Off(instr.TopLeft, instr.BtmRight)
+		case TurnOn:
+			lightGrid.On(instr.TopLeft, instr.BtmRight)
+		case Toggle:
+			lightGrid.ToggleRange(instr.TopLeft, instr.BtmRight)
+		}
+	}
+
+	day.Answer = lightGrid.GetBrightness()
+
+	return nil
 }
