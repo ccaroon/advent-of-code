@@ -1,0 +1,11 @@
+# Tests each operation
+123 -> a
+456 -> b
+a AND b -> c
+a OR b -> d
+a RSHIFT 2 -> e
+b LSHIFT 2 -> f
+NOT a -> g
+NOT b -> h
+a -> z
+b -> zz

@@ -19,7 +19,7 @@ var _ = Describe("Day0X", func() {
 		Expect(day.Answer).To(Equal(expectedValue))
 	},
 
-		Entry(nil, "data/part1/example1.data", 00),
+		Entry(nil, "data/part1/example1.data", 0),
 	)
 
 	DescribeTable("Part2", func(inputFile string, expectedValue int) {
@@ -31,6 +31,6 @@ var _ = Describe("Day0X", func() {
 		Expect(day.Answer).To(Equal(expectedValue))
 	},
 
-		Entry(nil, "data/part2/example1.data", 00),
+		Entry(nil, "data/part2/example1.data", 0),
 	)
 })
