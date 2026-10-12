@@ -1,5 +1,7 @@
 package day06
 
+// var logger = log.Default()
+
 func (day *Day06) SolvePart1() error {
 	lightGrid := NewLightGrid[int8](1000, 1000)
 
@@ -21,7 +23,6 @@ func (day *Day06) SolvePart1() error {
 	return nil
 }
 
-// 15706847 -- too high
 func (day *Day06) SolvePart2() error {
 	lightGrid := NewLightGrid[int16](1000, 1000)
 

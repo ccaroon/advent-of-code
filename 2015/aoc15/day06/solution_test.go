@@ -57,5 +57,6 @@ var _ = Describe("Day06", func() {
 
 		Entry(nil, "data/part2/example1.data", 1),
 		Entry(nil, "data/part2/example2.data", 2_000_000),
+		Entry(nil, "data/part2/example3.data", 0),
 	)
 })

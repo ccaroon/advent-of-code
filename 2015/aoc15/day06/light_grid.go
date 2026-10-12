@@ -52,13 +52,13 @@ func (lg *LightGrid[LT]) SetRange(topLeft, btmRight Coord, value LT) {
 			case int8:
 				lg.lights[idx] = value
 			case int16:
-				if value == OFF && lg.lights[idx] > 0 {
+				if value == ON {
+					lg.lights[idx] += 1
+				} else if value == OFF && lg.lights[idx] > 0 {
 					lg.lights[idx] -= 1
-				} else {
-					lg.lights[idx] += 1 
 				}
 			default:
-				_ = v
+				panic(v)
 			}
 
 		}
@@ -86,7 +86,7 @@ func (lg *LightGrid[LT]) ToggleRange(topLeft, btmRight Coord) {
 			case int16:
 				lg.lights[idx] += 2
 			default:
-				_ = v
+				panic(v)
 			}
 
 		}
