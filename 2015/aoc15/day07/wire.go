@@ -7,9 +7,10 @@ import (
 )
 
 type Wire struct {
-	id     string
-	Signal uint16
-	Inst   *Instruction
+	id       string
+	Signal   uint16
+	resolved bool
+	Inst     *Instruction
 }
 
 func NewWire(id string) *Wire {
@@ -67,7 +68,7 @@ func (w *Wire) Id() string {
 func (w *Wire) Resolve() {
 	var inst *Instruction = w.Inst
 
-	if inst != nil {
+	if inst != nil && w.resolved == false {
 		if inst.input1 != nil {
 			inst.input1.Resolve()
 		}
@@ -78,11 +79,14 @@ func (w *Wire) Resolve() {
 
 		_ = inst.Exec()
 
-		// Set instructions to resolve signal to nil to signify
-		// that this wire has already been resolved. No need to
+		// Mark the wire as having it's signal resolved. No need to
 		// resolve it / calculate the value again.
-		w.Inst = nil
+		w.resolved = true
 	}
+}
+
+func (w *Wire) Reset() {
+	w.resolved = false
 }
 
 func (w *Wire) String() string {

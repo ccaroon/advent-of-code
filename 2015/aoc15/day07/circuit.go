@@ -73,6 +73,12 @@ func (circuit Circuit) Build(input string) error {
 	return nil
 }
 
+func (circuit Circuit) Reset() {
+	for _, wire := range circuit {
+		wire.Reset()
+	}
+}
+
 func (circuit Circuit) String() string {
 	var output string
 	for _, wire := range circuit {
