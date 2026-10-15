@@ -21,16 +21,21 @@ var _ = Describe("Day07", func() {
 		err := day.SolvePart1()
 
 		Expect(err).To(BeNil())
-		// Expect(day.Answer).To(Equal(expectedValue))
+		// Expect(day07.MainCircuit).ToNot(BeEmpty())
+		// fmt.Println(day07.MainCircuit)
+		// Expect(day.Answer).To(Equal(42))
 
 		for _, eValue := range expectedValues {
-			Expect(day07.FindWire(eValue.id).Signal).To(Equal(eValue.expected))
+			wire := day07.MainCircuit.FindWire(eValue.id)
+			wire.Resolve()
+			Expect(wire.Signal).To(Equal(eValue.expected))
 		}
 	},
 		// Don't care about day.Answer | expectedValue
 		Entry(nil,
 			"data/part1/example1.data",
 			[]EV{
+				EV{"a", 42},
 				EV{"d", 72},
 				EV{"e", 507},
 				EV{"f", 492},

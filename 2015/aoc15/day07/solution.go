@@ -2,20 +2,21 @@ package day07
 
 import "fmt"
 
-func (day *Day07) SolvePart1() error {
-	for _, input := range day.Input {
-		inst, err := parseInstruction(input)
-		if err != nil {
-			return err
-		}
+// Declared here so that it can be use in unit tests
+var MainCircuit Circuit
 
-		err = inst.Exec()
+func (day *Day07) SolvePart1() error {
+	MainCircuit = NewCircuit()
+
+	for _, input := range day.Input {
+		err := MainCircuit.Build(input)
 		if err != nil {
 			return err
 		}
 	}
 
-	aWire := FindWire("a")
+	aWire := MainCircuit.FindWire("a")
+	aWire.Resolve()
 	day.Answer = int(aWire.Signal)
 
 	return nil

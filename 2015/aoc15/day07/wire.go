@@ -1,12 +1,32 @@
 package day07
 
+import (
+	"fmt"
+	"regexp"
+	"strconv"
+)
+
 type Wire struct {
 	id     string
 	Signal uint16
+	Inst   *Instruction
 }
 
-// All the Wires in the connected circuit
-var circuit map[string]*Wire = make(map[string]*Wire)
+func NewWire(id string) *Wire {
+	var wire Wire
+
+	isConstant, _ := regexp.MatchString(`^\d+$`, id)
+	if isConstant {
+		value, _ := strconv.Atoi(id)
+		wire = Wire{id: "__CONSTANT__", Signal: uint16(value)}
+	} else {
+		wire = Wire{id: id}
+	}
+
+	// fmt.Printf("NewWire: Created '%s'\n", id)
+
+	return &wire
+}
 
 func (w *Wire) AND(input1 *Wire, input2 *Wire) {
 	w.Signal = input1.Signal & input2.Signal
@@ -32,14 +52,42 @@ func (w *Wire) ASSIGN(input1 *Wire) {
 	w.Signal = input1.Signal
 }
 
-func FindWire(id string) *Wire {
-	var ok bool
-	var wire *Wire
+func (w *Wire) Id() string {
+	var id string
 
-	if wire, ok = circuit[id]; !ok {
-		wire = &Wire{id: id}
-		circuit[id] = wire
+	if w.id == "__CONSTANT__" {
+		id = fmt.Sprintf("<%d>", w.Signal)
+	} else {
+		return w.id
 	}
 
-	return wire
+	return id
+}
+
+func (w *Wire) Resolve() {
+	var inst *Instruction = w.Inst
+
+	if inst != nil {
+		if inst.input1 != nil {
+			inst.input1.Resolve()
+		}
+
+		if inst.input2 != nil {
+			inst.input2.Resolve()
+		}
+
+		_ = inst.Exec()
+
+		// Set instructions to resolve signal to nil to signify
+		// that this wire has already been resolved. No need to
+		// resolve it / calculate the value again.
+		w.Inst = nil
+	}
+}
+
+func (w *Wire) String() string {
+	var output string
+	output = fmt.Sprintf("%s -> %d\n%s\n", w.id, w.Signal, w.Inst)
+
+	return output
 }
