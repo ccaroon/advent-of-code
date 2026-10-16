@@ -13,7 +13,7 @@ Icons: [⭐️🚫]
 * [x] ⭐️⭐️ [Day 05: Doesn't He Have Intern-Elves For This?](./aoc15/day05)
 * [x] ⭐️⭐️ [Day 06: Probably a Fire Hazard](./aoc15/day06)
 * [x] ⭐️⭐️ [Day 07: Some Assembly Required](./aoc15/day07)
-* [ ] ⭐️🚫 [Day 08: Matchsticks](./aoc15/day08)
+* [x] ⭐️⭐️ [Day 08: Matchsticks](./aoc15/day08)
 
 ### Development
 Code lives in the `aoc15` go module.
