@@ -59,6 +59,38 @@ func (day *Day08) SolvePart1() error {
 	return nil
 }
 
+// "aaa\"aaa" => "\"aaa\\\"aaa\""
+// "\x27"     => "\"\\x27\""
+func encodeString(input string) string {
+	var output string
+
+	bsRe := regexp.MustCompile(`\\`)
+	dqRe := regexp.MustCompile(`"`)
+
+	// 1. backslashes
+	output = bsRe.ReplaceAllString(input, `\\`)
+
+	// 2. double-quotes
+	output = dqRe.ReplaceAllString(output, `\"`)
+
+	// fmt.Printf("=> EncStr: [%s] -> [%s]\n", input, output)
+
+	return fmt.Sprintf(`"%s"`, output)
+}
+
 func (day *Day08) SolvePart2() error {
-	return fmt.Errorf("Day #08 - Part 2 - Not implemented!")
+	var codeChars int
+	var encChars int
+
+	for _, input := range day.Input {
+		codeChars += countCodeChars(input)
+		output := encodeString(input)
+		encChars += len(output)
+	}
+
+	// fmt.Printf("%d - %d = %d\n", encChars, codeChars, encChars-codeChars)
+
+	day.Answer = encChars - codeChars
+
+	return nil
 }

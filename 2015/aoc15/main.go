@@ -87,9 +87,9 @@ func main() {
 
 			fmt.Println("+------------------------------------------------+")
 			fmt.Println("|         *** Advent of Code - 2015 ***          |")
-			fmt.Printf("|               Day #%02d / Part #%d                |\n", pzzle.Day, pzzle.Part)
+			fmt.Printf("|                    Day #%02d                     |\n", pzzle.Day)
 			fmt.Println("+------------------------------------------------+")
-			fmt.Printf("| '%s'\n", pzzle.Title)
+			fmt.Printf("| %s - Part #%d\n", pzzle.Title, pzzle.Part)
 			fmt.Printf("| Answer: [%d] %s\n", pzzle.Answer, testIndicator)
 			fmt.Println("+------------------------------------------------+")
 		}
