@@ -14,6 +14,8 @@ Icons: [⭐️🚫]
 * [x] ⭐️⭐️ [Day 06: Probably a Fire Hazard](./aoc15/day06)
 * [x] ⭐️⭐️ [Day 07: Some Assembly Required](./aoc15/day07)
 * [x] ⭐️⭐️ [Day 08: Matchsticks](./aoc15/day08)
+* [ ] 🚫🚫 [Day 09: All in a Single Night](./aoc15/day09)
+
 
 ### Development
 Code lives in the `aoc15` go module.
