@@ -15,6 +15,7 @@ Icons: [⭐️🚫]
 * [x] ⭐️⭐️ [Day 07: Some Assembly Required](./aoc15/day07)
 * [x] ⭐️⭐️ [Day 08: Matchsticks](./aoc15/day08)
 * [ ] 🚫🚫 [Day 09: All in a Single Night](./aoc15/day09)
+* [x] ⭐️⭐️ [Day 10: Elves Look, Elves Say](./aoc15/day10)
 
 
 ### Development

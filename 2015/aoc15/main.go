@@ -16,6 +16,7 @@ import (
 	"aoc15/day07"
 	"aoc15/day08"
 	"aoc15/day09"
+	"aoc15/day10"
 	"aoc15/puzzle"
 	"aoc15/utils"
 )
@@ -76,6 +77,10 @@ func main() {
 			pzzle = puzzle.Puzzle(*day)
 		case 9:
 			day := day09.New(partNum, input)
+			err = puzzle.Solve(day)
+			pzzle = puzzle.Puzzle(*day)
+		case 10:
+			day := day10.New(partNum, input)
 			err = puzzle.Solve(day)
 			pzzle = puzzle.Puzzle(*day)
 		default:
