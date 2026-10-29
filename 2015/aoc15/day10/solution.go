@@ -1,17 +1,40 @@
 package day10
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 )
 
+// https://www.youtube.com/watch?v=ea7lJkEhytA
+
+func manualTest() {
+	var value string
+	var iters int
+
+	fmt.Print("Enter <VALUE> <ITERATIONS>: ")
+	fmt.Scanf("%s %d\n", &value, &iters)
+	fmt.Printf("[%s] [%d]\n", value, iters)
+
+	seq := NewMonsterSequence(value)
+	seq.FastFwd(iters)
+
+	seq.Print()
+}
+
 func (day *Day10) SolvePart1() error {
+
+	// UNCOMMENT to create and run a specific sequence
+	// manualTest()
+
 	initValue, numIterations := parseInput(day.Input[0])
 	if numIterations < 0 {
 		numIterations = 40
 	}
 
-	day.Answer = solveIt(initValue, numIterations)
+	seq := NewMonsterSequence(initValue)
+	seq.FastFwd(numIterations)
+	day.Answer = len(seq.Value)
 
 	return nil
 }
@@ -22,7 +45,9 @@ func (day *Day10) SolvePart2() error {
 		numIterations = 50
 	}
 
-	day.Answer = solveIt(initValue, numIterations)
+	seq := NewMonsterSequence(initValue)
+	seq.FastFwd(numIterations)
+	day.Answer = len(seq.Value)
 
 	return nil
 }
@@ -44,13 +69,4 @@ func parseInput(input string) (string, int) {
 	}
 
 	return initValue, numIterations
-}
-
-func solveIt(initValue string, iterations int) int {
-	seq := NewMonsterSequence(initValue)
-	for idx := 0; idx < iterations; idx++ {
-		seq.Next()
-	}
-
-	return len(seq.value)
 }

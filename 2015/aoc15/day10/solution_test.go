@@ -23,6 +23,7 @@ var _ = Describe("Day10", func() {
 		Entry(nil, "data/part1/example2.data", 4),
 		Entry(nil, "data/part1/example3.data", 6),
 		Entry(nil, "data/part1/example4.data", 6),
+		Entry(nil, "data/part1/example5.data", 26),
 	)
 
 	DescribeTable("Part2", func(inputFile string, expectedValue int) {
