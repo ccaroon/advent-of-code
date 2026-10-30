@@ -1,7 +1,5 @@
 package day11
 
-import "fmt"
-
 func (day *Day11) SolvePart1() error {
 	passwd := NewPassword(day.Input[0])
 
@@ -13,5 +11,13 @@ func (day *Day11) SolvePart1() error {
 }
 
 func (day *Day11) SolvePart2() error {
-	return fmt.Errorf("Day #11 - Part 2 - Not implemented!")
+	passwd := NewPassword(day.Input[0])
+
+	// Rotate twice to get the next two valid passwords
+	passwd.Rotate()
+	passwd.Rotate()
+
+	day.Answer = passwd.Value()
+
+	return nil
 }

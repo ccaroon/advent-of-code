@@ -72,17 +72,20 @@ func (passwd *Password) IsValid() bool {
 			straightCount += 1
 		}
 	}
-	valid = valid && straightCount == 1
+	valid = valid && straightCount >= 1
+	// fmt.Printf("strTest [%v] c[%d]\n", valid, straightCount)
 
 	// Must not contain i, o, l
 	valid = valid && !slices.Contains(passwd.data[:], byte('i')-asciiOffset)
 	// fmt.Printf("iTest [%v]\n", valid)
 	valid = valid && !slices.Contains(passwd.data[:], byte('o')-asciiOffset)
+	// fmt.Printf("oTest [%v]\n", valid)
 	valid = valid && !slices.Contains(passwd.data[:], byte('l')-asciiOffset)
+	// fmt.Printf("lTest [%v]\n", valid)
 
 	// Must contain at least 2 unique, non-overlapping letter pairs
 	pairCount := 0
-	var pairValue uint8
+	var pairValue uint8 // to track uniqueness
 	for idx := 0; idx < len(passwd.data)-1; idx++ {
 		ltrNum := passwd.data[idx]
 		if pairValue != ltrNum && passwd.data[idx+1] == ltrNum {
@@ -91,7 +94,9 @@ func (passwd *Password) IsValid() bool {
 			idx++
 		}
 	}
+	// fmt.Printf("v[%v] pC[%d] pV[%d]\n", valid, pairCount, pairValue)
 	valid = valid && pairCount >= 2
+	// fmt.Printf("pTest [%v]\n", valid)
 
 	return valid
 }
@@ -112,9 +117,12 @@ func (passwd *Password) Next() {
 
 // Rotate the current password to the next Valid value
 func (passwd *Password) Rotate() {
+	// fmt.Println(passwd)
 	passwd.Next()
 
 	for !passwd.IsValid() {
+		// fmt.Println(passwd)
 		passwd.Next()
 	}
+	// fmt.Println(passwd)
 }

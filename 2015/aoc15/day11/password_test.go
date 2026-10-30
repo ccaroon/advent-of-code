@@ -46,10 +46,10 @@ var _ = Describe("Password", func() {
 		Expect(passwd).ToNot(BeNil())
 		Expect(passwd.IsValid()).To(BeFalse())
 
-		// Not Valid: More than 1  3-letter straight
+		// Valid: More than 1 3-letter straight
 		passwd = day11.NewPassword("abccxyzz")
 		Expect(passwd).ToNot(BeNil())
-		Expect(passwd.IsValid()).To(BeFalse())
+		Expect(passwd.IsValid()).To(BeTrue())
 
 		// Not Valid: contains `i`
 		passwd = day11.NewPassword("abcciffx")
@@ -85,6 +85,12 @@ var _ = Describe("Password", func() {
 		passwd = day11.NewPassword("abceaaaa")
 		Expect(passwd).ToNot(BeNil())
 		Expect(passwd.IsValid()).To(BeFalse())
+
+		// Misc Test
+		passwd = day11.NewPassword("abcdffaa")
+		Expect(passwd).ToNot(BeNil())
+		Expect(passwd.IsValid()).To(BeTrue())
+
 	})
 
 	It("Can get the Next value", func() {
