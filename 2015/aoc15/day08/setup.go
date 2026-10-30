@@ -2,7 +2,7 @@ package day08
 
 import "aoc15/puzzle"
 
-type Day08 puzzle.Puzzle
+type Day08 puzzle.Puzzle[int]
 
 const (
 	title  = "Matchsticks"

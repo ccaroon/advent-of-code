@@ -2,7 +2,7 @@ package day03
 
 import "aoc15/puzzle"
 
-type Day03 puzzle.Puzzle
+type Day03 puzzle.Puzzle[int]
 
 const (
 	title  = "Perfectly Spherical Houses in a Vacuum"

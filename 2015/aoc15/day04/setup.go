@@ -2,7 +2,7 @@ package day04
 
 import "aoc15/puzzle"
 
-type Day04 puzzle.Puzzle
+type Day04 puzzle.Puzzle[int]
 
 const (
 	title  = "The Ideal Stocking Stuffer"

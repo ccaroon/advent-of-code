@@ -2,7 +2,7 @@ package day02
 
 import "aoc15/puzzle"
 
-type Day02 puzzle.Puzzle
+type Day02 puzzle.Puzzle[int]
 
 const (
 	title  = "I Was Told There Would Be No Math"

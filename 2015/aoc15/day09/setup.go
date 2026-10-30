@@ -2,7 +2,7 @@ package day09
 
 import "aoc15/puzzle"
 
-type Day09 puzzle.Puzzle
+type Day09 puzzle.Puzzle[int]
 
 const (
 	title  = "All in a Single Night"

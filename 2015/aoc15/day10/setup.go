@@ -2,7 +2,7 @@ package day10
 
 import "aoc15/puzzle"
 
-type Day10 puzzle.Puzzle
+type Day10 puzzle.Puzzle[int]
 
 const (
 	title  = "Elves Look, Elves Say"

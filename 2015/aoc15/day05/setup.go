@@ -2,7 +2,7 @@ package day05
 
 import "aoc15/puzzle"
 
-type Day05 puzzle.Puzzle
+type Day05 puzzle.Puzzle[int]
 
 const (
 	title  = "Doesn't He Have Intern-Elves For This?"

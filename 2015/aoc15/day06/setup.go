@@ -2,7 +2,7 @@ package day06
 
 import "aoc15/puzzle"
 
-type Day06 puzzle.Puzzle
+type Day06 puzzle.Puzzle[int]
 
 const (
 	title  = "Probably a Fire Hazard"

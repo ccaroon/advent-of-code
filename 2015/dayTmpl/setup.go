@@ -2,7 +2,7 @@ package day0X
 
 import "aoc15/puzzle"
 
-type Day0X puzzle.Puzzle
+type Day0X puzzle.Puzzle[int]
 
 const (
 	title  = "<PUZZLE TITLE GOES HERE>"

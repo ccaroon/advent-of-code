@@ -2,7 +2,7 @@ package day01
 
 import "aoc15/puzzle"
 
-type Day01 puzzle.Puzzle
+type Day01 puzzle.Puzzle[int]
 
 const (
 	title  = "Not Quite LISP"

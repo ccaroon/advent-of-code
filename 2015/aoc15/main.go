@@ -3,9 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"path"
 	"strconv"
-	"strings"
 
 	"aoc15/day01"
 	"aoc15/day02"
@@ -17,6 +15,7 @@ import (
 	"aoc15/day08"
 	"aoc15/day09"
 	"aoc15/day10"
+	"aoc15/day11"
 	"aoc15/puzzle"
 	"aoc15/utils"
 )
@@ -41,48 +40,52 @@ func main() {
 		inputFileName := os.Args[3]
 		input := utils.ReadInputFile(inputFileName)
 
-		var pzzle puzzle.Puzzle
+		var pzzle any
 		switch dayNum {
 		case 1:
 			day := day01.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
 		case 2:
 			day := day02.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
 		case 3:
 			day := day03.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
 		case 4:
 			day := day04.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
 		case 5:
 			day := day05.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
 		case 6:
 			day := day06.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
 		case 7:
 			day := day07.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
 		case 8:
 			day := day08.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
 		case 9:
 			day := day09.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
 		case 10:
 			day := day10.New(partNum, input)
 			err = puzzle.Solve(day)
-			pzzle = puzzle.Puzzle(*day)
+			pzzle = puzzle.Puzzle[int](*day)
+		case 11:
+			day := day11.New(partNum, input)
+			err = puzzle.Solve(day)
+			pzzle = puzzle.Puzzle[string](*day)
 		default:
 			err = fmt.Errorf("Unknown/Unimplemented Day [%d]\n", dayNum)
 		}
@@ -90,18 +93,21 @@ func main() {
 		if err != nil {
 			fmt.Printf("Error: %s\n", err)
 		} else {
-			var testIndicator string
-			if strings.HasPrefix(path.Base(inputFileName), "example") {
-				testIndicator = "(EXAMPLE)"
-			}
-
 			fmt.Println("+------------------------------------------------+")
 			fmt.Println("|         *** Advent of Code - 2015 ***          |")
-			fmt.Printf("|                    Day #%02d                     |\n", pzzle.Day)
+			fmt.Printf("|                    Day #%02d                     |\n", dayNum)
 			fmt.Println("+------------------------------------------------+")
-			fmt.Printf("| %s - Part #%d\n", pzzle.Title, pzzle.Part)
-			fmt.Printf("| Answer: [%d] %s\n", pzzle.Answer, testIndicator)
-			fmt.Println("+------------------------------------------------+")
+
+			switch v := pzzle.(type) {
+			case puzzle.Puzzle[int]:
+				pz := puzzle.Puzzle[int](v)
+				pz.Print()
+			case puzzle.Puzzle[string]:
+				pz := puzzle.Puzzle[string](v)
+				pz.Print()
+			default:
+				fmt.Printf("Unknown Puzzle Type [%T]\n", v)
+			}
 		}
 	}
 }

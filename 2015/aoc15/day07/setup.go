@@ -2,7 +2,7 @@ package day07
 
 import "aoc15/puzzle"
 
-type Day07 puzzle.Puzzle
+type Day07 puzzle.Puzzle[int]
 
 const (
 	title  = "Some Assembly Required"
