@@ -17,7 +17,7 @@ Icons: [⭐️🚫]
 * [ ] 🚫🚫 [Day 09: All in a Single Night](./aoc15/day09)
 * [x] ⭐️⭐️ [Day 10: Elves Look, Elves Say](./aoc15/day10)
 * [x] ⭐️⭐️ [Day 11: Corporate Policy](./aoc15/day11)
-* [ ] ⭐️🚫 [Day 12: JSAbacusFramework.io](./aoc15/day12)
+* [x] ⭐️⭐️ [Day 12: JSAbacusFramework.io](./aoc15/day12)
 
 
 ### Development

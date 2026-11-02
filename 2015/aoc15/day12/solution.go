@@ -1,18 +1,24 @@
 package day12
 
-import "fmt"
-
 func (day *Day12) SolvePart1() error {
 	data, err := ParseJSON(day.Input[0])
 	if err != nil {
 		return err
 	}
 
-	day.Answer = FindTotal(data)
+	day.Answer = FindTotal(data, nil)
 
 	return nil
 }
 
 func (day *Day12) SolvePart2() error {
-	return fmt.Errorf("Day #12 - Part 2 - Not implemented!")
+	data, err := ParseJSON(day.Input[0])
+	if err != nil {
+		return err
+	}
+
+	ignoreValue := "red"
+	day.Answer = FindTotal(data, &ignoreValue)
+
+	return nil
 }
