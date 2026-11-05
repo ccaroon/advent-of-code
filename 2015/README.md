@@ -18,6 +18,7 @@ Icons: [⭐️🚫]
 * [x] ⭐️⭐️ [Day 10: Elves Look, Elves Say](./aoc15/day10)
 * [x] ⭐️⭐️ [Day 11: Corporate Policy](./aoc15/day11)
 * [x] ⭐️⭐️ [Day 12: JSAbacusFramework.io](./aoc15/day12)
+* [ ] 🚫🚫 [Day 13: Knights of the Dinner Table](./aoc15/day13)
 
 
 ### Development
